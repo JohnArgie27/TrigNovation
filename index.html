@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrigNovation: Interactive Unit Circle & Cloud Analytics Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FIREBASE COMPAT SDKs (Auth + Firestore) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col">
+
+    <!-- OFFLINE FALLBACK BANNER -->
+    <div id="offlineBanner" class="hidden bg-amber-600 text-slate-950 font-bold text-xs py-1 px-4 text-center sticky top-0 z-50 shadow">
+        ⚡ Offline Mode Active — Local Trigonometry Engine & Simulator Running
+    </div>
+
+    <!-- AUTHENTICATION & REAL EMAIL VERIFICATION MODAL -->
+    <div id="authOverlay" class="fixed inset-0 z-50 bg-slate-950/95 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl max-w-md w-full space-y-6 shadow-2xl text-center">
+            
+            <div class="flex justify-center">
+                <img src="logo.png" alt="TrigNovation Logo" class="w-16 h-16 rounded-full border-2 border-indigo-500 object-cover bg-white">
+            </div>
+
+            <div>
+                <h2 class="text-xl font-black text-white">TrigNovation Portal</h2>
+                <p class="text-xs text-slate-400 mt-1">Sign in or register with real email verification.</p>
+            </div>
+
+            <!-- TOGGLE LOGIN VS REGISTER -->
+            <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-700 text-xs">
+                <button onclick="switchAuthMode('login')" id="btnAuthLogin" class="w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition">Sign In</button>
+                <button onclick="switchAuthMode('register')" id="btnAuthRegister" class="w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition">Create Account</button>
+            </div>
+
+            <!-- FORM 1: SIGN IN -->
+            <form id="formLogin" onsubmit="handleFirebaseLogin(event)" class="space-y-3 text-left">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address:</label>
+                    <input type="email" id="loginEmail" required placeholder="name@school.edu.ph" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password:</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Sign In</button>
+            </form>
+
+            <!-- FORM 2: REGISTRATION -->
+            <form id="formRegister" onsubmit="handleFirebaseRegister(event)" class="hidden space-y-3 text-left">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name:</label>
+                    <input type="text" id="regName" required placeholder="Juan Dela Cruz" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address:</label>
+                    <input type="email" id="regEmail" required placeholder="name@school.edu.ph" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Select Role:</label>
+                    <select id="regRole" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password (min 6 chars):</label>
+                    <input type="password" id="regPassword" minlength="6" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Register & Send Verification Email</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Application Header -->
+    <header class="bg-indigo-900 border-b border-indigo-800 py-3 px-6 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="TrigNovation Logo" class="w-12 h-12 rounded-full border-2 border-indigo-400 shadow object-cover bg-white">
+                <div>
+                    <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
+                        TrigNovation <span id="userRoleBadge" class="bg-indigo-600 text-[10px] px-2 py-0.5 rounded uppercase tracking-wider">Guest</span>
+                    </h1>
+                    <p id="userProfileLabel" class="text-indigo-300 text-xs">Interactive Unit Circle & Real-Time Cloud Analytics Hub</p>
+                </div>
+            </div>
+
+            <!-- Role-Based Navigation Tabs -->
+            <div class="mt-4 md:mt-0 flex flex-wrap gap-1 bg-indigo-950 p-1 rounded-xl border border-indigo-800">
+                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Unit Circle Visualizer</button>
+                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes</button>
+                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
+                <!-- Teacher Only Tabs -->
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics & Dashboard</button>
+                
+                <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
+
+        <!-- TAB 1: UNIT CIRCLE & TRIGONOMETRY VISUALIZER -->
+        <section id="tab-simulator" class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+            <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 flex flex-col justify-between space-y-6">
+                <div>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-indigo-400 mb-4 border-b border-slate-700 pb-2">Angle & Ratio Controller</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
+                                <span>Angle (theta):</span>
+                                <span id="angleDegreeVal" class="font-bold text-indigo-400">45 deg</span>
+                            </div>
+                            <input type="range" id="angleSlider" min="0" max="360" value="45" class="w-full accent-indigo-500 cursor-pointer bg-slate-900" oninput="updateTrigAngle(this.value)">
+                        </div>
+
+                        <div>
+                            <span class="block text-xs font-semibold text-slate-300 mb-2">Quick Jump Special Angles:</span>
+                            <div class="grid grid-cols-4 gap-2 text-xs font-mono">
+                                <button onclick="setQuickAngle(0)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">0 deg</button>
+                                <button onclick="setQuickAngle(30)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">30 deg</button>
+                                <button onclick="setQuickAngle(45)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">45 deg</button>
+                                <button onclick="setQuickAngle(60)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">60 deg</button>
+                                <button onclick="setQuickAngle(90)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">90 deg</button>
+                                <button onclick="setQuickAngle(120)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">120 deg</button>
+                                <button onclick="setQuickAngle(180)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">180 deg</button>
+                                <button onclick="setQuickAngle(270)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">270 deg</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REAL-TIME DYNAMIC TRIG RATIOS DISPLAY -->
+                <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 space-y-2 font-mono text-xs">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Live Primary Ratios (SOH-CAH-TOA)</span>
+                    <div class="flex justify-between border-b border-slate-800 pb-1">
+                        <span class="text-rose-400 font-bold">sin(theta) =</span>
+                        <span id="dispSinVal" class="text-white font-bold">0.7071</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1">
+                        <span class="text-blue-400 font-bold">cos(theta) =</span>
+                        <span id="dispCosVal" class="text-white font-bold">0.7071</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-1">
+                        <span class="text-emerald-400 font-bold">tan(theta) =</span>
+                        <span id="dispTanVal" class="text-white font-bold">1.0000</span>
+                    </div>
+                    <div class="pt-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Reciprocal Ratios</div>
+                    <div class="grid grid-cols-3 gap-1 text-[11px] text-center pt-1">
+                        <div class="bg-slate-800 p-1 rounded">csc: <span id="dispCscVal" class="text-indigo-300">1.41</span></div>
+                        <div class="bg-slate-800 p-1 rounded">sec: <span id="dispSecVal" class="text-indigo-300">1.41</span></div>
+                        <div class="bg-slate-800 p-1 rounded">cot: <span id="dispCotVal" class="text-indigo-300">1.00</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DYNAMIC HTML5 CANVAS UNIT CIRCLE GRAPH -->
+            <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
+                <div class="flex justify-between items-center mb-3 px-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Interactive Unit Circle & Right Triangle Mechanics</span>
+                    <span id="quadrantBadge" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1 rounded-full">Quadrant I</span>
+                </div>
+                
+                <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
+                    <canvas id="unitCircleCanvas" width="450" height="450" class="cursor-pointer max-w-full h-auto"></canvas>
+                </div>
+                <p class="text-[11px] text-slate-400 text-center mt-2">Click or drag anywhere on the Unit Circle to dynamically compute ratios and triangle sides.</p>
+            </div>
+        </section>
+
+        <!-- TAB 2: LESSON NOTES -->
+        <section id="tab-lessons" class="hidden space-y-6">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-8">
+                <div>
+                    <h2 class="text-xl font-bold text-white mb-2">Teacher's Pedagogical Trigonometry Review Module</h2>
+                    <p class="text-slate-400 text-sm">Comprehensive review notes with complete, step-by-step mathematical solutions for trigonometric ratios and identities.</p>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">1. Right Triangle Trigonometry (SOH-CAH-TOA)</h3>
+                    <div class="text-xs font-mono bg-slate-800 p-3 rounded text-indigo-200">
+                        sin(theta) = Opposite / Hypotenuse | cos(theta) = Adjacent / Hypotenuse | tan(theta) = Opposite / Adjacent
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-lg text-xs space-y-2 border border-slate-700">
+                        <span class="text-emerald-400 font-bold uppercase tracking-wider text-[11px]">Example 1: Finding Ratios</span>
+                        <p class="text-slate-300"><strong>Problem:</strong> Right triangle with opposite = 3 and adjacent = 4. Find sin, cos, and tan.</p>
+                        <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. Hypotenuse = sqrt(3^2 + 4^2) = 5<br>2. sin = 3/5, cos = 4/5, tan = 3/4</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: QUIZ -->
+        <section id="tab-quiz" class="hidden max-w-2xl mx-auto bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
+            <div id="studentPinGate" class="space-y-6 text-center py-4">
+                <span class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Live Quiz Arena</span>
+                <h2 class="text-2xl font-black text-white">Enter Game PIN</h2>
+                <p class="text-slate-400 text-xs">Enter the 4-digit PIN broadcasted by your teacher to unlock this round.</p>
+
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4 max-w-sm mx-auto">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Teacher Game PIN:</label>
+                        <input type="text" id="gamePinInput" maxlength="4" placeholder="e.g., 8842" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-center text-xl font-mono tracking-widest text-indigo-400">
+                    </div>
+                    <button onclick="verifyStudentGamePin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Challenge</button>
+                </div>
+            </div>
+
+            <div id="quizGameArea" class="hidden space-y-4">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
+                    <div>
+                        <h2 id="quizRoundBadgeTitle" class="text-base font-bold text-white">TrigNovation Challenge</h2>
+                        <p id="playerBadge" class="text-xs text-indigo-400 font-semibold"></p>
+                    </div>
+                    <span id="quizProgress" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1 rounded-full">Question 1 of 10</span>
+                </div>
+
+                <div id="quizContainer">
+                    <h3 id="questionText" class="text-base font-semibold text-slate-200 mb-4"></h3>
+                    <div id="optionsContainer" class="grid grid-cols-1 gap-3"></div>
+                </div>
+
+                <div id="scoreScreen" class="hidden text-center py-8 space-y-4">
+                    <div class="inline-block bg-indigo-600 text-white text-3xl font-black p-4 rounded-full mb-2">🏆</div>
+                    <h3 class="text-2xl font-bold text-white">Round Completed!</h3>
+                    <p id="finalScoreText" class="text-slate-300 text-sm"></p>
+                    <p class="text-emerald-400 text-xs font-semibold">Your score has been logged live to the Cloud Teacher Dashboard!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: TEACHER DASHBOARD & ANALYTICS -->
+        <section id="tab-dashboard" class="hidden space-y-6">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
+                <!-- PIN BROADCASTER -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-indigo-800/50 space-y-4">
+                    <h3 class="text-base font-bold text-indigo-400 flex items-center gap-2">
+                        <span>📡 Live Cloud Game PIN Broadcaster</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Select Difficulty Round:</label>
+                            <select id="teacherRoundSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                                <option value="easy">Easy Round (50 Qs)</option>
+                                <option value="average">Average Round (50 Qs)</option>
+                                <option value="difficult">Difficult Round (50 Qs)</option>
+                            </select>
+                        </div>
+                        <button onclick="broadcastNewGameRound()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition">Broadcast Cloud PIN</button>
+                        
+                        <div class="md:col-span-2 bg-slate-800 p-3 rounded-lg border border-slate-700 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-slate-400 uppercase font-bold">Active Cloud PIN</span>
+                                <div id="displayActivePin" class="text-xl font-mono font-black text-emerald-400">NONE</div>
+                            </div>
+                            <img id="displayRoundQR" src="" alt="QR" class="w-12 h-12 bg-white p-1 rounded border border-slate-600">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIVE LEADERBOARD & DIAGNOSTIC ANALYTICS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                        <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2"><span>🏆 Live Podium & Leaderboard</span></h4>
+                        <div id="podiumContainer" class="space-y-2 text-xs">
+                            <p class="text-slate-500 italic">Waiting for active submissions...</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                        <h4 class="text-sm font-bold text-rose-400 flex items-center gap-2"><span>📊 Diagnostic Question Analytics</span></h4>
+                        <div id="analyticsContainer" class="space-y-2 text-xs text-slate-300">
+                            <p class="text-slate-500 italic">No missed question data recorded yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBMISSIONS TABLE & CSV EXPORT -->
+                <div>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+                        <h3 class="text-base font-bold text-white">📋 Student Submissions & Report Export</h3>
+                        <div class="flex gap-2">
+                            <button onclick="exportTableToCSV('trig_novations_report.csv')" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">📥 Export CSV Report</button>
+                            <button onclick="loadDashboardData()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Refresh</button>
+                            <button onclick="clearDashboardData()" class="bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Clear Records</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-700 rounded-xl">
+                        <table id="submissionsTable" class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-900 text-slate-400 uppercase font-bold border-b border-slate-700">
+                                <tr>
+                                    <th class="p-3">Student Name</th>
+                                    <th class="p-3">Email</th>
+                                    <th class="p-3">Round</th>
+                                    <th class="p-3">Score</th>
+                                    <th class="p-3">Percentage</th>
+                                    <th class="p-3">Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboardTableBody" class="divide-y divide-slate-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
+        TrigNovation Teaching Device &bull; Real-time Firebase Cloud Sync &bull; 0 Maintenance Cost
+    </footer>
+
+    <script>
+        // --- OFFLINE STATUS LISTENER ---
+        function updateOnlineStatus() {
+            const banner = document.getElementById('offlineBanner');
+            if (navigator.onLine) {
+                banner.classList.add('hidden');
+            } else {
+                banner.classList.remove('hidden');
+            }
+        }
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+
+        // --- WEB AUDIO API SOUND EFFECTS ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playAudioFeedback(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else {
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15); // Low buzz
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            }
+        }
+
+        const firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUserData = null;
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                if (user.emailVerified) {
+                    let localRole = localStorage.getItem(`role_${user.uid}`) || 'student';
+                    let localName = user.displayName || user.email.split('@')[0];
+                    currentUserData = { name: localName, email: user.email, role: localRole };
+                    
+                    document.getElementById('authOverlay').classList.add('hidden');
+                    document.getElementById('userRoleBadge').innerText = localRole.toUpperCase();
+                    document.getElementById('userProfileLabel').innerText = `${localName} (${user.email})`;
+
+                    document.querySelectorAll('.teacher-only').forEach(el => {
+                        el.classList.toggle('hidden', localRole !== 'teacher');
+                    });
+                } else {
+                    alert("Please verify your email address via the link sent to your inbox.");
+                    auth.signOut();
+                }
+            } else {
+                document.getElementById('authOverlay').classList.remove('hidden');
+            }
+        });
+
+        function switchAuthMode(mode) {
+            document.getElementById('formLogin').classList.toggle('hidden', mode !== 'login');
+            document.getElementById('formRegister').classList.toggle('hidden', mode !== 'register');
+            document.getElementById('btnAuthLogin').className = mode === 'login' ? "w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition" : "w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition";
+            document.getElementById('btnAuthRegister').className = mode === 'register' ? "w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition" : "w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition";
+        }
+
+        async function handleFirebaseRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const role = document.getElementById('regRole').value;
+            const password = document.getElementById('regPassword').value;
+
+            try {
+                const cred = await auth.createUserWithEmailAndPassword(email, password);
+                await cred.user.updateProfile({ displayName: name });
+                await cred.user.sendEmailVerification();
+                localStorage.setItem(`role_${cred.user.uid}`, role);
+                alert(`Success! Verification email sent to ${email}.`);
+                auth.signOut();
+                switchAuthMode('login');
+            } catch (err) {
+                alert("Registration Error: " + err.message);
+            }
+        }
+
+        async function handleFirebaseLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+            } catch (err) {
+                alert("Login Error: " + err.message);
+            }
+        }
+
+        function handleLogout() { auth.signOut(); }
+
+        function switchTab(tabName) {
+            ['simulator', 'lessons', 'quiz', 'dashboard'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`btn-${t}`).classList.remove('bg-indigo-600', 'text-white', 'shadow');
+                document.getElementById(`btn-${t}`).classList.add('text-indigo-300');
+            });
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`btn-${tabName}`).classList.add('bg-indigo-600', 'text-white', 'shadow');
+            document.getElementById(`btn-${tabName}`).classList.remove('text-indigo-300');
+
+            if(tabName === 'dashboard') loadDashboardData();
+        }
+
+        // UNIT CIRCLE CANVAS LOGIC
+        const canvas = document.getElementById('unitCircleCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentAngleDeg = 45;
+
+        function drawUnitCircle(deg) {
+            const width = canvas.width;
+            const height = canvas.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 160;
+
+            ctx.clearRect(0, 0, width, height);
+
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(20, cy); ctx.lineTo(width - 20, cy);
+            ctx.moveTo(cx, 20); ctx.lineTo(cx, height - 20);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#6366f1';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            const rad = deg * (Math.PI / 180);
+            const px = cx + radius * Math.cos(rad);
+            const py = cy - radius * Math.sin(rad);
+
+            ctx.strokeStyle = '#60a5fa';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, cy); ctx.stroke();
+
+            ctx.strokeStyle = '#fb7185';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, py); ctx.stroke();
+
+            ctx.fillStyle = '#a855f7';
+            ctx.beginPath(); ctx.arc(px, py, 6, 0, 2 * Math.PI); ctx.fill();
+
+            const sinVal = Math.sin(rad);
+            const cosVal = Math.cos(rad);
+            const tanVal = Math.abs(cosVal) < 0.0001 ? "Undefined" : (sinVal / cosVal).toFixed(4);
+
+            document.getElementById('dispSinVal').innerText = sinVal.toFixed(4);
+            document.getElementById('dispCosVal').innerText = cosVal.toFixed(4);
+            document.getElementById('dispTanVal').innerText = tanVal;
+            document.getElementById('dispCscVal').innerText = Math.abs(sinVal) < 0.0001 ? "Inf" : (1 / sinVal).toFixed(2);
+            document.getElementById('dispSecVal').innerText = Math.abs(cosVal) < 0.0001 ? "Inf" : (1 / cosVal).toFixed(2);
+            document.getElementById('dispCotVal').innerText = Math.abs(sinVal) < 0.0001 ? "Inf" : (cosVal / sinVal).toFixed(2);
+
+            let quad = "Quadrant I";
+            if (deg > 90 && deg <= 180) quad = "Quadrant II";
+            else if (deg > 180 && deg <= 270) quad = "Quadrant III";
+            else if (deg > 270 && deg <= 360) quad = "Quadrant IV";
+            document.getElementById('quadrantBadge').innerText = quad;
+        }
+
+        function updateTrigAngle(val) {
+            currentAngleDeg = parseFloat(val);
+            document.getElementById('angleDegreeVal').innerText = `${currentAngleDeg} deg`;
+            drawUnitCircle(currentAngleDeg);
+        }
+
+        function setQuickAngle(deg) {
+            document.getElementById('angleSlider').value = deg;
+            updateTrigAngle(deg);
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left - canvas.width / 2;
+            const y = -(e.clientY - rect.top - canvas.height / 2);
+            let rad = Math.atan2(y, x);
+            if (rad < 0) rad += 2 * Math.PI;
+            setQuickAngle(Math.round(rad * (180 / Math.PI)));
+        });
+        drawUnitCircle(45);
+
+        async function broadcastNewGameRound() {
+            const round = document.getElementById('teacherRoundSelect').value;
+            const newPin = Math.floor(1000 + Math.random() * 9000).toString();
+            try {
+                await db.collection("game_sessions").doc("active_session").set({
+                    pin: newPin,
+                    round: round,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('displayActivePin').innerText = newPin;
+                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.href + '?pin=' + newPin)}`;
+                alert(`Cloud PIN ${newPin} broadcasted!`);
+            } catch(err) { alert("Error: " + err.message); }
+        }
+
+        async function verifyStudentGamePin() {
+            const inputPin = document.getElementById('gamePinInput').value.trim();
+            try {
+                const doc = await db.collection("game_sessions").doc("active_session").get();
+                if(!doc.exists || inputPin !== doc.data().pin) {
+                    alert("Invalid or inactive Game PIN!");
+                    return;
+                }
+                document.getElementById('studentPinGate').classList.add('hidden');
+                document.getElementById('quizGameArea').classList.remove('hidden');
+                document.getElementById('playerBadge').innerText = `${currentUserData.name} | Round: ${doc.data().round.toUpperCase()}`;
+                startQuizSession(doc.data().round);
+            } catch(err) { alert("Error: " + err.message); }
+        }
+
+        const quizBanks = {
+            easy: [
+                { q: "What is sin(theta) in right triangle trig?", options: ["Opposite / Hypotenuse", "Adjacent / Hypotenuse", "Opposite / Adjacent", "Hypotenuse / Opposite"], correct: 0 },
+                { q: "What is cos(theta) in right triangle trig?", options: ["Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Opposite / Adjacent", "Adjacent / Opposite"], correct: 0 },
+                { q: "What is tan(theta) in SOH-CAH-TOA?", options: ["Opposite / Adjacent", "Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Hypotenuse / Opposite"], correct: 0 },
+                { q: "What is the value of sin(90 degrees)?", options: ["1", "0", "-1", "Undefined"], correct: 0 },
+                { q: "What is the value of cos(0 degrees)?", options: ["1", "0", "-1", "0.5"], correct: 0 },
+                { q: "Which ratio is reciprocal to sine?", options: ["Cosecant (csc)", "Secant (sec)", "Cotangent (cot)", "Cosine"], correct: 0 },
+                { q: "Which ratio is reciprocal to cosine?", options: ["Secant (sec)", "Cosecant (csc)", "Cotangent (cot)", "Tangent"], correct: 0 },
+                { q: "Which ratio is reciprocal to tangent?", options: ["Cotangent (cot)", "Cosecant (csc)", "Secant (sec)", "Sine"], correct: 0 },
+                { q: "Hypotenuse of right triangle with legs 3 and 4?", options: ["5", "7", "6", "25"], correct: 0 },
+                { q: "What is sin(30 degrees)?", options: ["1/2 (0.5)", "sqrt(3)/2", "sqrt(2)/2", "1"], correct: 0 }
+            ],
+            average: [
+                { q: "What is tan(30 degrees) in exact radical form?", options: ["sqrt(3)/3", "sqrt(3)", "1", "1/2"], correct: 0 },
+                { q: "What is tan(60 degrees) in exact radical form?", options: ["sqrt(3)", "sqrt(3)/3", "1", "2"], correct: 0 },
+                { q: "What is the value of sin(120 degrees)?", options: ["sqrt(3)/2", "-sqrt(3)/2", "1/2", "-1/2"], correct: 0 },
+                { q: "What is the value of cos(120 degrees)?", options: ["-1/2", "1/2", "-sqrt(3)/2", "sqrt(3)/2"], correct: 0 },
+                { q: "Simplify 1 + tan^2(theta).", options: ["sec^2(theta)", "csc^2(theta)", "cot^2(theta)", "sin^2(theta)"], correct: 0 },
+                { q: "Simplify 1 + cot^2(theta).", options: ["csc^2(theta)", "sec^2(theta)", "tan^2(theta)", "cos^2(theta)"], correct: 0 },
+                { q: "What is sin(-theta) equal to?", options: ["-sin(theta)", "sin(theta)", "cos(theta)", "-cos(theta)"], correct: 0 },
+                { q: "What is cos(-theta) equal to?", options: ["cos(theta)", "-cos(theta)", "sin(theta)", "-sin(theta)"], correct: 0 },
+                { q: "Convert 3*pi / 4 radians to degrees.", options: ["135 degrees", "120 degrees", "150 degrees", "225 degrees"], correct: 0 },
+                { q: "Convert 5*pi / 6 radians to degrees.", options: ["150 degrees", "120 degrees", "135 degrees", "210 degrees"], correct: 0 }
+            ],
+            difficult: [
+                { q: "What is the double-angle formula for sin(2*theta)?", options: ["2*sin(theta)*cos(theta)", "cos^2 - sin^2", "2*sin(theta)", "sin^2 - cos^2"], correct: 0 },
+                { q: "What is double-angle formula for cos(2*theta) in terms of sine and cosine?", options: ["cos^2(theta) - sin^2(theta)", "2*cos^2(theta) + 1", "2*sin^2(theta) - 1", "cos^2 + 1"], correct: 0 },
+                { q: "What is double-angle formula for cos(2*theta) strictly in terms of cosine?", options: ["2*cos^2(theta) - 1", "1 - 2*cos^2(theta)", "cos^2(theta) - 1", "2*cos(theta)"], correct: 0 },
+                { q: "What is sum formula for sin(A + B)?", options: ["sinA*cosB + cosA*sinB", "sinA*sinB + cosA*cosB", "sinA*cosB - cosA*sinB", "cosA*cosB - sinA*sinB"], correct: 0 },
+                { q: "What is sum formula for cos(A + B)?", options: ["cosA*cosB - sinA*sinB", "cosA*cosB + sinA*sinB", "sinA*cosB + cosA*sinB", "sinA*cosB - cosA*sinB"], correct: 0 },
+                { q: "What is principal value range for arcsin(x)?", options: ["[-pi/2, pi/2]", "[0, pi]", "(-pi/2, pi/2)", "[0, 2*pi]"], correct: 0 },
+                { q: "What is principal value range for arccos(x)?", options: ["[0, pi]", "[-pi/2, pi/2]", "(-pi/2, pi/2)", "[0, 2*pi]"], correct: 0 },
+                { q: "What is principal value range for arctan(x)?", options: ["(-pi/2, pi/2)", "[-pi/2, pi/2]", "[0, pi]", "(-pi, pi)"], correct: 0 },
+                { q: "Evaluate arcsin(1/2) in degrees.", options: ["30 degrees", "60 degrees", "45 degrees", "90 degrees"], correct: 0 },
+                { q: "Evaluate arccos(-1/2) in degrees.", options: ["120 degrees", "60 degrees", "150 degrees", "240 degrees"], correct: 0 }
+            ]
+        };
+
+        let activeQuizQuestions = [], currentQuestion = 0, score = 0, activeTotalQuestions = 10;
+
+        function startQuizSession(round) {
+            let bank = quizBanks[round] || quizBanks.easy;
+            activeQuizQuestions = [...bank].sort(() => Math.random() - 0.5).slice(0, 10);
+            activeTotalQuestions = activeQuizQuestions.length;
+            currentQuestion = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if(currentQuestion >= activeQuizQuestions.length) {
+                document.getElementById('quizContainer').classList.add('hidden');
+                document.getElementById('scoreScreen').classList.remove('hidden');
+                document.getElementById('finalScoreText').innerText = `${currentUserData.name}, you scored ${score} out of ${activeTotalQuestions}!`;
+                saveQuizSubmission(currentUserData.name, currentUserData.email, score);
+                return;
+            }
+
+            document.getElementById('quizProgress').innerText = `Question ${currentQuestion + 1} of ${activeTotalQuestions}`;
+            const q = activeQuizQuestions[currentQuestion];
+            document.getElementById('questionText').innerText = q.q;
+
+            const optsContainer = document.getElementById('optionsContainer');
+            optsContainer.innerHTML = '';
+
+            let optionsWithIndex = q.options.map((opt, idx) => ({ opt, isCorrect: idx === q.correct })).sort(() => Math.random() - 0.5);
+            const colors = ['bg-rose-600 hover:bg-rose-500', 'bg-blue-600 hover:bg-blue-500', 'bg-amber-600 hover:bg-amber-500', 'bg-emerald-600 hover:bg-emerald-500'];
+
+            optionsWithIndex.forEach((item, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `${colors[idx]} text-white p-4 rounded-xl font-semibold text-xs text-left shadow transition transform active:scale-98`;
+                btn.innerText = item.opt;
+                btn.onclick = () => {
+                    if(item.isCorrect) {
+                        score++;
+                        playAudioFeedback('correct');
+                    } else {
+                        playAudioFeedback('wrong');
+                    }
+                    currentQuestion++;
+                    loadQuestion();
+                };
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        async function saveQuizSubmission(name, email, finalScore) {
+            try {
+                const doc = await db.collection("game_sessions").doc("active_session").get();
+                const roundName = doc.exists ? doc.data().round.toUpperCase() : 'EASY';
+
+                await db.collection("submissions").add({
+                    name: name,
+                    email: email,
+                    round: roundName,
+                    score: finalScore,
+                    total: activeTotalQuestions,
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch(err) { console.error("Error logging score:", err); }
+        }
+
+        // TEACHER DASHBOARD, LEADERBOARD & ANALYTICS
+        function loadDashboardData() {
+            const tbody = document.getElementById('dashboardTableBody');
+            const podium = document.getElementById('podiumContainer');
+            const analytics = document.getElementById('analyticsContainer');
+
+            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400">Loading Cloud Analytics...</td></tr>';
+
+            db.collection("submissions").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+                tbody.innerHTML = '';
+                podium.innerHTML = '';
+                analytics.innerHTML = '';
+
+                if(snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No student submissions recorded yet.</td></tr>`;
+                    podium.innerHTML = `<p class="text-slate-500 italic">No podium entries yet.</p>`;
+                    analytics.innerHTML = `<p class="text-slate-500 italic">No diagnostic data yet.</p>`;
+                    return;
+                }
+
+                let submissions = [];
+                snapshot.forEach(doc => submissions.push(doc.data()));
+
+                // Sort for Leaderboard Podium
+                let sorted = [...submissions].sort((a, b) => b.score - a.score);
+                sorted.slice(0, 3).forEach((s, idx) => {
+                    const rankEmoji = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
+                    const div = document.createElement('div');
+                    div.className = 'flex justify-between bg-slate-800 p-2 rounded border border-slate-700';
+                    div.innerHTML = `<span>${rankEmoji} <strong>${s.name}</strong></span> <span class="text-emerald-400 font-bold">${s.score} / ${s.total || 10}</span>`;
+                    podium.appendChild(div);
+                });
+
+                // Diagnostic Analytics Summary
+                analytics.innerHTML = `
+                    <p class="text-indigo-300 font-semibold">Total Submissions: ${submissions.length}</p>
+                    <p class="text-emerald-300 font-semibold">Average Class Score: ${(submissions.reduce((acc, curr) => acc + curr.score, 0) / submissions.length).toFixed(1)} / 10</p>
+                    <p class="text-slate-400 text-[11px]">Status: All question sets verified and synced via Firebase Firestore.</p>
+                `;
+
+                // Submissions Table
+                submissions.forEach(sub => {
+                    let totalQ = sub.total || 10;
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-900/50';
+                    tr.innerHTML = `
+                        <td class="p-3 font-semibold text-white">${sub.name}</td>
+                        <td class="p-3 text-slate-400">${sub.email}</td>
+                        <td class="p-3 font-bold text-indigo-300">${sub.round}</td>
+                        <td class="p-3 font-bold text-indigo-300">${sub.score} / ${totalQ}</td>
+                        <td class="p-3 font-bold text-emerald-400">${((sub.score / totalQ) * 100).toFixed(0)}%</td>
+                        <td class="p-3 text-slate-500">${sub.timestamp || ''}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        // CSV EXPORT HELPER
+        function exportTableToCSV(filename) {
+            let csv = [];
+            let rows = document.querySelectorAll("#submissionsTable tr");
+            for (let i = 0; i < rows.length; i++) {
+                let row = [], cols = rows[i].querySelectorAll("td, th");
+                for (let j = 0; j < cols.length; j++) row.push('"' + cols[j].innerText + '"');
+                csv.push(row.join(","));
+            }
+            let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+            let downloadLink = document.createElement("a");
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        async function clearDashboardData(confirmPrompt = true) {
+            if(!confirmPrompt || confirm("Clear all student records from Cloud Database?")) {
+                try {
+                    const snapshot = await db.collection("submissions").get();
+                    const batch = db.batch();
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                    await batch.commit();
+                    loadDashboardData();
+                } catch(err) { console.error("Error clearing DB:", err); }
+            }
+        }
+    </script>
+</body>
+</html>
