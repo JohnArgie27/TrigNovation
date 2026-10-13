@@ -118,8 +118,8 @@
                     <div class="space-y-4">
                         <div>
                             <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-                                <span>Angle (theta):</span>
-                                <span id="angleDegreeVal" class="font-bold text-indigo-400">45 deg</span>
+                                <span>Angle (θ):</span>
+                                <span id="angleDegreeVal" class="font-bold text-indigo-400">45°</span>
                             </div>
                             <input type="range" id="angleSlider" min="0" max="360" value="45" class="w-full accent-indigo-500 cursor-pointer bg-slate-900" oninput="updateTrigAngle(this.value)">
                         </div>
@@ -127,14 +127,14 @@
                         <div>
                             <span class="block text-xs font-semibold text-slate-300 mb-2">Quick Jump Special Angles:</span>
                             <div class="grid grid-cols-4 gap-2 text-xs font-mono">
-                                <button onclick="setQuickAngle(0)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">0 deg</button>
-                                <button onclick="setQuickAngle(30)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">30 deg</button>
-                                <button onclick="setQuickAngle(45)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">45 deg</button>
-                                <button onclick="setQuickAngle(60)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">60 deg</button>
-                                <button onclick="setQuickAngle(90)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">90 deg</button>
-                                <button onclick="setQuickAngle(120)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">120 deg</button>
-                                <button onclick="setQuickAngle(180)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">180 deg</button>
-                                <button onclick="setQuickAngle(270)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">270 deg</button>
+                                <button onclick="setQuickAngle(0)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">0°</button>
+                                <button onclick="setQuickAngle(30)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">30°</button>
+                                <button onclick="setQuickAngle(45)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">45°</button>
+                                <button onclick="setQuickAngle(60)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">60°</button>
+                                <button onclick="setQuickAngle(90)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">90°</button>
+                                <button onclick="setQuickAngle(120)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">120°</button>
+                                <button onclick="setQuickAngle(180)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">180°</button>
+                                <button onclick="setQuickAngle(270)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">270°</button>
                             </div>
                         </div>
                     </div>
@@ -144,15 +144,15 @@
                 <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 space-y-2 font-mono text-xs">
                     <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Live Primary Ratios (SOH-CAH-TOA)</span>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-rose-400 font-bold">sin(theta) [Opp]:</span>
+                        <span class="text-rose-400 font-bold">sin(θ) [Opp]:</span>
                         <span id="dispSinVal" class="text-white font-bold">0.7071</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-blue-400 font-bold">cos(theta) [Adj]:</span>
+                        <span class="text-blue-400 font-bold">cos(θ) [Adj]:</span>
                         <span id="dispCosVal" class="text-white font-bold">0.7071</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-emerald-400 font-bold">tan(theta) [Opp/Adj]:</span>
+                        <span class="text-emerald-400 font-bold">tan(θ) [Opp/Adj]:</span>
                         <span id="dispTanVal" class="text-white font-bold">1.0000</span>
                     </div>
                     <div class="pt-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Reciprocal Ratios</div>
@@ -192,82 +192,82 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                         <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
                             <span class="text-emerald-400 font-bold uppercase">Primary Ratios (SOH-CAH-TOA)</span>
-                            <p class="text-slate-300">Sine ($\sin \theta$) = $\frac{\text{Opposite}}{\text{Hypotenuse}}$</p>
-                            <p class="text-slate-300">Cosine ($\cos \theta$) = $\frac{\text{Adjacent}}{\text{Hypotenuse}}$</p>
-                            <p class="text-slate-300">Tangent ($\tan \theta$) = $\frac{\text{Opposite}}{\text{Adjacent}} = \frac{\sin \theta}{\cos \theta}$</p>
+                            <p class="text-slate-300">Sine (sin θ) = Opposite / Hypotenuse</p>
+                            <p class="text-slate-300">Cosine (cos θ) = Adjacent / Hypotenuse</p>
+                            <p class="text-slate-300">Tangent (tan θ) = Opposite / Adjacent = sin θ / cos θ</p>
                         </div>
                         <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
                             <span class="text-indigo-400 font-bold uppercase">Reciprocal Ratios</span>
-                            <p class="text-slate-300">Cosecant ($\csc \theta$) = $\frac{1}{\sin \theta} = \frac{\text{Hypotenuse}}{\text{Opposite}}$</p>
-                            <p class="text-slate-300">Secant ($\sec \theta$) = $\frac{1}{\cos \theta} = \frac{\text{Hypotenuse}}{\text{Adjacent}}$</p>
-                            <p class="text-slate-300">Cotangent ($\cot \theta$) = $\frac{1}{\tan \theta} = \frac{\text{Adjacent}}{\text{Opposite}}$</p>
+                            <p class="text-slate-300">Cosecant (csc θ) = 1 / sin θ = Hypotenuse / Opposite</p>
+                            <p class="text-slate-300">Secant (sec θ) = 1 / cos θ = Hypotenuse / Adjacent</p>
+                            <p class="text-slate-300">Cotangent (cot θ) = 1 / tan θ = Adjacent / Opposite</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 10 WORKED EXAMPLES: SIDES, ANGLES & PYTHAGOREAN THEOREM -->
+                <!-- 10 WORKED EXAMPLES -->
                 <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
                     <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Problem Solving Examples</h3>
                     <div class="grid grid-cols-1 gap-4 text-xs">
                         
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                             <span class="text-emerald-400 font-bold uppercase">Example 1: Using Pythagorean Theorem</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> In a right-angled triangle, leg $a = 6$ and leg $b = 8$. Find the hypotenuse $c$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $c^2 = a^2 + b^2$<br>2. $c^2 = 6^2 + 8^2 = 36 + 64 = 100$<br>3. $c = \sqrt{100} = 10$<br><strong>Answer: Hypotenuse $c = 10$</strong></p>
+                            <p class="text-slate-300"><strong>Problem:</strong> In a right-angled triangle, leg a = 6 and leg b = 8. Find the hypotenuse c.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. c² = a² + b²<br>2. c² = 6² + 8² = 36 + 64 = 100<br>3. c = √100 = 10<br><strong>Answer: Hypotenuse c = 10</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                             <span class="text-emerald-400 font-bold uppercase">Example 2: Finding Sine Ratio</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Right triangle has opposite side $= 5$ and hypotenuse $= 13$. Find $\sin \theta$ and $\csc \theta$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\sin \theta = \frac{\text{Opp}}{\text{Hyp}} = \frac{5}{13}$<br>2. $\csc \theta = \frac{1}{\sin \theta} = \frac{13}{5}$<br><strong>Answer: $\sin \theta = 5/13$, $\csc \theta = 13/5$</strong></p>
+                            <p class="text-slate-300"><strong>Problem:</strong> Right triangle has opposite side = 5 and hypotenuse = 13. Find sin θ and csc θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin θ = Opp / Hyp = 5/13<br>2. csc θ = 1 / sin θ = 13/5<br><strong>Answer: sin θ = 5/13, csc θ = 13/5</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                             <span class="text-emerald-400 font-bold uppercase">Example 3: Finding Cosine and Adjacent Side</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse $= 10$ and $\cos \theta = 0.8$. Find the adjacent side length.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\cos \theta = \frac{\text{Adj}}{\text{Hyp}} \implies 0.8 = \frac{\text{Adj}}{10}$<br>2. $\text{Adj} = 0.8 \times 10 = 8$<br><strong>Answer: Adjacent side = 8</strong></p>
+                            <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse = 10 and cos θ = 0.8. Find the adjacent side length.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cos θ = Adj / Hyp → 0.8 = Adj / 10<br>2. Adj = 0.8 × 10 = 8<br><strong>Answer: Adjacent side = 8</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                             <span class="text-emerald-400 font-bold uppercase">Example 4: Using Tangent to Find Opposite Side</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Adjacent side $= 12$ and $\tan \theta = \frac{3}{4}$. Find the opposite side.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\tan \theta = \frac{\text{Opp}}{\text{Adj}} \implies \frac{3}{4} = \frac{\text{Opp}}{12}$<br>2. $\text{Opp} = 12 \times \frac{3}{4} = 9$<br><strong>Answer: Opposite side = 9</strong></p>
+                            <p class="text-slate-300"><strong>Problem:</strong> Adjacent side = 12 and tan θ = 3/4. Find the opposite side.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan θ = Opp / Adj → 3/4 = Opp / 12<br>2. Opp = 12 × (3/4) = 9<br><strong>Answer: Opposite side = 9</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                             <span class="text-emerald-400 font-bold uppercase">Example 5: Finding Missing Leg via Pythagorean Theorem</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse $c = 15$ and leg $a = 9$. Find the other leg $b$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $b^2 = c^2 - a^2 = 15^2 - 9^2 = 225 - 81 = 144$<br>2. $b = \sqrt{144} = 12$<br><strong>Answer: Leg $b = 12$</strong></p>
+                            <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse c = 15 and leg a = 9. Find leg b.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. b² = c² - a² = 15² - 9² = 225 - 81 = 144<br>2. b = √144 = 12<br><strong>Answer: Leg b = 12</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                             <span class="text-emerald-400 font-bold uppercase">Example 6: Reciprocal Secant Calculation</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> If $\cos \theta = \frac{4}{5}$, find the secant ratio $\sec \theta$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\sec \theta = \frac{1}{\cos \theta}$<br>2. $\sec \theta = \frac{1}{4/5} = \frac{5}{4}$<br><strong>Answer: $\sec \theta = 5/4$</strong></p>
+                            <p class="text-slate-300"><strong>Problem:</strong> If cos θ = 4/5, find sec θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sec θ = 1 / cos θ<br>2. sec θ = 1 / (4/5) = 5/4<br><strong>Answer: sec θ = 5/4</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                             <span class="text-emerald-400 font-bold uppercase">Example 7: Cotangent Calculation</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> If $\tan \theta = \frac{7}{24}$, find $\cot \theta$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\cot \theta = \frac{1}{\tan \theta}$<br>2. $\cot \theta = \frac{24}{7}$<br><strong>Answer: $\cot \theta = 24/7$</strong></p>
+                            <p class="text-slate-300"><strong>Problem:</strong> If tan θ = 7/24, find cot θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cot θ = 1 / tan θ<br>2. cot θ = 24/7<br><strong>Answer: cot θ = 24/7</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                            <span class="text-emerald-400 font-bold uppercase">Example 8: Finding an Angle using Inverse Sine</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> In a right triangle, $\sin \theta = 0.5$. Find angle $\theta$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\theta = \arcsin(0.5)$<br>2. $\theta = 30^\circ$ (or $\frac{\pi}{6}$ radians)<br><strong>Answer: $\theta = 30^\circ$</strong></p>
+                            <span class="text-emerald-400 font-bold uppercase">Example 8: Finding Angle using Inverse Sine</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> In a right triangle, sin θ = 0.5. Find angle θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. θ = arcsin(0.5)<br>2. θ = 30° (or π/6 rad)<br><strong>Answer: θ = 30°</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                             <span class="text-emerald-400 font-bold uppercase">Example 9: Using Pythagorean Identity</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> If $\sin \theta = \frac{3}{5}$ in Quadrant I, find $\cos \theta$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\sin^2 \theta + \cos^2 \theta = 1 \implies (\frac{3}{5})^2 + \cos^2 \theta = 1$<br>2. $\frac{9}{25} + \cos^2 \theta = 1 \implies \cos^2 \theta = \frac{16}{25}$<br>3. $\cos \theta = \frac{4}{5}$<br><strong>Answer: $\cos \theta = 4/5$</strong></p>
+                            <p class="text-slate-300"><strong>Problem:</strong> If sin θ = 3/5 in Quadrant I, find cos θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin² θ + cos² θ = 1 → (3/5)² + cos² θ = 1<br>2. 9/25 + cos² θ = 1 → cos² θ = 16/25<br>3. cos θ = √(16/25) = 4/5<br><strong>Answer: cos θ = 4/5</strong></p>
                         </div>
 
                         <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                            <span class="text-emerald-400 font-bold uppercase">Example 10: Complete Triangle Side Evaluation</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Angle $\theta = 45^\circ$ and adjacent side $= 7$. Find opposite side and hypotenuse.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\tan(45^\circ) = 1 \implies \text{Opposite} = \text{Adjacent} = 7$<br>2. Hypotenuse $c = \sqrt{7^2 + 7^2} = \sqrt{98} = 7\sqrt{2}$<br><strong>Answer: Opposite = 7, Hypotenuse = $7\sqrt{2}$</strong></p>
+                            <span class="text-emerald-400 font-bold uppercase">Example 10: Complete Triangle Evaluation</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Angle θ = 45° and adjacent side = 7. Find opposite side and hypotenuse.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan(45°) = 1 → Opposite = Adjacent = 7<br>2. Hypotenuse c = √(7² + 7²) = √98 = 7√2<br><strong>Answer: Opposite = 7, Hypotenuse = 7√2</strong></p>
                         </div>
 
                     </div>
@@ -276,23 +276,51 @@
             </div>
         </section>
 
-        <!-- TAB 3: QUIZ -->
-        <section id="tab-quiz" class="hidden max-w-2xl mx-auto bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
-            <div id="studentPinGate" class="space-y-6 text-center py-4">
-                <span class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Live Quiz Arena</span>
+        <!-- TAB 3: QUIZ (LIVE ARENA + PRACTICE QUIZ PORTAL) -->
+        <section id="tab-quiz" class="hidden max-w-2xl mx-auto space-y-6">
+            
+            <!-- QUIZ MODE SELECTOR BAR -->
+            <div class="flex bg-slate-800 p-1.5 rounded-xl border border-slate-700 text-xs font-bold text-center">
+                <button onclick="switchQuizMode('live')" id="btnQuizLive" class="w-1/2 py-2.5 rounded-lg bg-indigo-600 text-white shadow transition">📡 Live Broadcast Arena (Game PIN)</button>
+                <button onclick="switchQuizMode('practice')" id="btnQuizPractice" class="w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition">🎯 Student Practice Quiz (Self-Paced)</button>
+            </div>
+
+            <!-- MODE 1: LIVE BROADCAST GATE -->
+            <div id="liveGateCard" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6 text-center">
+                <span class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cloud Broadcast Mode</span>
                 <h2 class="text-2xl font-black text-white">Enter Game PIN</h2>
-                <p class="text-slate-400 text-xs">Enter the 4-digit PIN broadcasted by your teacher to unlock this round.</p>
+                <p class="text-slate-400 text-xs">Enter the 4-digit PIN broadcasted by your teacher to submit scores live.</p>
 
                 <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4 max-w-sm mx-auto">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Teacher Game PIN:</label>
                         <input type="text" id="gamePinInput" maxlength="4" placeholder="e.g., 8842" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-center text-xl font-mono tracking-widest text-indigo-400">
                     </div>
-                    <button onclick="verifyStudentGamePin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Challenge</button>
+                    <button onclick="verifyStudentGamePin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Live Challenge</button>
                 </div>
             </div>
 
-            <div id="quizGameArea" class="hidden space-y-4">
+            <!-- MODE 2: PRACTICE QUIZ GATE -->
+            <div id="practiceGateCard" class="hidden bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6 text-center">
+                <span class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Practice Portal</span>
+                <h2 class="text-2xl font-black text-white">Self-Paced Practice Drill</h2>
+                <p class="text-slate-400 text-xs">Practice drill scores stay private on your device and are <strong>never recorded</strong> on the Teacher Dashboard.</p>
+
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4 max-w-sm mx-auto text-left">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Select Practice Difficulty:</label>
+                        <select id="practiceDifficultySelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                            <option value="easy">Easy Level (10 Questions)</option>
+                            <option value="average">Average Level (10 Questions)</option>
+                            <option value="difficult">Difficult Level (10 Worded Problems)</option>
+                        </select>
+                    </div>
+                    <button onclick="startPracticeSession()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Practice Quiz</button>
+                </div>
+            </div>
+
+            <!-- ACTIVE QUIZ GAME ENGINE -->
+            <div id="quizGameArea" class="hidden bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
                 <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
                     <div>
                         <h2 id="quizRoundBadgeTitle" class="text-base font-bold text-white">TrigNovation Challenge</h2>
@@ -307,10 +335,11 @@
                 </div>
 
                 <div id="scoreScreen" class="hidden text-center py-8 space-y-4">
-                    <div class="inline-block bg-indigo-600 text-white text-3xl font-black p-4 rounded-full mb-2">🏆</div>
+                    <div id="scoreIcon" class="inline-block bg-indigo-600 text-white text-3xl font-black p-4 rounded-full mb-2">🏆</div>
                     <h3 class="text-2xl font-bold text-white">Round Completed!</h3>
                     <p id="finalScoreText" class="text-slate-300 text-sm"></p>
-                    <p class="text-emerald-400 text-xs font-semibold">Your score has been logged live to the Cloud Teacher Dashboard!</p>
+                    <p id="scoreSubText" class="text-emerald-400 text-xs font-semibold"></p>
+                    <button onclick="resetQuizView()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs px-4 py-2 rounded-lg transition">Return to Menu</button>
                 </div>
             </div>
         </section>
@@ -327,9 +356,9 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-300 mb-1">Select Difficulty Round:</label>
                             <select id="teacherRoundSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
-                                <option value="easy">Easy Round (50 Qs)</option>
-                                <option value="average">Average Round (50 Qs)</option>
-                                <option value="difficult">Difficult Round (50 Qs)</option>
+                                <option value="easy">Easy Round (10 Qs)</option>
+                                <option value="average">Average Round (10 Qs)</option>
+                                <option value="difficult">Difficult Round (10 Worded Problems)</option>
                             </select>
                         </div>
                         <button onclick="broadcastNewGameRound()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition">Broadcast Cloud PIN</button>
@@ -354,9 +383,9 @@
                     </div>
 
                     <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
-                        <h4 class="text-sm font-bold text-rose-400 flex items-center gap-2"><span>📊 Diagnostic Question Analytics</span></h4>
+                        <h4 class="text-sm font-bold text-rose-400 flex items-center gap-2"><span>📊 Diagnostic Class Analytics</span></h4>
                         <div id="analyticsContainer" class="space-y-2 text-xs text-slate-300">
-                            <p class="text-slate-500 italic">No missed question data recorded yet.</p>
+                            <p class="text-slate-500 italic">No live submission data recorded yet.</p>
                         </div>
                     </div>
                 </div>
@@ -364,7 +393,7 @@
                 <!-- SUBMISSIONS TABLE & CSV EXPORT -->
                 <div>
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-                        <h3 class="text-base font-bold text-white">📋 Student Submissions & Report Export</h3>
+                        <h3 class="text-base font-bold text-white">📋 Live Student Submissions (Practice Quizzes Excluded)</h3>
                         <div class="flex gap-2">
                             <button onclick="exportTableToCSV('trig_novations_report.csv')" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">📥 Export CSV Report</button>
                             <button onclick="loadDashboardData()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Refresh</button>
@@ -381,7 +410,7 @@
                                     <th class="p-3">Round</th>
                                     <th class="p-3">Score</th>
                                     <th class="p-3">Percentage</th>
-                                    <th class="p-3">Timestamp</th>
+                                    <th class="p-3">Date & Time Taken</th>
                                 </tr>
                             </thead>
                             <tbody id="dashboardTableBody" class="divide-y divide-slate-700"></tbody>
@@ -525,7 +554,7 @@
             if(tabName === 'dashboard') loadDashboardData();
         }
 
-        // --- ENHANCED UNIT CIRCLE CANVAS LOGIC WITH LABELS & HYPOTENUSE ---
+        // UNIT CIRCLE CANVAS LOGIC
         const canvas = document.getElementById('unitCircleCanvas');
         const ctx = canvas.getContext('2d');
         let currentAngleDeg = 45;
@@ -539,7 +568,6 @@
 
             ctx.clearRect(0, 0, width, height);
 
-            // Draw Coordinate Axes
             ctx.strokeStyle = '#475569';
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -547,7 +575,6 @@
             ctx.moveTo(cx, 30); ctx.lineTo(cx, height - 30);
             ctx.stroke();
 
-            // Draw Unit Circle Ring
             ctx.strokeStyle = '#6366f1';
             ctx.lineWidth = 2.5;
             ctx.beginPath();
@@ -558,7 +585,6 @@
             const px = cx + radius * Math.cos(rad);
             const py = cy - radius * Math.sin(rad);
 
-            // 1. Draw Angle Arc & Label theta
             ctx.strokeStyle = '#f59e0b';
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -570,34 +596,29 @@
             let arcLabelRad = -rad / 2;
             let arcLabelX = cx + 55 * Math.cos(arcLabelRad);
             let arcLabelY = cy + 55 * Math.sin(arcLabelRad);
-            ctx.fillText(`theta=${deg}°`, arcLabelX - 15, arcLabelY + 5);
+            ctx.fillText(`θ=${deg}°`, arcLabelX - 15, arcLabelY + 5);
 
-            // 2. Draw Adjacent Side (Cos) - Blue Line with Length Label
             ctx.strokeStyle = '#60a5fa';
             ctx.lineWidth = 3;
             ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, cy); ctx.stroke();
             ctx.fillStyle = '#60a5fa';
             ctx.fillText(`cos = ${Math.cos(rad).toFixed(2)}`, (cx + px) / 2 - 25, cy + 18);
 
-            // 3. Draw Opposite Side (Sin) - Rose Line with Length Label
             ctx.strokeStyle = '#fb7185';
             ctx.lineWidth = 3;
             ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, py); ctx.stroke();
             ctx.fillStyle = '#fb7185';
             ctx.fillText(`sin = ${Math.sin(rad).toFixed(2)}`, px + 8, (cy + py) / 2);
 
-            // 4. Draw Hypotenuse - Green Line with Length Label (= 1.00)
             ctx.strokeStyle = '#34d399';
             ctx.lineWidth = 3;
             ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
             ctx.fillStyle = '#34d399';
             ctx.fillText(`Hyp = 1.00`, (cx + px) / 2 - 40, (cy + py) / 2 - 10);
 
-            // Draw Point on Circle
             ctx.fillStyle = '#a855f7';
             ctx.beginPath(); ctx.arc(px, py, 6, 0, 2 * Math.PI); ctx.fill();
 
-            // Update Numerical Ratios Display
             const sinVal = Math.sin(rad);
             const cosVal = Math.cos(rad);
             const tanVal = Math.abs(cosVal) < 0.0001 ? "Undefined" : (sinVal / cosVal).toFixed(4);
@@ -618,7 +639,7 @@
 
         function updateTrigAngle(val) {
             currentAngleDeg = parseFloat(val);
-            document.getElementById('angleDegreeVal').innerText = `${currentAngleDeg} deg`;
+            document.getElementById('angleDegreeVal').innerText = `${currentAngleDeg}°`;
             drawUnitCircle(currentAngleDeg);
         }
 
@@ -637,19 +658,96 @@
         });
         drawUnitCircle(45);
 
-        async function broadcastNewGameRound() {
-            const round = document.getElementById('teacherRoundSelect').value;
-            const newPin = Math.floor(1000 + Math.random() * 9000).toString();
-            try {
-                await db.collection("game_sessions").doc("active_session").set({
-                    pin: newPin,
-                    round: round,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                document.getElementById('displayActivePin').innerText = newPin;
-                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.href + '?pin=' + newPin)}`;
-                alert(`Cloud PIN ${newPin} broadcasted!`);
-            } catch(err) { alert("Error: " + err.message); }
+        // --- QUIZ QUESTION BANKS (10 ITEMS EACH LEVEL, PROPER MATH SYMBOLS & DIFFICULT WORDED PROBLEMS) ---
+        const liveQuizBanks = {
+            easy: [
+                { q: "What is sin(θ) equal to in right triangle trigonometry?", options: ["Opposite / Hypotenuse", "Adjacent / Hypotenuse", "Opposite / Adjacent", "Hypotenuse / Opposite"], correct: 0 },
+                { q: "What is cos(θ) equal to in right triangle trigonometry?", options: ["Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Opposite / Adjacent", "Adjacent / Opposite"], correct: 0 },
+                { q: "What is tan(θ) equal to in SOH-CAH-TOA?", options: ["Opposite / Adjacent", "Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Hypotenuse / Opposite"], correct: 0 },
+                { q: "What is the value of sin(90°)?", options: ["1", "0", "-1", "Undefined"], correct: 0 },
+                { q: "What is the value of cos(0°)?", options: ["1", "0", "-1", "0.5"], correct: 0 },
+                { q: "Which ratio is reciprocal to sine?", options: ["csc θ", "sec θ", "cot θ", "cos θ"], correct: 0 },
+                { q: "Which ratio is reciprocal to cosine?", options: ["sec θ", "csc θ", "cot θ", "tan θ"], correct: 0 },
+                { q: "Which ratio is reciprocal to tangent?", options: ["cot θ", "csc θ", "sec θ", "sin θ"], correct: 0 },
+                { q: "What is the hypotenuse of a right triangle with legs 3 and 4?", options: ["5", "7", "6", "25"], correct: 0 },
+                { q: "What is sin(30°)?", options: ["1/2", "√3/2", "√2/2", "1"], correct: 0 }
+            ],
+            average: [
+                { q: "What is tan(30°) in exact radical form?", options: ["√3/3", "√3", "1", "1/2"], correct: 0 },
+                { q: "What is tan(60°) in exact radical form?", options: ["√3", "√3/3", "1", "2"], correct: 0 },
+                { q: "What is the value of sin(120°)?", options: ["√3/2", "-√3/2", "1/2", "-1/2"], correct: 0 },
+                { q: "What is the value of cos(120°)?", options: ["-1/2", "1/2", "-√3/2", "√3/2"], correct: 0 },
+                { q: "Simplify 1 + tan²(θ).", options: ["sec²(θ)", "csc²(θ)", "cot²(θ)", "sin²(θ)"], correct: 0 },
+                { q: "Simplify 1 + cot²(θ).", options: ["csc²(θ)", "sec²(θ)", "tan²(θ)", "cos²(θ)"], correct: 0 },
+                { q: "What is sin(-θ) equal to?", options: ["-sin(θ)", "sin(θ)", "cos(θ)", "-cos(θ)"], correct: 0 },
+                { q: "What is cos(-θ) equal to?", options: ["cos(θ)", "-cos(θ)", "sin(θ)", "-sin(θ)"], correct: 0 },
+                { q: "Convert 3π/4 radians to degrees.", options: ["135°", "120°", "150°", "225°"], correct: 0 },
+                { q: "Convert 5π/6 radians to degrees.", options: ["150°", "120°", "135°", "210°"], correct: 0 }
+            ],
+            difficult: [
+                { q: "A 12-meter ladder leans against a vertical wall making an angle of 60° with the ground. How high up the wall does the ladder reach?", options: ["6√3 m", "6 m", "12√3 m", "3√3 m"], correct: 0 },
+                { q: "A surveyor stands 50 meters away from the base of a building and measures the angle of elevation to the top to be 30°. How tall is the building?", options: ["50√3/3 m", "50√3 m", "25 m", "50 m"], correct: 0 },
+                { q: "A lighthouse keeper at a height of 80 meters observes a boat with an angle of depression of 45°. How far is the boat from the base of the lighthouse?", options: ["80 m", "80√2 m", "40 m", "80√3 m"], correct: 0 },
+                { q: "A drone flies horizontally at an altitude of 120 meters. At a specific moment, the angle of elevation from a radar station on the ground is 30°. What is the direct distance from the radar to the drone?", options: ["240 m", "120√3 m", "240√3 m", "120 m"], correct: 0 },
+                { q: "An airplane ascends at a steady angle of 15° relative to the ground. After traveling 4,000 meters along its flight path, what is its vertical altitude (nearest meter)?", options: ["1,035 m", "3,864 m", "1,072 m", "2,000 m"], correct: 0 },
+                { q: "A ramp is to be constructed to reach a platform 3 meters high. If safety regulations require the angle of inclination to be at most 30°, what is the minimum required ramp length?", options: ["6 m", "3√3 m", "6√3 m", "9 m"], correct: 0 },
+                { q: "From the top of a 50-meter cliff, the angles of depression to two ships directly in line with the observer are 60° and 30°. What is the distance between the two ships?", options: ["100√3/3 m", "50√3 m", "50√3/3 m", "100 m"], correct: 0 },
+                { q: "A kite is flying at a height of 45 meters attached to a taut string inclined at 45° to the horizontal. How long is the kite string?", options: ["45√2 m", "90 m", "45√3 m", "30√2 m"], correct: 0 },
+                { q: "A ship sails 10 km due East, then turns and sails 10√3 km due North. What is the bearing angle of the ship relative to its starting point?", options: ["N 30° E (or 60° elevation from East)", "N 45° E", "N 60° E", "N 15° E"], correct: 0 },
+                { q: "A flagpole casts a shadow 15 meters long when the sun's angle of elevation is 60°. What is the height of the flagpole?", options: ["15√3 m", "15√3/3 m", "30 m", "15 m"], correct: 0 }
+            ]
+        };
+
+        const practiceQuizBanks = {
+            easy: [
+                { q: "What is tan(45°)?", options: ["1", "0", "√3", "1/2"], correct: 0 },
+                { q: "What is the hypotenuse of a right triangle with legs 6 and 8?", options: ["10", "14", "12", "100"], correct: 0 },
+                { q: "If opposite = 5 and hypotenuse = 13, what is sin(θ)?", options: ["5/13", "12/13", "5/12", "13/5"], correct: 0 },
+                { q: "What is cos(60°)?", options: ["1/2", "√3/2", "√2/2", "0"], correct: 0 },
+                { q: "In a unit circle, what coordinate represents cos(θ)?", options: ["x-coordinate", "y-coordinate", "Radius", "Slope"], correct: 0 },
+                { q: "In a unit circle, what coordinate represents sin(θ)?", options: ["y-coordinate", "x-coordinate", "Radius", "Angle"], correct: 0 },
+                { q: "Convert π/2 radians to degrees.", options: ["90°", "180°", "45°", "360°"], correct: 0 },
+                { q: "Convert π radians to degrees.", options: ["180°", "360°", "90°", "270°"], correct: 0 },
+                { q: "What is the value of sin(0°)?", options: ["0", "1", "-1", "Undefined"], correct: 0 },
+                { q: "What is the value of cos(90°)?", options: ["0", "1", "-1", "Undefined"], correct: 0 }
+            ],
+            average: [
+                { q: "In Quadrant II, which primary ratio is positive?", options: ["Sine", "Cosine", "Tangent", "None"], correct: 0 },
+                { q: "In Quadrant III, which primary ratio is positive?", options: ["Tangent", "Sine", "Cosine", "All"], correct: 0 },
+                { q: "In Quadrant IV, which primary ratio is positive?", options: ["Cosine", "Sine", "Tangent", "None"], correct: 0 },
+                { q: "Evaluate sin(135°).", options: ["√2/2", "-√2/2", "1/2", "-1/2"], correct: 0 },
+                { q: "Evaluate cos(135°).", options: ["-√2/2", "√2/2", "-1/2", "1/2"], correct: 0 },
+                { q: "Evaluate tan(135°).", options: ["-1", "1", "√3", "-√3"], correct: 0 },
+                { q: "What is csc(30°)?", options: ["2", "√2", "2/√3", "1/2"], correct: 0 },
+                { q: "What is sec(45°)?", options: ["√2", "2", "2/√3", "1"], correct: 0 },
+                { q: "What is cot(60°)?", options: ["√3/3", "√3", "1", "2"], correct: 0 },
+                { q: "If sin(θ) = 3/5 in Q2, what is cos(θ)?", options: ["-4/5", "4/5", "-3/5", "3/4"], correct: 0 }
+            ],
+            difficult: [
+                { q: "A rescue helicopter hovers 200 meters above a search area. The pilot spots a raft at an angle of depression of 30°. How far must the rescue boat travel horizontally from directly below the helicopter to reach the raft?", options: ["200√3 m", "200 m", "400 m", "100√3 m"], correct: 0 },
+                { q: "A 10-meter telephone pole is supported by a guy wire anchored to the ground making a 45° angle with the horizontal. What is the length of the guy wire?", options: ["10√2 m", "20 m", "10√3 m", "5√2 m"], correct: 0 },
+                { q: "An observer on a watchtower 40 meters tall sees a firespotted at an angle of depression of 60°. What is the ground distance from the base of the tower to the fire?", options: ["40√3/3 m", "40√3 m", "20 m", "80 m"], correct: 0 },
+                { q: "A shadow cast by a tree changes from 20 meters to 20√3/3 meters as the sun rises. What was the shift in the sun's angle of elevation?", options: ["From 30° to 60° (increased by 30°)", "From 45° to 60°", "From 30° to 45°", "From 15° to 45°"], correct: 0 },
+                { q: "A mountain climber measures the angle of elevation to a peak as 30°. After walking 1,000 meters closer along a flat plain, the angle of elevation increases to 60°. What is the height of the mountain peak?", options: ["500√3 m", "500 m", "1,000√3 m", "250√3 m"], correct: 0 },
+                { q: "A security camera mounted 6 meters above the ground pans down at an angle of depression of 30° to focus on an entrance door. How far is the door from the wall directly below the camera?", options: ["6√3 m", "6 m", "12 m", "3√3 m"], correct: 0 },
+                { q: "A cable car spans a river connecting two hills. The higher station is 150 meters above the lower station, and the cable forms a 30° angle with the horizontal. What is the length of the cable?", options: ["300 m", "150√3 m", "300√3 m", "150 m"], correct: 0 },
+                { q: "A solar panel is tilted at an angle of 30° to the horizontal roof. If the panel length is 2 meters, what is the vertical height of its upper edge above the roof?", options: ["1 m", "√3 m", "0.5 m", "2√3 m"], correct: 0 },
+                { q: "An archer shoots an arrow at an angle of elevation of 45° toward a target 30 meters away horizontally. Assuming a straight flight path, what height does the arrow reach at the target line?", options: ["30 m", "30√2 m", "15 m", "15√2 m"], correct: 0 },
+                { q: "Two points A and B on opposite sides of a river are observed from a bridge 25 meters high. The angles of depression to A and B are 45° and 30° respectively. What is the distance between A and B?", options: ["25(1 + √3) m", "25√3 m", "50 m", "25(√3 - 1) m"], correct: 0 }
+            ]
+        };
+
+        let activeQuizQuestions = [], currentQuestion = 0, score = 0, activeTotalQuestions = 10;
+        let isPracticeMode = false;
+
+        function switchQuizMode(mode) {
+            isPracticeMode = (mode === 'practice');
+            document.getElementById('liveGateCard').classList.toggle('hidden', isPracticeMode);
+            document.getElementById('practiceGateCard').classList.toggle('hidden', !isPracticeMode);
+            document.getElementById('quizGameArea').classList.add('hidden');
+
+            document.getElementById('btnQuizLive').className = !isPracticeMode ? "w-1/2 py-2.5 rounded-lg bg-indigo-600 text-white shadow transition" : "w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition";
+            document.getElementById('btnQuizPractice').className = isPracticeMode ? "w-1/2 py-2.5 rounded-lg bg-emerald-600 text-white shadow transition" : "w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition";
         }
 
         async function verifyStudentGamePin() {
@@ -660,45 +758,34 @@
                     alert("Invalid or inactive Game PIN!");
                     return;
                 }
-                document.getElementById('studentPinGate').classList.add('hidden');
+                document.getElementById('liveGateCard').classList.add('hidden');
                 document.getElementById('quizGameArea').classList.remove('hidden');
                 document.getElementById('playerBadge').innerText = `${currentUserData.name} | Round: ${doc.data().round.toUpperCase()}`;
-                startQuizSession(doc.data().round);
+                
+                isPracticeMode = false;
+                startQuizSession(doc.data().round, liveQuizBanks);
             } catch(err) { alert("Error: " + err.message); }
         }
 
-        const quizBanks = {
-            easy: [
-                { q: "What is sin(theta) in right triangle trig?", options: ["Opposite / Hypotenuse", "Adjacent / Hypotenuse", "Opposite / Adjacent", "Hypotenuse / Opposite"], correct: 0 },
-                { q: "What is cos(theta) in right triangle trig?", options: ["Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Opposite / Adjacent", "Adjacent / Opposite"], correct: 0 },
-                { q: "What is tan(theta) in SOH-CAH-TOA?", options: ["Opposite / Adjacent", "Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Hypotenuse / Opposite"], correct: 0 },
-                { q: "What is the value of sin(90 degrees)?", options: ["1", "0", "-1", "Undefined"], correct: 0 },
-                { q: "What is the value of cos(0 degrees)?", options: ["1", "0", "-1", "0.5"], correct: 0 }
-            ],
-            average: [
-                { q: "What is tan(30 degrees) in exact radical form?", options: ["sqrt(3)/3", "sqrt(3)", "1", "1/2"], correct: 0 },
-                { q: "What is tan(60 degrees) in exact radical form?", options: ["sqrt(3)", "sqrt(3)/3", "1", "2"], correct: 0 },
-                { q: "What is the value of sin(120 degrees)?", options: ["sqrt(3)/2", "-sqrt(3)/2", "1/2", "-1/2"], correct: 0 },
-                { q: "What is the value of cos(120 degrees)?", options: ["-1/2", "1/2", "-sqrt(3)/2", "sqrt(3)/2"], correct: 0 },
-                { q: "Simplify 1 + tan^2(theta).", options: ["sec^2(theta)", "csc^2(theta)", "cot^2(theta)", "sin^2(theta)"], correct: 0 }
-            ],
-            difficult: [
-                { q: "What is the double-angle formula for sin(2*theta)?", options: ["2*sin(theta)*cos(theta)", "cos^2 - sin^2", "2*sin(theta)", "sin^2 - cos^2"], correct: 0 },
-                { q: "What is double-angle formula for cos(2*theta) in terms of sine and cosine?", options: ["cos^2(theta) - sin^2(theta)", "2*cos^2(theta) + 1", "2*sin^2(theta) - 1", "cos^2 + 1"], correct: 0 },
-                { q: "What is double-angle formula for cos(2*theta) strictly in terms of cosine?", options: ["2*cos^2(theta) - 1", "1 - 2*cos^2(theta)", "cos^2(theta) - 1", "2*cos(theta)"], correct: 0 },
-                { q: "What is sum formula for sin(A + B)?", options: ["sinA*cosB + cosA*sinB", "sinA*sinB + cosA*cosB", "sinA*cosB - cosA*sinB", "cosA*cosB - sinA*sinB"], correct: 0 },
-                { q: "What is principal value range for arcsin(x)?", options: ["[-pi/2, pi/2]", "[0, pi]", "(-pi/2, pi/2)", "[0, 2*pi]"], correct: 0 }
-            ]
-        };
+        function startPracticeSession() {
+            const diff = document.getElementById('practiceDifficultySelect').value;
+            document.getElementById('practiceGateCard').classList.add('hidden');
+            document.getElementById('quizGameArea').classList.remove('hidden');
+            document.getElementById('playerBadge').innerText = `${currentUserData.name} | PRACTICE: ${diff.toUpperCase()}`;
+            
+            isPracticeMode = true;
+            startQuizSession(diff, practiceQuizBanks);
+        }
 
-        let activeQuizQuestions = [], currentQuestion = 0, score = 0, activeTotalQuestions = 10;
-
-        function startQuizSession(round) {
-            let bank = quizBanks[round] || quizBanks.easy;
-            activeQuizQuestions = [...bank].sort(() => Math.random() - 0.5).slice(0, 10);
+        function startQuizSession(round, bankSource) {
+            let bank = bankSource[round] || bankSource.easy;
+            activeQuizQuestions = [...bank].sort(() => Math.random() - 0.5);
             activeTotalQuestions = activeQuizQuestions.length;
             currentQuestion = 0;
             score = 0;
+            
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('scoreScreen').classList.add('hidden');
             loadQuestion();
         }
 
@@ -707,7 +794,15 @@
                 document.getElementById('quizContainer').classList.add('hidden');
                 document.getElementById('scoreScreen').classList.remove('hidden');
                 document.getElementById('finalScoreText').innerText = `${currentUserData.name}, you scored ${score} out of ${activeTotalQuestions}!`;
-                saveQuizSubmission(currentUserData.name, currentUserData.email, score);
+                
+                if (isPracticeMode) {
+                    document.getElementById('scoreIcon').innerText = '🎯';
+                    document.getElementById('scoreSubText').innerText = 'Practice completed! Score kept local to device (not recorded on Teacher Dashboard).';
+                } else {
+                    document.getElementById('scoreIcon').innerText = '🏆';
+                    document.getElementById('scoreSubText').innerText = 'Your score and timestamp have been logged live to the Cloud Teacher Dashboard!';
+                    saveLiveQuizSubmission(currentUserData.name, currentUserData.email, score);
+                }
                 return;
             }
 
@@ -739,10 +834,22 @@
             });
         }
 
-        async function saveQuizSubmission(name, email, finalScore) {
+        function resetQuizView() {
+            document.getElementById('quizGameArea').classList.add('hidden');
+            if (isPracticeMode) {
+                document.getElementById('practiceGateCard').classList.remove('hidden');
+            } else {
+                document.getElementById('liveGateCard').classList.remove('hidden');
+            }
+        }
+
+        async function saveLiveQuizSubmission(name, email, finalScore) {
             try {
                 const doc = await db.collection("game_sessions").doc("active_session").get();
                 const roundName = doc.exists ? doc.data().round.toUpperCase() : 'EASY';
+
+                const now = new Date();
+                const formattedDateTime = now.toLocaleString();
 
                 await db.collection("submissions").add({
                     name: name,
@@ -750,10 +857,25 @@
                     round: roundName,
                     score: finalScore,
                     total: activeTotalQuestions,
-                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    dateTaken: formattedDateTime,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
             } catch(err) { console.error("Error logging score:", err); }
+        }
+
+        async function broadcastNewGameRound() {
+            const round = document.getElementById('teacherRoundSelect').value;
+            const newPin = Math.floor(1000 + Math.random() * 9000).toString();
+            try {
+                await db.collection("game_sessions").doc("active_session").set({
+                    pin: newPin,
+                    round: round,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('displayActivePin').innerText = newPin;
+                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.href + '?pin=' + newPin)}`;
+                alert(`Cloud PIN ${newPin} broadcasted!`);
+            } catch(err) { alert("Error: " + err.message); }
         }
 
         function loadDashboardData() {
@@ -769,9 +891,9 @@
                 analytics.innerHTML = '';
 
                 if(snapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No student submissions recorded yet.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No student live submissions recorded yet.</td></tr>`;
                     podium.innerHTML = `<p class="text-slate-500 italic">No podium entries yet.</p>`;
-                    analytics.innerHTML = `<p class="text-slate-500 italic">No diagnostic data yet.</p>`;
+                    analytics.innerHTML = `<p class="text-slate-500 italic">No live submission data recorded yet.</p>`;
                     return;
                 }
 
@@ -788,9 +910,9 @@
                 });
 
                 analytics.innerHTML = `
-                    <p class="text-indigo-300 font-semibold">Total Submissions: ${submissions.length}</p>
+                    <p class="text-indigo-300 font-semibold">Total Live Submissions: ${submissions.length}</p>
                     <p class="text-emerald-300 font-semibold">Average Class Score: ${(submissions.reduce((acc, curr) => acc + curr.score, 0) / submissions.length).toFixed(1)} / 10</p>
-                    <p class="text-slate-400 text-[11px]">Status: All question sets verified and synced via Firebase Firestore.</p>
+                    <p class="text-slate-400 text-[11px]">Note: Practice quiz attempts are excluded automatically.</p>
                 `;
 
                 submissions.forEach(sub => {
@@ -803,7 +925,7 @@
                         <td class="p-3 font-bold text-indigo-300">${sub.round}</td>
                         <td class="p-3 font-bold text-indigo-300">${sub.score} / ${totalQ}</td>
                         <td class="p-3 font-bold text-emerald-400">${((sub.score / totalQ) * 100).toFixed(0)}%</td>
-                        <td class="p-3 text-slate-500">${sub.timestamp || ''}</td>
+                        <td class="p-3 text-slate-300 font-mono">${sub.dateTaken || 'N/A'}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -829,7 +951,7 @@
         }
 
         async function clearDashboardData(confirmPrompt = true) {
-            if(!confirmPrompt || confirm("Clear all student records from Cloud Database?")) {
+            if(!confirmPrompt || confirm("Clear all student live records from Cloud Database?")) {
                 try {
                     const snapshot = await db.collection("submissions").get();
                     const batch = db.batch();
