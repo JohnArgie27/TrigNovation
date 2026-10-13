@@ -144,15 +144,15 @@
                 <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 space-y-2 font-mono text-xs">
                     <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Live Primary Ratios (SOH-CAH-TOA)</span>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-rose-400 font-bold">sin(theta) =</span>
+                        <span class="text-rose-400 font-bold">sin(theta) [Opp]:</span>
                         <span id="dispSinVal" class="text-white font-bold">0.7071</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-blue-400 font-bold">cos(theta) =</span>
+                        <span class="text-blue-400 font-bold">cos(theta) [Adj]:</span>
                         <span id="dispCosVal" class="text-white font-bold">0.7071</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-emerald-400 font-bold">tan(theta) =</span>
+                        <span class="text-emerald-400 font-bold">tan(theta) [Opp/Adj]:</span>
                         <span id="dispTanVal" class="text-white font-bold">1.0000</span>
                     </div>
                     <div class="pt-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Reciprocal Ratios</div>
@@ -167,36 +167,112 @@
             <!-- DYNAMIC HTML5 CANVAS UNIT CIRCLE GRAPH -->
             <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
                 <div class="flex justify-between items-center mb-3 px-2">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Interactive Unit Circle & Right Triangle Mechanics</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Interactive Unit Circle, Hypotenuse & Side Lengths</span>
                     <span id="quadrantBadge" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1 rounded-full">Quadrant I</span>
                 </div>
                 
                 <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
-                    <canvas id="unitCircleCanvas" width="450" height="450" class="cursor-pointer max-w-full h-auto"></canvas>
+                    <canvas id="unitCircleCanvas" width="460" height="460" class="cursor-pointer max-w-full h-auto"></canvas>
                 </div>
-                <p class="text-[11px] text-slate-400 text-center mt-2">Click or drag anywhere on the Unit Circle to dynamically compute ratios and triangle sides.</p>
+                <p class="text-[11px] text-slate-400 text-center mt-2">Click or drag anywhere on the Unit Circle to dynamically view angle arcs, hypotenuse, and side lengths.</p>
             </div>
         </section>
 
-        <!-- TAB 2: LESSON NOTES -->
+        <!-- TAB 2: COMPREHENSIVE LESSON NOTES -->
         <section id="tab-lessons" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-8">
                 <div>
                     <h2 class="text-xl font-bold text-white mb-2">Teacher's Pedagogical Trigonometry Review Module</h2>
-                    <p class="text-slate-400 text-sm">Comprehensive review notes with complete, step-by-step mathematical solutions for trigonometric ratios and identities.</p>
+                    <p class="text-slate-400 text-sm">Comprehensive review notes with complete, step-by-step mathematical solutions covering main ratios, reciprocals, Pythagorean theorem, and right-triangle problem solving.</p>
                 </div>
 
-                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
-                    <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">1. Right Triangle Trigonometry (SOH-CAH-TOA)</h3>
-                    <div class="text-xs font-mono bg-slate-800 p-3 rounded text-indigo-200">
-                        sin(theta) = Opposite / Hypotenuse | cos(theta) = Adjacent / Hypotenuse | tan(theta) = Opposite / Adjacent
-                    </div>
-                    <div class="bg-slate-800 p-4 rounded-lg text-xs space-y-2 border border-slate-700">
-                        <span class="text-emerald-400 font-bold uppercase tracking-wider text-[11px]">Example 1: Finding Ratios</span>
-                        <p class="text-slate-300"><strong>Problem:</strong> Right triangle with opposite = 3 and adjacent = 4. Find sin, cos, and tan.</p>
-                        <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. Hypotenuse = sqrt(3^2 + 4^2) = 5<br>2. sin = 3/5, cos = 4/5, tan = 3/4</p>
+                <!-- MAIN RATIOS & RECIPROCALS OVERVIEW -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                    <h3 class="text-indigo-400 font-bold text-base border-b border-slate-800 pb-2">Core Trigonometric Definitions & Reciprocals</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
+                            <span class="text-emerald-400 font-bold uppercase">Primary Ratios (SOH-CAH-TOA)</span>
+                            <p class="text-slate-300">Sine ($\sin \theta$) = $\frac{\text{Opposite}}{\text{Hypotenuse}}$</p>
+                            <p class="text-slate-300">Cosine ($\cos \theta$) = $\frac{\text{Adjacent}}{\text{Hypotenuse}}$</p>
+                            <p class="text-slate-300">Tangent ($\tan \theta$) = $\frac{\text{Opposite}}{\text{Adjacent}} = \frac{\sin \theta}{\cos \theta}$</p>
+                        </div>
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
+                            <span class="text-indigo-400 font-bold uppercase">Reciprocal Ratios</span>
+                            <p class="text-slate-300">Cosecant ($\csc \theta$) = $\frac{1}{\sin \theta} = \frac{\text{Hypotenuse}}{\text{Opposite}}$</p>
+                            <p class="text-slate-300">Secant ($\sec \theta$) = $\frac{1}{\cos \theta} = \frac{\text{Hypotenuse}}{\text{Adjacent}}$</p>
+                            <p class="text-slate-300">Cotangent ($\cot \theta$) = $\frac{1}{\tan \theta} = \frac{\text{Adjacent}}{\text{Opposite}}$</p>
+                        </div>
                     </div>
                 </div>
+
+                <!-- 10 WORKED EXAMPLES: SIDES, ANGLES & PYTHAGOREAN THEOREM -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Problem Solving Examples</h3>
+                    <div class="grid grid-cols-1 gap-4 text-xs">
+                        
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 1: Using Pythagorean Theorem</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> In a right-angled triangle, leg $a = 6$ and leg $b = 8$. Find the hypotenuse $c$.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $c^2 = a^2 + b^2$<br>2. $c^2 = 6^2 + 8^2 = 36 + 64 = 100$<br>3. $c = \sqrt{100} = 10$<br><strong>Answer: Hypotenuse $c = 10$</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 2: Finding Sine Ratio</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Right triangle has opposite side $= 5$ and hypotenuse $= 13$. Find $\sin \theta$ and $\csc \theta$.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\sin \theta = \frac{\text{Opp}}{\text{Hyp}} = \frac{5}{13}$<br>2. $\csc \theta = \frac{1}{\sin \theta} = \frac{13}{5}$<br><strong>Answer: $\sin \theta = 5/13$, $\csc \theta = 13/5$</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 3: Finding Cosine and Adjacent Side</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse $= 10$ and $\cos \theta = 0.8$. Find the adjacent side length.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\cos \theta = \frac{\text{Adj}}{\text{Hyp}} \implies 0.8 = \frac{\text{Adj}}{10}$<br>2. $\text{Adj} = 0.8 \times 10 = 8$<br><strong>Answer: Adjacent side = 8</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 4: Using Tangent to Find Opposite Side</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Adjacent side $= 12$ and $\tan \theta = \frac{3}{4}$. Find the opposite side.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\tan \theta = \frac{\text{Opp}}{\text{Adj}} \implies \frac{3}{4} = \frac{\text{Opp}}{12}$<br>2. $\text{Opp} = 12 \times \frac{3}{4} = 9$<br><strong>Answer: Opposite side = 9</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 5: Finding Missing Leg via Pythagorean Theorem</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse $c = 15$ and leg $a = 9$. Find the other leg $b$.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $b^2 = c^2 - a^2 = 15^2 - 9^2 = 225 - 81 = 144$<br>2. $b = \sqrt{144} = 12$<br><strong>Answer: Leg $b = 12$</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 6: Reciprocal Secant Calculation</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> If $\cos \theta = \frac{4}{5}$, find the secant ratio $\sec \theta$.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\sec \theta = \frac{1}{\cos \theta}$<br>2. $\sec \theta = \frac{1}{4/5} = \frac{5}{4}$<br><strong>Answer: $\sec \theta = 5/4$</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 7: Cotangent Calculation</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> If $\tan \theta = \frac{7}{24}$, find $\cot \theta$.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\cot \theta = \frac{1}{\tan \theta}$<br>2. $\cot \theta = \frac{24}{7}$<br><strong>Answer: $\cot \theta = 24/7$</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 8: Finding an Angle using Inverse Sine</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> In a right triangle, $\sin \theta = 0.5$. Find angle $\theta$.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\theta = \arcsin(0.5)$<br>2. $\theta = 30^\circ$ (or $\frac{\pi}{6}$ radians)<br><strong>Answer: $\theta = 30^\circ$</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 9: Using Pythagorean Identity</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> If $\sin \theta = \frac{3}{5}$ in Quadrant I, find $\cos \theta$.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\sin^2 \theta + \cos^2 \theta = 1 \implies (\frac{3}{5})^2 + \cos^2 \theta = 1$<br>2. $\frac{9}{25} + \cos^2 \theta = 1 \implies \cos^2 \theta = \frac{16}{25}$<br>3. $\cos \theta = \frac{4}{5}$<br><strong>Answer: $\cos \theta = 4/5$</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 10: Complete Triangle Side Evaluation</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Angle $\theta = 45^\circ$ and adjacent side $= 7$. Find opposite side and hypotenuse.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\tan(45^\circ) = 1 \implies \text{Opposite} = \text{Adjacent} = 7$<br>2. Hypotenuse $c = \sqrt{7^2 + 7^2} = \sqrt{98} = 7\sqrt{2}$<br><strong>Answer: Opposite = 7, Hypotenuse = $7\sqrt{2}$</strong></p>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -422,9 +498,7 @@
                 alert(`Success! Verification email sent to ${email}.`);
                 auth.signOut();
                 switchAuthMode('login');
-            } catch (err) {
-                alert("Registration Error: " + err.message);
-            }
+            } catch (err) { alert("Registration Error: " + err.message); }
         }
 
         async function handleFirebaseLogin(e) {
@@ -433,9 +507,7 @@
             const password = document.getElementById('loginPassword').value;
             try {
                 await auth.signInWithEmailAndPassword(email, password);
-            } catch (err) {
-                alert("Login Error: " + err.message);
-            }
+            } catch (err) { alert("Login Error: " + err.message); }
         }
 
         function handleLogout() { auth.signOut(); }
@@ -453,7 +525,7 @@
             if(tabName === 'dashboard') loadDashboardData();
         }
 
-        // UNIT CIRCLE CANVAS LOGIC
+        // --- ENHANCED UNIT CIRCLE CANVAS LOGIC WITH LABELS & HYPOTENUSE ---
         const canvas = document.getElementById('unitCircleCanvas');
         const ctx = canvas.getContext('2d');
         let currentAngleDeg = 45;
@@ -463,19 +535,21 @@
             const height = canvas.height;
             const cx = width / 2;
             const cy = height / 2;
-            const radius = 160;
+            const radius = 150;
 
             ctx.clearRect(0, 0, width, height);
 
+            // Draw Coordinate Axes
             ctx.strokeStyle = '#475569';
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(20, cy); ctx.lineTo(width - 20, cy);
-            ctx.moveTo(cx, 20); ctx.lineTo(cx, height - 20);
+            ctx.moveTo(30, cy); ctx.lineTo(width - 30, cy);
+            ctx.moveTo(cx, 30); ctx.lineTo(cx, height - 30);
             ctx.stroke();
 
+            // Draw Unit Circle Ring
             ctx.strokeStyle = '#6366f1';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 2.5;
             ctx.beginPath();
             ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
             ctx.stroke();
@@ -484,17 +558,46 @@
             const px = cx + radius * Math.cos(rad);
             const py = cy - radius * Math.sin(rad);
 
+            // 1. Draw Angle Arc & Label theta
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 40, 0, -rad, true);
+            ctx.stroke();
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = 'bold 12px monospace';
+            let arcLabelRad = -rad / 2;
+            let arcLabelX = cx + 55 * Math.cos(arcLabelRad);
+            let arcLabelY = cy + 55 * Math.sin(arcLabelRad);
+            ctx.fillText(`theta=${deg}°`, arcLabelX - 15, arcLabelY + 5);
+
+            // 2. Draw Adjacent Side (Cos) - Blue Line with Length Label
             ctx.strokeStyle = '#60a5fa';
             ctx.lineWidth = 3;
             ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, cy); ctx.stroke();
+            ctx.fillStyle = '#60a5fa';
+            ctx.fillText(`cos = ${Math.cos(rad).toFixed(2)}`, (cx + px) / 2 - 25, cy + 18);
 
+            // 3. Draw Opposite Side (Sin) - Rose Line with Length Label
             ctx.strokeStyle = '#fb7185';
             ctx.lineWidth = 3;
             ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, py); ctx.stroke();
+            ctx.fillStyle = '#fb7185';
+            ctx.fillText(`sin = ${Math.sin(rad).toFixed(2)}`, px + 8, (cy + py) / 2);
 
+            // 4. Draw Hypotenuse - Green Line with Length Label (= 1.00)
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
+            ctx.fillStyle = '#34d399';
+            ctx.fillText(`Hyp = 1.00`, (cx + px) / 2 - 40, (cy + py) / 2 - 10);
+
+            // Draw Point on Circle
             ctx.fillStyle = '#a855f7';
             ctx.beginPath(); ctx.arc(px, py, 6, 0, 2 * Math.PI); ctx.fill();
 
+            // Update Numerical Ratios Display
             const sinVal = Math.sin(rad);
             const cosVal = Math.cos(rad);
             const tanVal = Math.abs(cosVal) < 0.0001 ? "Undefined" : (sinVal / cosVal).toFixed(4);
@@ -570,36 +673,21 @@
                 { q: "What is cos(theta) in right triangle trig?", options: ["Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Opposite / Adjacent", "Adjacent / Opposite"], correct: 0 },
                 { q: "What is tan(theta) in SOH-CAH-TOA?", options: ["Opposite / Adjacent", "Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Hypotenuse / Opposite"], correct: 0 },
                 { q: "What is the value of sin(90 degrees)?", options: ["1", "0", "-1", "Undefined"], correct: 0 },
-                { q: "What is the value of cos(0 degrees)?", options: ["1", "0", "-1", "0.5"], correct: 0 },
-                { q: "Which ratio is reciprocal to sine?", options: ["Cosecant (csc)", "Secant (sec)", "Cotangent (cot)", "Cosine"], correct: 0 },
-                { q: "Which ratio is reciprocal to cosine?", options: ["Secant (sec)", "Cosecant (csc)", "Cotangent (cot)", "Tangent"], correct: 0 },
-                { q: "Which ratio is reciprocal to tangent?", options: ["Cotangent (cot)", "Cosecant (csc)", "Secant (sec)", "Sine"], correct: 0 },
-                { q: "Hypotenuse of right triangle with legs 3 and 4?", options: ["5", "7", "6", "25"], correct: 0 },
-                { q: "What is sin(30 degrees)?", options: ["1/2 (0.5)", "sqrt(3)/2", "sqrt(2)/2", "1"], correct: 0 }
+                { q: "What is the value of cos(0 degrees)?", options: ["1", "0", "-1", "0.5"], correct: 0 }
             ],
             average: [
                 { q: "What is tan(30 degrees) in exact radical form?", options: ["sqrt(3)/3", "sqrt(3)", "1", "1/2"], correct: 0 },
                 { q: "What is tan(60 degrees) in exact radical form?", options: ["sqrt(3)", "sqrt(3)/3", "1", "2"], correct: 0 },
                 { q: "What is the value of sin(120 degrees)?", options: ["sqrt(3)/2", "-sqrt(3)/2", "1/2", "-1/2"], correct: 0 },
                 { q: "What is the value of cos(120 degrees)?", options: ["-1/2", "1/2", "-sqrt(3)/2", "sqrt(3)/2"], correct: 0 },
-                { q: "Simplify 1 + tan^2(theta).", options: ["sec^2(theta)", "csc^2(theta)", "cot^2(theta)", "sin^2(theta)"], correct: 0 },
-                { q: "Simplify 1 + cot^2(theta).", options: ["csc^2(theta)", "sec^2(theta)", "tan^2(theta)", "cos^2(theta)"], correct: 0 },
-                { q: "What is sin(-theta) equal to?", options: ["-sin(theta)", "sin(theta)", "cos(theta)", "-cos(theta)"], correct: 0 },
-                { q: "What is cos(-theta) equal to?", options: ["cos(theta)", "-cos(theta)", "sin(theta)", "-sin(theta)"], correct: 0 },
-                { q: "Convert 3*pi / 4 radians to degrees.", options: ["135 degrees", "120 degrees", "150 degrees", "225 degrees"], correct: 0 },
-                { q: "Convert 5*pi / 6 radians to degrees.", options: ["150 degrees", "120 degrees", "135 degrees", "210 degrees"], correct: 0 }
+                { q: "Simplify 1 + tan^2(theta).", options: ["sec^2(theta)", "csc^2(theta)", "cot^2(theta)", "sin^2(theta)"], correct: 0 }
             ],
             difficult: [
                 { q: "What is the double-angle formula for sin(2*theta)?", options: ["2*sin(theta)*cos(theta)", "cos^2 - sin^2", "2*sin(theta)", "sin^2 - cos^2"], correct: 0 },
                 { q: "What is double-angle formula for cos(2*theta) in terms of sine and cosine?", options: ["cos^2(theta) - sin^2(theta)", "2*cos^2(theta) + 1", "2*sin^2(theta) - 1", "cos^2 + 1"], correct: 0 },
                 { q: "What is double-angle formula for cos(2*theta) strictly in terms of cosine?", options: ["2*cos^2(theta) - 1", "1 - 2*cos^2(theta)", "cos^2(theta) - 1", "2*cos(theta)"], correct: 0 },
                 { q: "What is sum formula for sin(A + B)?", options: ["sinA*cosB + cosA*sinB", "sinA*sinB + cosA*cosB", "sinA*cosB - cosA*sinB", "cosA*cosB - sinA*sinB"], correct: 0 },
-                { q: "What is sum formula for cos(A + B)?", options: ["cosA*cosB - sinA*sinB", "cosA*cosB + sinA*sinB", "sinA*cosB + cosA*sinB", "sinA*cosB - cosA*sinB"], correct: 0 },
-                { q: "What is principal value range for arcsin(x)?", options: ["[-pi/2, pi/2]", "[0, pi]", "(-pi/2, pi/2)", "[0, 2*pi]"], correct: 0 },
-                { q: "What is principal value range for arccos(x)?", options: ["[0, pi]", "[-pi/2, pi/2]", "(-pi/2, pi/2)", "[0, 2*pi]"], correct: 0 },
-                { q: "What is principal value range for arctan(x)?", options: ["(-pi/2, pi/2)", "[-pi/2, pi/2]", "[0, pi]", "(-pi, pi)"], correct: 0 },
-                { q: "Evaluate arcsin(1/2) in degrees.", options: ["30 degrees", "60 degrees", "45 degrees", "90 degrees"], correct: 0 },
-                { q: "Evaluate arccos(-1/2) in degrees.", options: ["120 degrees", "60 degrees", "150 degrees", "240 degrees"], correct: 0 }
+                { q: "What is principal value range for arcsin(x)?", options: ["[-pi/2, pi/2]", "[0, pi]", "(-pi/2, pi/2)", "[0, 2*pi]"], correct: 0 }
             ]
         };
 
@@ -668,7 +756,6 @@
             } catch(err) { console.error("Error logging score:", err); }
         }
 
-        // TEACHER DASHBOARD, LEADERBOARD & ANALYTICS
         function loadDashboardData() {
             const tbody = document.getElementById('dashboardTableBody');
             const podium = document.getElementById('podiumContainer');
@@ -691,7 +778,6 @@
                 let submissions = [];
                 snapshot.forEach(doc => submissions.push(doc.data()));
 
-                // Sort for Leaderboard Podium
                 let sorted = [...submissions].sort((a, b) => b.score - a.score);
                 sorted.slice(0, 3).forEach((s, idx) => {
                     const rankEmoji = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
@@ -701,14 +787,12 @@
                     podium.appendChild(div);
                 });
 
-                // Diagnostic Analytics Summary
                 analytics.innerHTML = `
                     <p class="text-indigo-300 font-semibold">Total Submissions: ${submissions.length}</p>
                     <p class="text-emerald-300 font-semibold">Average Class Score: ${(submissions.reduce((acc, curr) => acc + curr.score, 0) / submissions.length).toFixed(1)} / 10</p>
                     <p class="text-slate-400 text-[11px]">Status: All question sets verified and synced via Firebase Firestore.</p>
                 `;
 
-                // Submissions Table
                 submissions.forEach(sub => {
                     let totalQ = sub.total || 10;
                     const tr = document.createElement('tr');
@@ -726,7 +810,6 @@
             });
         }
 
-        // CSV EXPORT HELPER
         function exportTableToCSV(filename) {
             let csv = [];
             let rows = document.querySelectorAll("#submissionsTable tr");
