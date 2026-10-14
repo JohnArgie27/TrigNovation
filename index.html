@@ -200,7 +200,7 @@
                 <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 flex flex-col justify-between space-y-6">
                     <div>
                         <h2 class="text-sm font-bold uppercase tracking-wider text-emerald-400 mb-4 border-b border-slate-700 pb-2">Oblique Triangle Solver</h2>
-                        <p class="text-xs text-slate-300 mb-4">Configure side lengths or angles. Labels match standard triangle notation ($A, B, C$ for vertices/angles; $a, b, c$ for opposite sides).</p>
+                        <p class="text-xs text-slate-300 mb-4">Configure side lengths or angles. Labels match standard triangle notation (A, B, C for vertices/angles; a, b, c for opposite sides).</p>
                         
                         <div class="space-y-4">
                             <div>
@@ -252,14 +252,14 @@
                 <!-- OBLIQUE CANVAS VISUALIZER -->
                 <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-3 px-2">
-                         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Oblique Triangle Scale Diagram ($A, B, C$ & $a, b, c$)</span>
+                         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Oblique Triangle Scale Diagram (A, B, C & a, b, c)</span>
                          <span class="text-xs bg-emerald-600 text-white font-bold px-3 py-1 rounded-full">SAS / SSS / AAS Solver</span>
                     </div>
                     
                     <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
                          <canvas id="obliqueCanvas" width="460" height="460" class="max-w-full h-auto"></canvas>
                     </div>
-                     <p class="text-[11px] text-slate-400 text-center mt-2">Proper symbols and label markings ($A, B, C$ vertices and $a, b, c$ side lengths) corresponding directly to standard trigonometry conventions.</p>
+                     <p class="text-[11px] text-slate-400 text-center mt-2">Proper symbols and label markings (A, B, C vertices and a, b, c side lengths) corresponding directly to standard trigonometry conventions.</p>
                 </div>
             </div>
         </section>
@@ -372,7 +372,7 @@
                    </div>
                 </div>
 
-                <!-- LESSON CONTENT B: OBLIQUE TRIANGLES -->
+                <!-- LESSON CONTENT B: OBLIQUE TRIANGLES (Proper mathematical symbols used) -->
                 <div id="lessonContentOblique" class="hidden space-y-8">
                    <!-- LAW OF SINES & COSINES OVERVIEW -->
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
@@ -381,84 +381,84 @@
                            <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-2">
                                <span class="text-emerald-400 font-bold uppercase">Law of Sines</span>
                                <p class="text-slate-300">Used when solving AAS, ASA, or SSA (Ambiguous Case) triangles.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2 rounded text-center">
-                                   $$\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}$$
-                               </p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-2 rounded text-center text-sm">
+                                   <span>&frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}</span>
+                               </div>
                            </div>
                            <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-2">
                                <span class="text-indigo-400 font-bold uppercase">Law of Cosines</span>
                                <p class="text-slate-300">Used when solving SAS (Side-Angle-Side) or SSS (Side-Side-Side) triangles.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2 rounded text-center">
-                                   $$c^2 = a^2 + b^2 - 2ab \cos C$$
-                                   $$\cos C = \frac{a^2 + b^2 - c^2}{2ab}$$
-                               </p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-2 rounded text-center text-sm space-y-1">
+                                   <div>c² = a² + b² − 2ab cos(C)</div>
+                                   <div>cos(C) = &frac{a² + b² − c²}{2ab}</div>
+                               </div>
                            </div>
                        </div>
                    </div>
 
-                   <!-- 10 OBLIQUE WORKED EXAMPLES -->
+                   <!-- 10 OBLIQUE WORKED EXAMPLES (Proper Symbols) -->
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
                        <h3 class="text-emerald-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Oblique Triangle Worked Examples</h3>
                        <div class="grid grid-cols-1 gap-4 text-xs">
                            
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 1 (Law of Sines - AAS): Finding a Side</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In $\triangle ABC$, $A = 30^\circ$, $B = 45^\circ$, and $a = 12$. Find side $b$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\frac{a}{\sin A} = \frac{b}{\sin B} \implies \frac{12}{\sin 30^\circ} = \frac{b}{\sin 45^\circ}$<br>2. $b = \frac{12 \times \sin 45^\circ}{\sin 30^\circ} = \frac{12 \times 0.7071}{0.5} = 16.97$<br><strong>Answer: Side b ≈ 16.97</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> In △ABC, A = 30°, B = 45°, and a = 12. Find side b.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. &frac{a}{\sin A} = \frac{b}{\sin B} ⇒ &frac{12}{\sin 30°} = \frac{b}{\sin 45°}<br>2. b = &frac{12 × \sin 45°}{\sin 30°} = &frac{12 × 0.7071}{0.5} = 16.97<br><strong>Answer: Side b ≈ 16.97</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 2 (Law of Sines - ASA): Finding an Angle</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In $\triangle ABC$, $A = 50^\circ$, $C = 60^\circ$, and $c = 15$. Find side $a$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\frac{a}{\sin A} = \frac{c}{\sin C} \implies \frac{a}{\sin 50^\circ} = \frac{15}{\sin 60^\circ}$<br>2. $a = \frac{15 \times \sin 50^\circ}{\sin 60^\circ} = \frac{15 \times 0.7660}{0.8660} = 13.27$<br><strong>Answer: Side a ≈ 13.27</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> In △ABC, A = 50°, C = 60°, and c = 15. Find side a.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. &frac{a}{\sin A} = \frac{c}{\sin C} ⇒ &frac{a}{\sin 50°} = \frac{15}{\sin 60°}<br>2. a = &frac{15 × \sin 50°}{\sin 60°} = &frac{15 × 0.7660}{0.8660} = 13.27<br><strong>Answer: Side a ≈ 13.27</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 3 (Law of Cosines - SAS): Finding Third Side</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In $\triangle ABC$, $a = 7$, $b = 10$, and $C = 60^\circ$. Find side $c$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $c^2 = a^2 + b^2 - 2ab \cos C$<br>2. $c^2 = 7^2 + 10^2 - 2(7)(10)\cos 60^\circ = 49 + 100 - 140(0.5) = 149 - 70 = 79$<br>3. $c = \sqrt{79} = 8.89$<br><strong>Answer: Side c ≈ 8.89</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> In △ABC, a = 7, b = 10, and C = 60°. Find side c.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. c² = a² + b² − 2ab cos(C)<br>2. c² = 7² + 10² − 2(7)(10) cos(60°) = 49 + 100 − 140(0.5) = 149 − 70 = 79<br>3. c = √79 = 8.89<br><strong>Answer: Side c ≈ 8.89</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 4 (Law of Cosines - SSS): Finding an Angle</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In $\triangle ABC$, $a = 5$, $b = 7$, and $c = 10$. Find angle $C$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\cos C = \frac{a^2 + b^2 - c^2}{2ab} = \frac{5^2 + 7^2 - 10^2}{2(5)(7)} = \frac{25 + 49 - 100}{70} = \frac{-26}{70} = -0.3714$<br>2. $C = \arccos(-0.3714) = 111.8^\circ$<br><strong>Answer: Angle C ≈ 111.8°</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> In △ABC, a = 5, b = 7, and c = 10. Find angle C.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cos(C) = &frac{a² + b² − c²}{2ab} = &frac{5² + 7² − 10²}{2(5)(7)} = &frac{25 + 49 − 100}{70} = &frac{-26}{70} = -0.3714<br>2. C = arccos(-0.3714) = 111.8°<br><strong>Answer: Angle C ≈ 111.8°</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 5 (Law of Sines): Finding Angle B</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In $\triangle ABC$, $a = 10$, $b = 14$, and $A = 35^\circ$. Find angle $B$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\frac{\sin B}{b} = \frac{\sin A}{a} \implies \sin B = \frac{14 \times \sin 35^\circ}{10} = \frac{14 \times 0.5736}{10} = 0.8030$<br>2. $B = \arcsin(0.8030) = 53.4^\circ$<br><strong>Answer: Angle B ≈ 53.4°</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> In △ABC, a = 10, b = 14, and A = 35°. Find angle B.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. &frac{\sin B}{b} = \frac{\sin A}{a} ⇒ \sin(B) = &frac{14 × \sin 35°}{10} = &frac{14 × 0.5736}{10} = 0.8030<br>2. B = arcsin(0.8030) = 53.4°<br><strong>Answer: Angle B ≈ 53.4°</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 6 (SAS Triangle Area): Finding Area</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Find the area of $\triangle ABC$ where $a = 8$, $b = 11$, and $C = 50^\circ$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\text{Area} = \frac{1}{2}ab \sin C$<br>2. $\text{Area} = \frac{1}{2}(8)(11)\sin 50^\circ = 44 \times 0.7660 = 33.70$<br><strong>Answer: Area ≈ 33.70 square units</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> Find the area of △ABC where a = 8, b = 11, and C = 50°.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. Area = &frac{1}{2} ab \sin(C)<br>2. Area = &frac{1}{2}(8)(11) \sin(50°) = 44 × 0.7660 = 33.70<br><strong>Answer: Area ≈ 33.70 square units</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 7 (Law of Sines - Worded Navigation): Bearing Problem</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Two ships leave port at the same angle. Distance from port to ship 1 is 40 km, to ship 2 is 55 km. The angle between their paths is $58^\circ$. Find the distance between the two ships.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. Use Law of Cosines: $d^2 = 40^2 + 55^2 - 2(40)(55)\cos 58^\circ$<br>2. $d^2 = 1600 + 3025 - 4400(0.5299) = 4625 - 2331.56 = 2293.44$<br>3. $d = \sqrt{2293.44} = 47.89 \text{ km}$<br><strong>Answer: Distance = 47.89 km</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> Two ships leave port at the same angle. Distance from port to ship 1 is 40 km, to ship 2 is 55 km. The angle between their paths is 58°. Find the distance between the two ships.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. Use Law of Cosines: d² = 40² + 55² − 2(40)(55) cos(58°)<br>2. d² = 1600 + 3025 − 4400(0.5299) = 4625 − 2331.56 = 2293.44<br>3. d = √2293.44 = 47.89 km<br><strong>Answer: Distance = 47.89 km</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 8 (Law of Sines - Complete Triangle): ASA Case</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Solve $\triangle ABC$ given $A = 40^\circ$, $B = 70^\circ$, and $c = 12$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $C = 180^\circ - (40^\circ + 70^\circ) = 70^\circ$<br>2. $a = \frac{c \sin A}{\sin C} = \frac{12 \sin 40^\circ}{\sin 70^\circ} = \frac{12 \times 0.6428}{0.9397} = 8.21$<br>3. $b = \frac{c \sin B}{\sin C} = \frac{12 \sin 70^\circ}{\sin 70^\circ} = 12$<br><strong>Answer: C = 70°, a = 8.21, b = 12</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> Solve △ABC given A = 40°, B = 70°, and c = 12.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. C = 180° − (40° + 70°) = 70°<br>2. a = &frac{c \sin(A)}{\sin(C)} = &frac{12 \sin(40°)}{\sin(70°)} = &frac{12 × 0.6428}{0.9397} = 8.21<br>3. b = &frac{c \sin(B)}{\sin(C)} = &frac{12 \sin(70°)}{\sin(70°)} = 12<br><strong>Answer: C = 70°, a = 8.21, b = 12</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 9 (Law of Cosines - SSS): Triangle Verification</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Find the smallest angle in a triangle with sides $a = 6$, $b = 8$, and $c = 12$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. The smallest angle $A$ is opposite side $a = 6$.<br>2. $\cos A = \frac{b^2 + c^2 - a^2}{2bc} = \frac{8^2 + 12^2 - 6^2}{2(8)(12)} = \frac{64 + 144 - 36}{192} = \frac{172}{192} = 0.8958$<br>3. $A = \arccos(0.8958) = 26.4^\circ$<br><strong>Answer: Smallest angle A ≈ 26.4°</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> Find the smallest angle in a triangle with sides a = 6, b = 8, and c = 12.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. The smallest angle A is opposite side a = 6.<br>2. cos(A) = &frac{b² + c² − a²}{2bc} = &frac{8² + 12² − 6²}{2(8)(12)} = &frac{64 + 144 − 36}{192} = &frac{172}{192} = 0.8958<br>3. A = arccos(0.8958) = 26.4°<br><strong>Answer: Smallest angle A ≈ 26.4°</strong></p>
                            </div>
 
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 10 (Ambiguous Case - SSA): Two Triangles Check</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In $\triangle ABC$, $a = 12$, $b = 16$, and $A = 30^\circ$. Determine possible values for angle $B$.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. $\sin B = \frac{b \sin A}{a} = \frac{16 \sin 30^\circ}{12} = \frac{16 \times 0.5}{12} = \frac{8}{12} = 0.6667$<br>2. $B_1 = \arcsin(0.6667) = 41.8^\circ$<br>3. $B_2 = 180^\circ - 41.8^\circ = 138.2^\circ$ (Valid since $30^\circ + 138.2^\circ < 180^\circ$)<br><strong>Answer: B can be 41.8° or 138.2°</strong></p>
+                               <p class="text-slate-300"><strong>Problem:</strong> In △ABC, a = 12, b = 16, and A = 30°. Determine possible values for angle B.</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. \sin(B) = &frac{b \sin(A)}{a} = &frac{16 \sin(30°)}{12} = &frac{16 × 0.5}{12} = &frac{8}{12} = 0.6667<br>2. B₁ = arcsin(0.6667) = 41.8°<br>3. B₂ = 180° − 41.8° = 138.2° (Valid since 30° + 138.2° &lt; 180°)<br><strong>Answer: B can be 41.8° or 138.2°</strong></p>
                            </div>
 
                        </div>
@@ -628,7 +628,7 @@
     <!-- FIREBASE CONFIG & APP SCRIPT -->
     <script>
         // ==========================================
-        // FIREBASE CONFIG & INITIALIZATION (PUT YOUR REAL CREDENTIALS HERE)
+        // FIREBASE CONFIG & INITIALIZATION (STAY AS IS)
         // ==========================================
         const firebaseConfig = {
   apiKey: "AIzaSyAHjIzF3_9cc8cI3lXKj7ec3dhGJinIcB8",
@@ -721,7 +721,6 @@
                 updateRoleUI();
             } else {
                 authOverlay.classList.remove('hidden');
-                // Check if offline
                 if (!navigator.onLine) {
                     document.getElementById('offlineBanner').classList.remove('hidden');
                 }
@@ -805,7 +804,7 @@
             }
         }
 
-        // Tab Navigation
+        // Tab Navigation (Student: Simulators, Lessons, Quiz ONLY; Teacher: includes Dashboard)
         function switchTab(tabId) {
             const tabs = ['simulator', 'lessons', 'quiz', 'dashboard'];
             tabs.forEach(t => {
@@ -849,7 +848,7 @@
             }
         }
 
-        // Unit Circle & Right Triangle Visualizer Engine
+        // Unit Circle & Right Triangle Visualizer Engine (with clear markings & labels)
         function updateTrigAngle(val) {
             const deg = parseInt(val);
             document.getElementById('angleDegreeVal').innerText = deg + '°';
@@ -918,8 +917,14 @@
             const px = cx + R * cosVal;
             const py = cy - R * sinVal;
 
-            // Draw Right Triangle Legs
-            // Cosine leg (Adjacent)
+            // Draw Angle Arc
+            ctx.strokeStyle = '#a855f7';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 35, 0, -rad, true);
+            ctx.stroke();
+
+            // Draw Cosine Leg (Adjacent) in Blue
             ctx.strokeStyle = '#3b82f6';
             ctx.lineWidth = 3;
             ctx.beginPath();
@@ -927,14 +932,14 @@
             ctx.lineTo(px, cy);
             ctx.stroke();
 
-            // Sine leg (Opposite)
+            // Draw Sine Leg (Opposite) in Red
             ctx.strokeStyle = '#f43f5e';
             ctx.beginPath();
             ctx.moveTo(px, cy);
             ctx.lineTo(px, py);
             ctx.stroke();
 
-            // Hypotenuse
+            // Draw Hypotenuse in Emerald
             ctx.strokeStyle = '#10b981';
             ctx.beginPath();
             ctx.moveTo(cx, cy);
@@ -947,11 +952,27 @@
             ctx.arc(px, py, 6, 0, 2 * Math.PI);
             ctx.fill();
 
-            // Label markings A, B, C & right angle symbol
+            // Canvas Markings & Labels for Angle, Sine, Cosine, Hypotenuse
+            ctx.font = 'bold 11px sans-serif';
+            // Angle label θ
+            ctx.fillStyle = '#a855f7';
+            ctx.fillText(`θ = ${deg}°`, cx + 45, cy - 15);
+
+            // Cosine label (Adjacent)
+            ctx.fillStyle = '#3b82f6';
+            ctx.fillText(`cos(θ) = ${cosVal.toFixed(2)}`, (cx + px) / 2 - 25, cy + 18);
+
+            // Sine label (Opposite)
+            ctx.fillStyle = '#f43f5e';
+            ctx.fillText(`sin(θ) = ${sinVal.toFixed(2)}`, px + 12, (cy + py) / 2);
+
+            // Hypotenuse label
+            ctx.fillStyle = '#10b981';
+            ctx.fillText(`Hypotenuse = 1.00`, (cx + px) / 2 - 40, (cy + py) / 2 - 12);
+
+            // Origin Label
             ctx.fillStyle = '#94a3b8';
-            ctx.font = '11px sans-serif';
-            ctx.fillText("Origin (O)", cx - 55, cy + 15);
-            ctx.fillText("P(cos θ, sin θ)", px + 10, py - 10);
+            ctx.fillText("Origin (0,0)", cx - 65, cy + 18);
         }
 
         // Oblique Triangles Simulator Engine
@@ -965,10 +986,8 @@
             document.getElementById('oblCSliderVal').innerText = C_deg + '°';
 
             const C_rad = (C_deg * Math.PI) / 180;
-            // Law of Cosines for side c
             const c = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(C_rad));
 
-            // Law of Sines for angle A and B
             const sinA = (a * Math.sin(C_rad)) / c;
             const A_rad = Math.asin(Math.min(1, Math.max(-1, sinA)));
             const A_deg = (A_rad * 180) / Math.PI;
@@ -993,7 +1012,6 @@
 
             ctx.clearRect(0, 0, w, h);
 
-            // Scale and center triangle vertices
             const scale = 8;
             const ax = 80;
             const ay = 360;
@@ -1014,22 +1032,21 @@
             ctx.closePath();
             ctx.stroke();
 
-            // Fill background tint
             ctx.fillStyle = 'rgba(16, 185, 129, 0.05)';
             ctx.fill();
 
-            // Draw Vertices and Proper Symbol Labels ($A, B, C$ and sides $a, b, c$)
+            // Draw Vertices and Proper Symbol Labels (A, B, C & sides a, b, c)
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 13px sans-serif';
-            ctx.fillText("Vertex A (" + A_deg.toFixed(1) + "°)", ax - 25, ay + 20);
-            ctx.fillText("Vertex B (" + B_deg.toFixed(1) + "°)", bx + 10, by + 20);
-            ctx.fillText("Vertex C (" + C_deg.toFixed(1) + "°)", cx - 10, cy - 15);
+            ctx.fillText(`Vertex A (${A_deg.toFixed(1)}°)`, ax - 25, ay + 20);
+            ctx.fillText(`Vertex B (${B_deg.toFixed(1)}°)`, bx + 10, by + 20);
+            ctx.fillText(`Vertex C (${C_deg.toFixed(1)}°)`, cx - 10, cy - 15);
 
             // Side Labels
             ctx.fillStyle = '#38bdf8';
-            ctx.fillText("c = " + (bx - ax) / scale, (ax + bx) / 2 - 15, ay + 20);
-            ctx.fillText("b = " + b, (ax + cx) / 2 - 25, (ay + cy) / 2);
-            ctx.fillText("a = " + a, (bx + cx) / 2 + 10, (by + cy) / 2);
+            ctx.fillText(`c = ${((bx - ax) / scale).toFixed(1)}`, (ax + bx) / 2 - 15, ay + 20);
+            ctx.fillText(`b = ${b}`, (ax + cx) / 2 - 25, (ay + cy) / 2);
+            ctx.fillText(`a = ${a}`, (bx + cx) / 2 + 10, (by + cy) / 2);
         }
 
         // Lesson Notes Dropdown Switcher
@@ -1087,7 +1104,6 @@
                     alert("Invalid or expired Game PIN. Please check with your teacher.");
                 }
             } catch (e) {
-                // Offline fallback simulation
                 activeGamePin = pin;
                 currentDifficulty = 'easy';
                 startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
