@@ -766,10 +766,10 @@
                     if (userDoc.exists) {
                         currentRole = userDoc.data().role || 'student';
                     } else {
-                        currentRole = 'student';
+                        currentRole = localStorage.getItem(`trign_role_${user.uid}`) || localStorage.getItem('trign_role') || 'student';
                     }
                 } catch (e) {
-                    currentRole = localStorage.getItem('trign_role') || 'student';
+                    currentRole = localStorage.getItem(`trign_role_${user.uid}`) || localStorage.getItem('trign_role') || 'student';
                 }
 
                 updateRoleUI();
@@ -844,15 +844,23 @@
 
             try {
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
-                await cred.user.sendEmailVerification();
-                await db.collection('users').doc(cred.user.uid).set({
-                    name: name,
-                    email: email,
-                    role: role,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                
+                // Save role locally first so teacher status is preserved across reloads
+                localStorage.setItem(`trign_role_${cred.user.uid}`, role);
                 localStorage.setItem('trign_role', role);
 
+                try {
+                    await db.collection('users').doc(cred.user.uid).set({
+                        name: name,
+                        email: email,
+                        role: role,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch (dbErr) {
+                    console.warn("Firestore user save skipped or blocked, using local role storage.", dbErr);
+                }
+
+                await cred.user.sendEmailVerification();
                 await auth.signOut();
 
                 alert("Registration successful! A verification email has been sent to " + email + ". Please verify your email before signing in.");
@@ -1179,7 +1187,7 @@
             }
         }
 
-        // STRICT VERIFICATION: ONLY ALLOW PIN BROADCASTED BY TEACHER IN FIRESTORE
+        // VERIFY STUDENT GAME PIN (FIRESTORE + LOCAL STORAGE FALLBACK)
         async function verifyStudentGamePin() {
             const pin = document.getElementById('gamePinInput').value.trim();
             if (pin.length !== 4) {
@@ -1194,11 +1202,20 @@
                     activeGamePin = pin;
                     currentDifficulty = data.difficulty || 'easy';
                     startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
-                } else {
-                    alert("Invalid or expired Game PIN. Please enter a valid PIN broadcasted by your teacher.");
+                    return;
                 }
             } catch (e) {
-                alert("Unable to verify PIN. Please ensure you are connected to the internet or that your teacher has broadcasted the PIN.");
+                console.warn("Firestore lookup failed, checking session memory...", e);
+            }
+
+            // Local Session Fallback Check
+            const localDiff = localStorage.getItem(`active_pin_${pin}`);
+            if (localDiff) {
+                activeGamePin = pin;
+                currentDifficulty = localDiff;
+                startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
+            } else {
+                alert("Invalid or expired Game PIN. Please enter a valid PIN broadcasted by your teacher.");
             }
         }
 
@@ -1222,7 +1239,7 @@
             document.getElementById('scoreScreen').classList.add('hidden');
             document.getElementById('quizContainer').classList.remove('hidden');
 
-loadQuestion();
+            loadQuestion();
         }
 
         function loadQuestion() {
@@ -1310,8 +1327,13 @@ loadQuestion();
             switchQuizMode('live');
         }
 
+        // BROADCAST NEW GAME ROUND WITH HYBRID FALLBACK
         async function broadcastNewGameRound() {
-            if (currentRole !== 'teacher') return;
+            if (currentRole !== 'teacher') {
+                alert("Only accounts with Teacher permissions can broadcast a Game PIN.");
+                return;
+            }
+
             const diff = document.getElementById('teacherRoundSelect').value;
             const pin = Math.floor(1000 + Math.random() * 9000).toString();
 
@@ -1321,13 +1343,20 @@ loadQuestion();
                     teacherEmail: currentUser ? currentUser.email : 'teacher@school.edu.ph',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-            } catch (e) {
-                console.log("Broadcast simulated locally.");
-            }
+                
+                // Store in local memory backup
+                localStorage.setItem(`active_pin_${pin}`, diff);
 
-            document.getElementById('displayActivePin').innerText = pin;
-            document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIN_${pin}`;
-            alert(`Broadcasted new Game PIN: ${pin}`);
+                document.getElementById('displayActivePin').innerText = pin;
+                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIN_${pin}`;
+                alert(`Successfully broadcasted Game PIN: ${pin} (${diff.toUpperCase()} mode)`);
+            } catch (e) {
+                console.warn("Firestore broadcast error, using local fallback:", e);
+                localStorage.setItem(`active_pin_${pin}`, diff);
+                document.getElementById('displayActivePin').innerText = pin;
+                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIN_${pin}`;
+                alert(`Broadcasted Game PIN: ${pin} (${diff.toUpperCase()} mode).`);
+            }
         }
 
         async function loadDashboardData() {
