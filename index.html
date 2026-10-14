@@ -30,12 +30,12 @@
            </div>
 
            <div>
-                <h2 class="text-xl font-black text-white">TrigNovation Portal</h2>
-                <p class="text-xs text-slate-400 mt-1">Sign in or register with real email verification.</p>
+                <h2 id="authTitle" class="text-xl font-black text-white">TrigNovation Portal</h2>
+                <p id="authSubtitle" class="text-xs text-slate-400 mt-1">Sign in or register with real email verification.</p>
            </div>
 
            <!-- TOGGLE LOGIN VS REGISTER -->
-           <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-700 text-xs">
+           <div id="authToggleBar" class="flex bg-slate-900 p-1 rounded-xl border border-slate-700 text-xs">
                <button onclick="switchAuthMode('login')" id="btnAuthLogin" class="w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition">Sign In</button>
                <button onclick="switchAuthMode('register')" id="btnAuthRegister" class="w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition">Create Account</button>
            </div>
@@ -47,7 +47,11 @@
                    <input type="email" id="loginEmail" required placeholder="name@school.edu.ph" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
                </div>
                <div>
-                   <label class="block text-xs font-semibold text-slate-300 mb-1">Password:</label>
+                   <div class="flex justify-between items-center mb-1">
+                       <label class="text-xs font-semibold text-slate-300">Password:</label>
+                       <!-- FORGOT PASSWORD TRIGGER LINK -->
+                       <button type="button" onclick="switchAuthMode('forgot')" class="text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 transition">Forgot Password?</button>
+                   </div>
                    <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
                </div>
                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Sign In</button>
@@ -77,6 +81,17 @@
                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Register & Send Verification Email</button>
            </form>
 
+           <!-- FORM 3: FORGOT PASSWORD -->
+           <form id="formForgot" onsubmit="handleFirebasePasswordReset(event)" class="hidden space-y-3 text-left">
+               <p class="text-xs text-slate-300">Enter your registered email address below and we will send you a link to reset your password.</p>
+               <div>
+                   <label class="block text-xs font-semibold text-slate-300 mb-1">Registered Email Address:</label>
+                   <input type="email" id="forgotEmail" required placeholder="name@school.edu.ph" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+               </div>
+               <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Send Password Reset Link</button>
+               <button type="button" onclick="switchAuthMode('login')" class="w-full text-center text-xs font-semibold text-slate-400 hover:text-white pt-2 transition">← Back to Sign In</button>
+           </form>
+
         </div>
     </div>
 
@@ -99,7 +114,7 @@
                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes</button>
                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
                
-               <!-- STRICT TEACHER ONLY TAB (Managed dynamically and via CSS) -->
+               <!-- STRICT TEACHER ONLY TAB -->
                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics & Dashboard</button>
                
                <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Sign Out</button>
@@ -110,9 +125,8 @@
     <!-- Main Workspace Container -->
     <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
 
-        <!-- TAB 1: SIMULATORS (Dropdown: Unit Circle vs Oblique Triangles) -->
+        <!-- TAB 1: SIMULATORS -->
         <section id="tab-simulator" class="space-y-6">
-            <!-- Simulator Dropdown Selector Bar -->
             <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h2 class="text-base font-black text-white">Trigonometry Simulators Hub</h2>
@@ -182,7 +196,7 @@
                     </div>
                 </div>
 
-                <!-- DYNAMIC HTML5 CANVAS UNIT CIRCLE GRAPH -->
+                <!-- CANVAS UNIT CIRCLE GRAPH -->
                 <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-3 px-2">
                          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Interactive Unit Circle, Hypotenuse & Side Lengths</span>
@@ -196,7 +210,7 @@
                 </div>
             </div>
 
-            <!-- SIMULATOR B: OBLIQUE TRIANGLES (Law of Sines & Law of Cosines) -->
+            <!-- SIMULATOR B: OBLIQUE TRIANGLES -->
             <div id="simObliqueContainer" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 flex flex-col justify-between space-y-6">
                     <div>
@@ -268,7 +282,6 @@
         <!-- TAB 2: COMPREHENSIVE LESSON NOTES -->
         <section id="tab-lessons" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-6">
-                <!-- Lesson Notes Dropdown Header -->
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-700 pb-4">
                     <div>
                         <h2 class="text-xl font-bold text-white mb-1">Teacher's Pedagogical Trigonometry Review Module</h2>
@@ -507,10 +520,9 @@
             </div>
         </section>
 
-        <!-- TAB 3: QUIZ (LIVE ARENA + PRACTICE QUIZ PORTAL) -->
+        <!-- TAB 3: QUIZ -->
         <section id="tab-quiz" class="hidden max-w-2xl mx-auto space-y-6">
             
-            <!-- QUIZ MODE SELECTOR BAR -->
             <div class="flex bg-slate-800 p-1.5 rounded-xl border border-slate-700 text-xs font-bold text-center">
                <button onclick="switchQuizMode('live')" id="btnQuizLive" class="w-1/2 py-2.5 rounded-lg bg-indigo-600 text-white shadow transition">📡 Live Broadcast Arena (Game PIN)</button>
                <button onclick="switchQuizMode('practice')" id="btnQuizPractice" class="w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition">🎯 Student Practice Quiz (Self-Paced)</button>
@@ -558,7 +570,6 @@
                        <p id="playerBadge" class="text-xs text-indigo-400 font-semibold"></p>
                    </div>
                    <div class="flex items-center gap-3">
-                       <!-- QUIZ TIMER BADGE -->
                        <div id="quizTimerBadge" class="bg-amber-500/20 border border-amber-500 text-amber-300 px-3 py-1 rounded-full text-xs font-mono font-bold flex items-center gap-1">
                            ⏱️ <span id="quizTimeRemaining">20</span>s
                        </div>
@@ -581,10 +592,9 @@
             </div>
         </section>
 
-        <!-- TAB 4: TEACHER DASHBOARD & ANALYTICS (TEACHER ONLY) -->
+        <!-- TAB 4: TEACHER DASHBOARD & ANALYTICS -->
         <section id="tab-dashboard" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
-               <!-- PIN BROADCASTER -->
                <div class="bg-slate-900 p-5 rounded-xl border border-indigo-800/50 space-y-4">
                    <h3 class="text-base font-bold text-indigo-400 flex items-center gap-2">
                        <span>📡 Live Cloud Game PIN Broadcaster</span>
@@ -610,7 +620,6 @@
                    </div>
                </div>
 
-               <!-- LIVE LEADERBOARD & DIAGNOSTIC ANALYTICS -->
                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
                        <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2"><span>🏆 Live Podium & Leaderboard</span></h4>
@@ -627,7 +636,6 @@
                    </div>
                </div>
 
-               <!-- SUBMISSIONS TABLE & CSV EXPORT -->
                <div>
                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
                        <h3 class="text-base font-bold text-white">📋 Live Student Submissions (Practice Quizzes Excluded)</h3>
@@ -742,7 +750,6 @@
         auth.onAuthStateChanged(async (user) => {
             const authOverlay = document.getElementById('authOverlay');
             if (user) {
-                // Ensure email is verified before letting them stay signed in
                 if (!user.emailVerified) {
                     await auth.signOut();
                     authOverlay.classList.remove('hidden');
@@ -774,22 +781,42 @@
             }
         });
 
+        // Switch Auth View Mode (login, register, or forgot)
         function switchAuthMode(mode) {
             const btnLogin = document.getElementById('btnAuthLogin');
             const btnReg = document.getElementById('btnAuthRegister');
+            const toggleBar = document.getElementById('authToggleBar');
             const formLogin = document.getElementById('formLogin');
             const formReg = document.getElementById('formRegister');
+            const formForgot = document.getElementById('formForgot');
+            const authTitle = document.getElementById('authTitle');
+            const authSubtitle = document.getElementById('authSubtitle');
 
             if (mode === 'login') {
+                toggleBar.classList.remove('hidden');
+                authTitle.innerText = "TrigNovation Portal";
+                authSubtitle.innerText = "Sign in or register with real email verification.";
                 btnLogin.className = "w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition";
                 btnReg.className = "w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition";
                 formLogin.classList.remove('hidden');
                 formReg.classList.add('hidden');
-            } else {
+                formForgot.classList.add('hidden');
+            } else if (mode === 'register') {
+                toggleBar.classList.remove('hidden');
+                authTitle.innerText = "TrigNovation Portal";
+                authSubtitle.innerText = "Sign in or register with real email verification.";
                 btnReg.className = "w-1/2 py-2 font-bold rounded-lg bg-emerald-600 text-white transition";
                 btnLogin.className = "w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition";
                 formReg.classList.remove('hidden');
                 formLogin.classList.add('hidden');
+                formForgot.classList.add('hidden');
+            } else if (mode === 'forgot') {
+                toggleBar.classList.add('hidden');
+                authTitle.innerText = "Password Recovery";
+                authSubtitle.innerText = "Reset your password via email.";
+                formLogin.classList.add('hidden');
+                formReg.classList.add('hidden');
+                formForgot.classList.remove('hidden');
             }
         }
 
@@ -817,13 +844,8 @@
             const pass = document.getElementById('regPassword').value;
 
             try {
-                // 1. Create user in Firebase Auth (automatically signs them in)
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
-                
-                // 2. Send the real verification email
                 await cred.user.sendEmailVerification();
-                
-                // 3. Save role data in Firestore
                 await db.collection('users').doc(cred.user.uid).set({
                     name: name,
                     email: email,
@@ -832,14 +854,26 @@
                 });
                 localStorage.setItem('trign_role', role);
 
-                // 4. CRUCIAL: Sign them out immediately so they cannot bypass verification
                 await auth.signOut();
 
-                // 5. Notify user
                 alert("Registration successful! A verification email has been sent to " + email + ". Please verify your email before signing in.");
                 switchAuthMode('login');
             } catch (err) {
                 alert("Registration Error: " + err.message);
+            }
+        }
+
+        // HANDLER: SEND PASSWORD RESET EMAIL
+        async function handleFirebasePasswordReset(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value.trim();
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                alert("Password reset email sent! Check your inbox (" + email + ") for instructions to set a new password.");
+                switchAuthMode('login');
+            } catch (err) {
+                alert("Password Reset Error: " + err.message);
             }
         }
 
@@ -865,7 +899,6 @@
                 }
             });
 
-            // Prevent students from viewing the dashboard section
             if (currentRole !== 'teacher') {
                 const dashTab = document.getElementById('tab-dashboard');
                 if (dashTab) {
@@ -879,9 +912,8 @@
             }
         }
 
-        // Tab Navigation with strict safety checks
+        // Tab Navigation
         function switchTab(tabId) {
-            // Absolute prevention rule: non-teachers cannot access dashboard
             if (tabId === 'dashboard' && currentRole !== 'teacher') {
                 alert("Access restricted: Teacher Analytics & Dashboard is available for Teacher accounts only.");
                 switchTab('simulator');
@@ -938,7 +970,6 @@
             }
         }
 
-        // Unit Circle & Right Triangle Visualizer Engine
         function updateTrigAngle(val) {
             const deg = parseInt(val);
             document.getElementById('angleDegreeVal').innerText = deg + '°';
@@ -962,7 +993,6 @@
 
             ctx.clearRect(0, 0, w, h);
 
-            // Draw Grid & Axes
             ctx.strokeStyle = '#334155';
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -970,7 +1000,6 @@
             ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
             ctx.stroke();
 
-            // Draw Unit Circle
             ctx.strokeStyle = '#6366f1';
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -1003,14 +1032,12 @@
             const px = cx + R * cosVal;
             const py = cy - R * sinVal;
 
-            // Draw Angle Arc
             ctx.strokeStyle = '#a855f7';
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(cx, cy, 35, 0, -rad, true);
             ctx.stroke();
 
-            // Cosine Leg (Adjacent)
             ctx.strokeStyle = '#3b82f6';
             ctx.lineWidth = 3;
             ctx.beginPath();
@@ -1018,27 +1045,23 @@
             ctx.lineTo(px, cy);
             ctx.stroke();
 
-            // Sine Leg (Opposite)
             ctx.strokeStyle = '#f43f5e';
             ctx.beginPath();
             ctx.moveTo(px, cy);
             ctx.lineTo(px, py);
             ctx.stroke();
 
-            // Hypotenuse
             ctx.strokeStyle = '#10b981';
             ctx.beginPath();
             ctx.moveTo(cx, cy);
             ctx.lineTo(px, py);
             ctx.stroke();
 
-            // Point Marker
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.arc(px, py, 6, 0, 2 * Math.PI);
             ctx.fill();
 
-            // Canvas Markings & Labels
             ctx.font = 'bold 11px sans-serif';
             ctx.fillStyle = '#a855f7';
             ctx.fillText(`θ = ${deg}°`, cx + 40, cy - 12);
@@ -1056,7 +1079,6 @@
             ctx.fillText("Origin (0,0)", cx - 65, cy + 18);
         }
 
-        // Oblique Triangles Simulator Engine
         function updateObliqueSimulation() {
             const a = parseFloat(document.getElementById('oblASlider').value);
             const b = parseFloat(document.getElementById('oblBSlider').value);
@@ -1127,7 +1149,6 @@
             ctx.fillText(`a = ${a}`, (bx + cx) / 2 + 10, (by + cy) / 2);
         }
 
-        // Lesson Notes Dropdown Switcher
         function switchLessonTopic(topic) {
             const rightContent = document.getElementById('lessonContentRight');
             const obliqueContent = document.getElementById('lessonContentOblique');
@@ -1140,7 +1161,6 @@
             }
         }
 
-        // Quiz Mode Switcher
         function switchQuizMode(mode) {
             activeQuizMode = mode;
             const btnLive = document.getElementById('btnQuizLive');
