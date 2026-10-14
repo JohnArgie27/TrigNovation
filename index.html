@@ -93,13 +93,13 @@
                </div>
             </div>
 
-            <!-- Navigation Tabs (Teacher Analytics hidden by default, shown strictly for Teacher role) -->
+            <!-- Navigation Tabs -->
             <div class="mt-4 md:mt-0 flex flex-wrap gap-1 bg-indigo-950 p-1 rounded-xl border border-indigo-800">
                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Simulators</button>
                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes</button>
                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
                
-               <!-- STRICT TEACHER ONLY TAB -->
+               <!-- STRICT TEACHER ONLY TAB (Managed dynamically and via CSS) -->
                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics & Dashboard</button>
                
                <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Sign Out</button>
@@ -265,7 +265,7 @@
             </div>
         </section>
 
-        <!-- TAB 2: COMPREHENSIVE LESSON NOTES (Dropdown: Right Triangles vs Oblique Triangles) -->
+        <!-- TAB 2: COMPREHENSIVE LESSON NOTES -->
         <section id="tab-lessons" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-6">
                 <!-- Lesson Notes Dropdown Header -->
@@ -285,7 +285,6 @@
 
                 <!-- LESSON CONTENT A: RIGHT TRIANGLES -->
                 <div id="lessonContentRight" class="space-y-8">
-                   <!-- MAIN RATIOS & RECIPROCALS OVERVIEW -->
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
                        <h3 class="text-indigo-400 font-bold text-base border-b border-slate-800 pb-2">Core Trigonometric Definitions & Reciprocals</h3>
                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
@@ -304,78 +303,65 @@
                        </div>
                    </div>
 
-                   <!-- 10 WORKED EXAMPLES -->
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
                        <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Right Triangle Problem Solving Examples</h3>
                        <div class="grid grid-cols-1 gap-4 text-xs">
-                           
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 1: Using Pythagorean Theorem</span>
                                <p class="text-slate-300"><strong>Problem:</strong> In a right-angled triangle, leg a = 6 and leg b = 8. Find the hypotenuse c.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. c² = a² + b²<br>2. c² = 6² + 8² = 36 + 64 = 100<br>3. c = √100 = 10<br><strong>Answer: Hypotenuse c = 10</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 2: Finding Sine Ratio</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Right triangle has opposite side = 5 and hypotenuse = 13. Find sin θ and csc θ.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin θ = Opp / Hyp = 5/13<br>2. csc θ = 1 / sin θ = 13/5<br><strong>Answer: sin θ = 5/13, csc θ = 13/5</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 3: Finding Cosine and Adjacent Side</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse = 10 and cos θ = 0.8. Find the adjacent side length.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cos θ = Adj / Hyp → 0.8 = Adj / 10<br>2. Adj = 0.8 × 10 = 8<br><strong>Answer: Adjacent side = 8</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 4: Using Tangent to Find Opposite Side</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Adjacent side = 12 and tan θ = 3/4. Find the opposite side.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan θ = Opp / Adj → 3/4 = Opp / 12<br>2. Opp = 12 × (3/4) = 9<br><strong>Answer: Opposite side = 9</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 5: Finding Missing Leg via Pythagorean Theorem</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse c = 15 and leg a = 9. Find leg b.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. b² = c² - a² = 15² - 9² = 225 - 81 = 144<br>2. b = √144 = 12<br><strong>Answer: Leg b = 12</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 6: Reciprocal Secant Calculation</span>
                                <p class="text-slate-300"><strong>Problem:</strong> If cos θ = 4/5, find sec θ.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sec θ = 1 / cos θ<br>2. sec θ = 1 / (4/5) = 5/4<br><strong>Answer: sec θ = 5/4</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 7: Cotangent Calculation</span>
                                <p class="text-slate-300"><strong>Problem:</strong> If tan θ = 7/24, find cot θ.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cot θ = 1 / tan θ<br>2. cot θ = 24/7<br><strong>Answer: cot θ = 24/7</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 8: Finding Angle using Inverse Sine</span>
                                <p class="text-slate-300"><strong>Problem:</strong> In a right triangle, sin θ = 0.5. Find angle θ.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. θ = arcsin(0.5)<br>2. θ = 30° (or π/6 rad)<br><strong>Answer: θ = 30°</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 9: Using Pythagorean Identity</span>
                                <p class="text-slate-300"><strong>Problem:</strong> If sin θ = 3/5 in Quadrant I, find cos θ.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin² θ + cos² θ = 1 → (3/5)² + cos² θ = 1<br>2. 9/25 + cos² θ = 1 → cos² θ = 16/25<br>3. cos θ = √(16/25) = 4/5<br><strong>Answer: cos θ = 4/5</strong></p>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 10: Complete Triangle Evaluation</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Angle θ = 45° and adjacent side = 7. Find opposite side and hypotenuse.</p>
                                <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan(45°) = 1 → Opposite = Adjacent = 7<br>2. Hypotenuse c = √(7² + 7²) = √98 = 7√2<br><strong>Answer: Opposite = 7, Hypotenuse = 7√2</strong></p>
                            </div>
-
                        </div>
                    </div>
                 </div>
 
-                <!-- LESSON CONTENT B: OBLIQUE TRIANGLES (Mathematical Symbols & Proper Notations) -->
+                <!-- LESSON CONTENT B: OBLIQUE TRIANGLES -->
                 <div id="lessonContentOblique" class="hidden space-y-8">
-                   <!-- LAW OF SINES & COSINES OVERVIEW -->
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
                        <h3 class="text-emerald-400 font-bold text-base border-b border-slate-800 pb-2">Oblique Triangles: Law of Sines & Law of Cosines</h3>
                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
@@ -403,11 +389,9 @@
                        </div>
                    </div>
 
-                   <!-- 10 OBLIQUE WORKED EXAMPLES -->
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
                        <h3 class="text-emerald-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Oblique Triangle Worked Examples</h3>
                        <div class="grid grid-cols-1 gap-4 text-xs">
-                           
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 1 (Law of Sines - AAS): Finding a Side</span>
                                <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, ∠A = 30°, ∠B = 45°, and side a = 12. Find side b.</p>
@@ -421,7 +405,6 @@
                                    <strong>Answer: Side b ≈ 16.97</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 2 (Law of Sines - ASA): Finding a Side</span>
                                <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, ∠A = 50°, ∠C = 60°, and side c = 15. Find side a.</p>
@@ -432,7 +415,6 @@
                                    <strong>Answer: Side a ≈ 13.27</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 3 (Law of Cosines - SAS): Finding Third Side</span>
                                <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 7, side b = 10, and ∠C = 60°. Find side c.</p>
@@ -444,7 +426,6 @@
                                    <strong>Answer: Side c ≈ 8.89</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 4 (Law of Cosines - SSS): Finding an Angle</span>
                                <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 5, side b = 7, and side c = 10. Find ∠C.</p>
@@ -456,7 +437,6 @@
                                    <strong>Answer: Angle ∠C ≈ 111.8°</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 5 (Law of Sines): Finding an Angle</span>
                                <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 10, side b = 14, and ∠A = 35°. Find ∠B.</p>
@@ -467,7 +447,6 @@
                                    <strong>Answer: Angle ∠B ≈ 53.4°</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 6 (SAS Triangle Area): Finding Area</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Find the area of ΔABC where side a = 8, side b = 11, and ∠C = 50°.</p>
@@ -478,7 +457,6 @@
                                    <strong>Answer: Area ≈ 33.70 square units</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 7 (Law of Cosines - Navigation): Distance Problem</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Two ships leave port at an angle of 58°. Ship 1 travels 40 km, Ship 2 travels 55 km. Find the distance d between them.</p>
@@ -490,7 +468,6 @@
                                    <strong>Answer: Distance d = 47.89 km</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 8 (Law of Sines - Complete Triangle): ASA Case</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Solve ΔABC given ∠A = 40°, ∠B = 70°, and side c = 12.</p>
@@ -502,7 +479,6 @@
                                    <strong>Answer: ∠C = 70°, a = 8.21, b = 12</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 9 (Law of Cosines - SSS): Smallest Angle</span>
                                <p class="text-slate-300"><strong>Problem:</strong> Find the smallest angle in a triangle with sides a = 6, b = 8, and c = 12.</p>
@@ -514,7 +490,6 @@
                                    <strong>Answer: Smallest angle ∠A ≈ 26.4°</strong>
                                </div>
                            </div>
-
                            <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
                                <span class="text-emerald-400 font-bold uppercase">Example 10 (Ambiguous Case - SSA): Two Triangles Check</span>
                                <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 12, side b = 16, and ∠A = 30°. Determine possible values for ∠B.</p>
@@ -526,7 +501,6 @@
                                    <strong>Answer: ∠B can be 41.8° or 138.2°</strong>
                                </div>
                            </div>
-
                        </div>
                    </div>
                 </div>
@@ -607,7 +581,7 @@
             </div>
         </section>
 
-        <!-- TAB 4: TEACHER DASHBOARD & ANALYTICS (RESTRICTED TO TEACHER ROLE) -->
+        <!-- TAB 4: TEACHER DASHBOARD & ANALYTICS (TEACHER ONLY) -->
         <section id="tab-dashboard" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
                <!-- PIN BROADCASTER -->
@@ -694,15 +668,15 @@
     <!-- FIREBASE CONFIG & APP SCRIPT -->
     <script>
         // ==========================================
-        // FIREBASE CONFIG & INITIALIZATION (STAY AS IS)
+        // FIREBASE CONFIG & INITIALIZATION
         // ==========================================
         const firebaseConfig = {
-  apiKey: "AIzaSyAHjIzF3_9cc8cI3lXKj7ec3dhGJinIcB8",
-  authDomain: "conicmaster-961bf.firebaseapp.com",
-  projectId: "conicmaster-961bf",
-  storageBucket: "conicmaster-961bf.firebasestorage.app",
-  messagingSenderId: "95380702057",
-  appId: "1:95380702057:web:91ed894b9b9cba502f33f8"
+  apiKey: "AIzaSyB0KkrkIo4vO2V9bMLmUgnR_vGYWsp4nKs",
+  authDomain: "trignovation.firebaseapp.com",
+  projectId: "trignovation",
+  storageBucket: "trignovation.firebasestorage.app",
+  messagingSenderId: "897735031507",
+  appId: "1:897735031507:web:0ce8ca5e2a80410d62f226"
 };
 
         // Initialize Firebase
@@ -724,7 +698,7 @@
         let activeQuizTimer = null;
         let timeLeft = 20;
 
-        // Question Banks (Easy, Average, Difficult)
+        // Question Banks
         const questionBanks = {
             easy: [
                 { q: "What is the primary trigonometric ratio for Sine in a right triangle?", options: ["Opposite / Hypotenuse", "Adjacent / Hypotenuse", "Opposite / Adjacent", "Hypotenuse / Opposite"], correct: 0 },
@@ -851,7 +825,7 @@
             });
         }
 
-        // Strict Role-Based UI Display: Student gets ONLY Simulators, Lessons, Quiz. Teacher gets Dashboard as well.
+        // Role-Based UI Display Configuration
         function updateRoleUI() {
             const badge = document.getElementById('userRoleBadge');
             badge.innerText = currentRole.toUpperCase();
@@ -860,16 +834,19 @@
             teacherElements.forEach(el => {
                 if (currentRole === 'teacher') {
                     el.classList.remove('hidden');
+                    el.style.display = '';
                 } else {
                     el.classList.add('hidden');
+                    el.style.display = 'none';
                 }
             });
 
-            // Ensure if current role is student, they are routed to simulator tab if on dashboard
+            // Prevent students from viewing the dashboard section
             if (currentRole !== 'teacher') {
                 const dashTab = document.getElementById('tab-dashboard');
-                if (dashTab && !dashTab.classList.contains('hidden')) {
-                    switchTab('simulator');
+                if (dashTab) {
+                    dashTab.classList.add('hidden');
+                    dashTab.style.display = 'none';
                 }
             }
 
@@ -878,11 +855,12 @@
             }
         }
 
-        // Tab Navigation
+        // Tab Navigation with strict safety checks
         function switchTab(tabId) {
-            // Guard clause: non-teachers cannot switch to dashboard
+            // Absolute prevention rule: non-teachers cannot access dashboard
             if (tabId === 'dashboard' && currentRole !== 'teacher') {
                 alert("Access restricted: Teacher Analytics & Dashboard is available for Teacher accounts only.");
+                switchTab('simulator');
                 return;
             }
 
@@ -890,7 +868,10 @@
             tabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`btn-${t}`);
-                if (el) el.classList.add('hidden');
+                if (el) {
+                    el.classList.add('hidden');
+                    el.style.display = 'none';
+                }
                 if (btn) {
                     btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white";
                 }
@@ -898,7 +879,12 @@
 
             const activeEl = document.getElementById(`tab-${tabId}`);
             const activeBtn = document.getElementById(`btn-${tabId}`);
-            if (activeEl) activeEl.classList.remove('hidden');
+            
+            if (activeEl) {
+                activeEl.classList.remove('hidden');
+                activeEl.style.display = 'block';
+            }
+            
             if (activeBtn) {
                 if (tabId === 'dashboard') {
                     activeBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-emerald-600 text-white shadow";
@@ -928,7 +914,7 @@
             }
         }
 
-        // Unit Circle & Right Triangle Visualizer Engine (with markings and labels)
+        // Unit Circle & Right Triangle Visualizer Engine
         function updateTrigAngle(val) {
             const deg = parseInt(val);
             document.getElementById('angleDegreeVal').innerText = deg + '°';
@@ -1028,7 +1014,7 @@
             ctx.arc(px, py, 6, 0, 2 * Math.PI);
             ctx.fill();
 
-            // Canvas Markings & Labels for Angle, Sine, Cosine, Hypotenuse
+            // Canvas Markings & Labels
             ctx.font = 'bold 11px sans-serif';
             ctx.fillStyle = '#a855f7';
             ctx.fillText(`θ = ${deg}°`, cx + 40, cy - 12);
@@ -1287,6 +1273,7 @@
         }
 
         async function broadcastNewGameRound() {
+            if (currentRole !== 'teacher') return;
             const diff = document.getElementById('teacherRoundSelect').value;
             const pin = Math.floor(1000 + Math.random() * 9000).toString();
 
@@ -1306,6 +1293,7 @@
         }
 
         async function loadDashboardData() {
+            if (currentRole !== 'teacher') return;
             const tbody = document.getElementById('submissionsTableBody');
             tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Loading submissions...</td></tr>`;
 
@@ -1368,6 +1356,7 @@
         }
 
         function exportTableToCSV(filename) {
+            if (currentRole !== 'teacher') return;
             let csv = [];
             const rows = document.querySelectorAll("#submissionsTable tr");
             rows.forEach(row => {
