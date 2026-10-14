@@ -155,20 +155,6 @@
                                 </div>
                                 <input type="range" id="angleSlider" min="0" max="360" value="45" class="w-full accent-indigo-500 cursor-pointer bg-slate-900" oninput="updateTrigAngle(this.value)">
                             </div>
-
-                            <div>
-                                <span class="block text-xs font-semibold text-slate-300 mb-2">Quick Jump Special Angles:</span>
-                                <div class="grid grid-cols-4 gap-2 text-xs font-mono">
-                                     <button onclick="setQuickAngle(0)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">0°</button>
-                                     <button onclick="setQuickAngle(30)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">30°</button>
-                                     <button onclick="setQuickAngle(45)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">45°</button>
-                                     <button onclick="setQuickAngle(60)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">60°</button>
-                                     <button onclick="setQuickAngle(90)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">90°</button>
-                                     <button onclick="setQuickAngle(120)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">120°</button>
-                                     <button onclick="setQuickAngle(180)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">180°</button>
-                                     <button onclick="setQuickAngle(270)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">270°</button>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -183,15 +169,9 @@
                             <span class="text-blue-400 font-bold">cos(θ) [Adj]:</span>
                             <span id="dispCosVal" class="text-white font-bold">0.7071</span>
                         </div>
-                        <div class="flex justify-between border-b border-slate-800 pb-1">
+                        <div class="flex justify-between">
                             <span class="text-emerald-400 font-bold">tan(θ) [Opp/Adj]:</span>
                             <span id="dispTanVal" class="text-white font-bold">1.0000</span>
-                        </div>
-                        <div class="pt-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Reciprocal Ratios</div>
-                        <div class="grid grid-cols-3 gap-1 text-[11px] text-center pt-1">
-                            <div class="bg-slate-800 p-1 rounded">csc: <span id="dispCscVal" class="text-indigo-300">1.41</span></div>
-                            <div class="bg-slate-800 p-1 rounded">sec: <span id="dispSecVal" class="text-indigo-300">1.41</span></div>
-                            <div class="bg-slate-800 p-1 rounded">cot: <span id="dispCotVal" class="text-indigo-300">1.00</span></div>
                         </div>
                     </div>
                 </div>
@@ -206,7 +186,6 @@
                     <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
                          <canvas id="unitCircleCanvas" width="460" height="460" class="cursor-pointer max-w-full h-auto"></canvas>
                     </div>
-                     <p class="text-[11px] text-slate-400 text-center mt-2">Click or drag anywhere on the Unit Circle to dynamically view angle arcs, hypotenuse, and side lengths.</p>
                 </div>
             </div>
 
@@ -215,8 +194,6 @@
                 <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 flex flex-col justify-between space-y-6">
                     <div>
                         <h2 class="text-sm font-bold uppercase tracking-wider text-emerald-400 mb-4 border-b border-slate-700 pb-2">Oblique Triangle Solver</h2>
-                        <p class="text-xs text-slate-300 mb-4">Configure side lengths or angles. Labels match standard triangle notation (A, B, C for vertices/angles; a, b, c for opposite sides).</p>
-                        
                         <div class="space-y-4">
                             <div>
                                 <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
@@ -241,40 +218,12 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- OBLIQUE RESULTS SUMMARY -->
-                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 space-y-2 font-mono text-xs">
-                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Computed Triangle Properties</span>
-                        <div class="flex justify-between border-b border-slate-800 pb-1">
-                            <span class="text-emerald-400 font-bold">Side c (Law of Cosines):</span>
-                            <span id="oblResC" class="text-white font-bold">11.83</span>
-                        </div>
-                        <div class="flex justify-between border-b border-slate-800 pb-1">
-                            <span class="text-indigo-400 font-bold">Angle A (Law of Sines):</span>
-                            <span id="oblResA" class="text-white font-bold">50.3°</span>
-                        </div>
-                        <div class="flex justify-between border-b border-slate-800 pb-1">
-                            <span class="text-amber-400 font-bold">Angle B:</span>
-                            <span id="oblResB" class="text-white font-bold">64.7°</span>
-                        </div>
-                        <div class="flex justify-between pt-1">
-                            <span class="text-slate-300">Perimeter:</span>
-                            <span id="oblResPerimeter" class="text-white font-bold">33.83</span>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- OBLIQUE CANVAS VISUALIZER -->
                 <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
-                    <div class="flex justify-between items-center mb-3 px-2">
-                         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Oblique Triangle Scale Diagram (A, B, C & a, b, c)</span>
-                         <span class="text-xs bg-emerald-600 text-white font-bold px-3 py-1 rounded-full">SAS / SSS / AAS Solver</span>
-                    </div>
-                    
                     <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
                          <canvas id="obliqueCanvas" width="460" height="460" class="max-w-full h-auto"></canvas>
                     </div>
-                     <p class="text-[11px] text-slate-400 text-center mt-2">Proper symbols and label markings (A, B, C vertices and a, b, c side lengths) corresponding directly to standard trigonometry conventions.</p>
                 </div>
             </div>
         </section>
@@ -282,241 +231,8 @@
         <!-- TAB 2: COMPREHENSIVE LESSON NOTES -->
         <section id="tab-lessons" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-700 pb-4">
-                    <div>
-                        <h2 class="text-xl font-bold text-white mb-1">Teacher's Pedagogical Trigonometry Review Module</h2>
-                        <p class="text-slate-400 text-sm">Comprehensive review notes with complete step-by-step mathematical solutions.</p>
-                    </div>
-                    <div class="flex items-center gap-3 w-full md:w-auto">
-                        <label class="text-xs font-semibold text-slate-300 whitespace-nowrap">Select Lesson Topic:</label>
-                        <select id="lessonNotesDropdown" onchange="switchLessonTopic(this.value)" class="bg-slate-900 border border-indigo-500 rounded-lg p-2.5 text-xs text-white font-bold w-full md:w-72 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="right">Right Triangles & Unit Circle (10 Worked Examples)</option>
-                            <option value="oblique">Oblique Triangles: Law of Sines & Cosines (10 Worked Examples)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- LESSON CONTENT A: RIGHT TRIANGLES -->
-                <div id="lessonContentRight" class="space-y-8">
-                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
-                       <h3 class="text-indigo-400 font-bold text-base border-b border-slate-800 pb-2">Core Trigonometric Definitions & Reciprocals</h3>
-                       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                           <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
-                               <span class="text-emerald-400 font-bold uppercase">Primary Ratios (SOH-CAH-TOA)</span>
-                               <p class="text-slate-300">Sine (sin θ) = Opposite / Hypotenuse</p>
-                               <p class="text-slate-300">Cosine (cos θ) = Adjacent / Hypotenuse</p>
-                               <p class="text-slate-300">Tangent (tan θ) = Opposite / Adjacent = sin θ / cos θ</p>
-                           </div>
-                           <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
-                               <span class="text-indigo-400 font-bold uppercase">Reciprocal Ratios</span>
-                               <p class="text-slate-300">Cosecant (csc θ) = 1 / sin θ = Hypotenuse / Opposite</p>
-                               <p class="text-slate-300">Secant (sec θ) = 1 / cos θ = Hypotenuse / Adjacent</p>
-                               <p class="text-slate-300">Cotangent (cot θ) = 1 / tan θ = Adjacent / Opposite</p>
-                           </div>
-                       </div>
-                   </div>
-
-                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
-                       <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Right Triangle Problem Solving Examples</h3>
-                       <div class="grid grid-cols-1 gap-4 text-xs">
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 1: Using Pythagorean Theorem</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In a right-angled triangle, leg a = 6 and leg b = 8. Find the hypotenuse c.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. c² = a² + b²<br>2. c² = 6² + 8² = 36 + 64 = 100<br>3. c = √100 = 10<br><strong>Answer: Hypotenuse c = 10</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 2: Finding Sine Ratio</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Right triangle has opposite side = 5 and hypotenuse = 13. Find sin θ and csc θ.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin θ = Opp / Hyp = 5/13<br>2. csc θ = 1 / sin θ = 13/5<br><strong>Answer: sin θ = 5/13, csc θ = 13/5</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 3: Finding Cosine and Adjacent Side</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse = 10 and cos θ = 0.8. Find the adjacent side length.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cos θ = Adj / Hyp → 0.8 = Adj / 10<br>2. Adj = 0.8 × 10 = 8<br><strong>Answer: Adjacent side = 8</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 4: Using Tangent to Find Opposite Side</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Adjacent side = 12 and tan θ = 3/4. Find the opposite side.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan θ = Opp / Adj → 3/4 = Opp / 12<br>2. Opp = 12 × (3/4) = 9<br><strong>Answer: Opposite side = 9</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 5: Finding Missing Leg via Pythagorean Theorem</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse c = 15 and leg a = 9. Find leg b.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. b² = c² - a² = 15² - 9² = 225 - 81 = 144<br>2. b = √144 = 12<br><strong>Answer: Leg b = 12</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 6: Reciprocal Secant Calculation</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> If cos θ = 4/5, find sec θ.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sec θ = 1 / cos θ<br>2. sec θ = 1 / (4/5) = 5/4<br><strong>Answer: sec θ = 5/4</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 7: Cotangent Calculation</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> If tan θ = 7/24, find cot θ.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cot θ = 1 / tan θ<br>2. cot θ = 24/7<br><strong>Answer: cot θ = 24/7</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 8: Finding Angle using Inverse Sine</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In a right triangle, sin θ = 0.5. Find angle θ.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. θ = arcsin(0.5)<br>2. θ = 30° (or π/6 rad)<br><strong>Answer: θ = 30°</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 9: Using Pythagorean Identity</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> If sin θ = 3/5 in Quadrant I, find cos θ.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin² θ + cos² θ = 1 → (3/5)² + cos² θ = 1<br>2. 9/25 + cos² θ = 1 → cos² θ = 16/25<br>3. cos θ = √(16/25) = 4/5<br><strong>Answer: cos θ = 4/5</strong></p>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 10: Complete Triangle Evaluation</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Angle θ = 45° and adjacent side = 7. Find opposite side and hypotenuse.</p>
-                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan(45°) = 1 → Opposite = Adjacent = 7<br>2. Hypotenuse c = √(7² + 7²) = √98 = 7√2<br><strong>Answer: Opposite = 7, Hypotenuse = 7√2</strong></p>
-                           </div>
-                       </div>
-                   </div>
-                </div>
-
-                <!-- LESSON CONTENT B: OBLIQUE TRIANGLES -->
-                <div id="lessonContentOblique" class="hidden space-y-8">
-                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
-                       <h3 class="text-emerald-400 font-bold text-base border-b border-slate-800 pb-2">Oblique Triangles: Law of Sines & Law of Cosines</h3>
-                       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                           <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-2">
-                               <span class="text-emerald-400 font-bold uppercase">Law of Sines</span>
-                               <p class="text-slate-300">Used when solving AAS, ASA, or SSA (Ambiguous Case) triangles.</p>
-                               <div class="bg-slate-900 p-2.5 rounded text-center text-indigo-300 font-mono text-sm font-bold border border-slate-700">
-                                   <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
-                                   <span>───────────&nbsp;=&nbsp;───────────&nbsp;=&nbsp;───────────</span><br>
-                                   <span>&nbsp;&nbsp;sin(A)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin(B)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin(C)&nbsp;&nbsp;</span>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-2">
-                               <span class="text-indigo-400 font-bold uppercase">Law of Cosines</span>
-                               <p class="text-slate-300">Used when solving SAS (Side-Angle-Side) or SSS (Side-Side-Side) triangles.</p>
-                               <div class="bg-slate-900 p-2.5 rounded text-center text-indigo-300 font-mono text-xs font-bold border border-slate-700 space-y-1">
-                                   <div>c² = a² + b² − 2ab · cos(C)</div>
-                                   <div class="pt-1 border-t border-slate-800">
-                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a² + b² − c²<br>
-                                       cos(C) = ───────────────<br>
-                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2ab
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-
-                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
-                       <h3 class="text-emerald-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Oblique Triangle Worked Examples</h3>
-                       <div class="grid grid-cols-1 gap-4 text-xs">
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 1 (Law of Sines - AAS): Finding a Side</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, ∠A = 30°, ∠B = 45°, and side a = 12. Find side b.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. Apply Law of Sines: <br>
-                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b<br>
-                                   ─────────── = ─────────── ⇒ 12 / sin(30°) = b / sin(45°)<br>
-                                   &nbsp;&nbsp;sin(A)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin(B)<br>
-                                   2. b = [ 12 · sin(45°) ] / sin(30°) = [ 12 · 0.7071 ] / 0.5 = 16.97<br>
-                                   <strong>Answer: Side b ≈ 16.97</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 2 (Law of Sines - ASA): Finding a Side</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, ∠A = 50°, ∠C = 60°, and side c = 15. Find side a.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. Apply Law of Sines: a / sin(A) = c / sin(C) ⇒ a / sin(50°) = 15 / sin(60°)<br>
-                                   2. a = [ 15 · sin(50°) ] / sin(60°) = [ 15 · 0.7660 ] / 0.8660 = 13.27<br>
-                                   <strong>Answer: Side a ≈ 13.27</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 3 (Law of Cosines - SAS): Finding Third Side</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 7, side b = 10, and ∠C = 60°. Find side c.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. Apply Law of Cosines: c² = a² + b² − 2ab · cos(C)<br>
-                                   2. c² = 7² + 10² − 2(7)(10) · cos(60°) = 49 + 100 − 140(0.5) = 149 − 70 = 79<br>
-                                   3. c = √79 = 8.89<br>
-                                   <strong>Answer: Side c ≈ 8.89</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 4 (Law of Cosines - SSS): Finding an Angle</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 5, side b = 7, and side c = 10. Find ∠C.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. Apply Law of Cosines: cos(C) = (a² + b² − c²) / (2ab)<br>
-                                   2. cos(C) = (5² + 7² − 10²) / [2(5)(7)] = (25 + 49 − 100) / 70 = −26 / 70 = −0.3714<br>
-                                   3. ∠C = arccos(−0.3714) = 111.8°<br>
-                                   <strong>Answer: Angle ∠C ≈ 111.8°</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 5 (Law of Sines): Finding an Angle</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 10, side b = 14, and ∠A = 35°. Find ∠B.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. sin(B) / b = sin(A) / a ⇒ sin(B) = [ 14 · sin(35°) ] / 10 = [ 14 · 0.5736 ] / 10 = 0.8030<br>
-                                   2. ∠B = arcsin(0.8030) = 53.4°<br>
-                                   <strong>Answer: Angle ∠B ≈ 53.4°</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 6 (SAS Triangle Area): Finding Area</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Find the area of ΔABC where side a = 8, side b = 11, and ∠C = 50°.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. Area = ½ · a · b · sin(C)<br>
-                                   2. Area = 0.5 · 8 · 11 · sin(50°) = 44 · 0.7660 = 33.70<br>
-                                   <strong>Answer: Area ≈ 33.70 square units</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 7 (Law of Cosines - Navigation): Distance Problem</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Two ships leave port at an angle of 58°. Ship 1 travels 40 km, Ship 2 travels 55 km. Find the distance d between them.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. d² = 40² + 55² − 2(40)(55) · cos(58°)<br>
-                                   2. d² = 1600 + 3025 − 4400(0.5299) = 4625 − 2331.56 = 2293.44<br>
-                                   3. d = √2293.44 = 47.89 km<br>
-                                   <strong>Answer: Distance d = 47.89 km</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 8 (Law of Sines - Complete Triangle): ASA Case</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Solve ΔABC given ∠A = 40°, ∠B = 70°, and side c = 12.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. ∠C = 180° − (40° + 70°) = 70°<br>
-                                   2. side a = [ c · sin(A) ] / sin(C) = [ 12 · sin(40°) ] / sin(70°) = [ 12 · 0.6428 ] / 0.9397 = 8.21<br>
-                                   3. side b = [ c · sin(B) ] / sin(C) = [ 12 · sin(70°) ] / sin(70°) = 12<br>
-                                   <strong>Answer: ∠C = 70°, a = 8.21, b = 12</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 9 (Law of Cosines - SSS): Smallest Angle</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> Find the smallest angle in a triangle with sides a = 6, b = 8, and c = 12.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. The smallest angle ∠A is opposite the shortest side a = 6.<br>
-                                   2. cos(A) = (b² + c² − a²) / (2bc) = (8² + 12² − 6²) / [2(8)(12)] = (64 + 144 − 36) / 192 = 172 / 192 = 0.8958<br>
-                                   3. ∠A = arccos(0.8958) = 26.4°<br>
-                                   <strong>Answer: Smallest angle ∠A ≈ 26.4°</strong>
-                               </div>
-                           </div>
-                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
-                               <span class="text-emerald-400 font-bold uppercase">Example 10 (Ambiguous Case - SSA): Two Triangles Check</span>
-                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 12, side b = 16, and ∠A = 30°. Determine possible values for ∠B.</p>
-                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
-                                   <strong>Solution:</strong><br>
-                                   1. sin(B) = [ b · sin(A) ] / a = [ 16 · sin(30°) ] / 12 = [ 16 · 0.5 ] / 12 = 8 / 12 = 0.6667<br>
-                                   2. ∠B₁ = arcsin(0.6667) = 41.8°<br>
-                                   3. ∠B₂ = 180° − 41.8° = 138.2° (Valid since ∠A + ∠B₂ = 30° + 138.2° = 168.2° &lt; 180°)<br>
-                                   <strong>Answer: ∠B can be 41.8° or 138.2°</strong>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-                </div>
+                <h2 class="text-xl font-bold text-white mb-1">Teacher's Pedagogical Trigonometry Review Module</h2>
+                <p class="text-slate-400 text-sm">Review definitions of right triangles, unit circle, and oblique triangle laws (Law of Sines & Cosines).</p>
             </div>
         </section>
 
@@ -547,15 +263,15 @@
             <div id="practiceGateCard" class="hidden bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6 text-center">
                <span class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Practice Portal</span>
                 <h2 class="text-2xl font-black text-white">Self-Paced Practice Drill</h2>
-                <p class="text-slate-400 text-xs">Practice drill scores stay private on your device and are <strong>never recorded</strong> on the Teacher Dashboard.</p>
+                <p class="text-slate-400 text-xs">Practice drill scores stay private on your device and include instant feedback (✓ / ✗ with correct answers).</p>
 
                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4 max-w-sm mx-auto text-left">
                    <div>
-                       <label class="block text-xs font-semibold text-slate-300 mb-1">Select Practice Difficulty:</label>
+                       <label class="block text-xs font-semibold text-slate-300 mb-1">Select Practice Difficulty (50 Qs Bank per Level):</label>
                        <select id="practiceDifficultySelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
-                           <option value="easy">Easy Level (10 Questions - 20s/item)</option>
-                           <option value="average">Average Level (10 Questions - 30s/item)</option>
-                           <option value="difficult">Difficult Level (10 Worded Problems - 60s/item)</option>
+                           <option value="easy">Easy Level (Right & Oblique Triangles)</option>
+                           <option value="average">Average Level (Right & Oblique Triangles)</option>
+                           <option value="difficult">Difficult Level (Worded Problems)</option>
                        </select>
                    </div>
                    <button onclick="startPracticeSession()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Practice Quiz</button>
@@ -571,7 +287,7 @@
                    </div>
                    <div class="flex items-center gap-3">
                        <div id="quizTimerBadge" class="bg-amber-500/20 border border-amber-500 text-amber-300 px-3 py-1 rounded-full text-xs font-mono font-bold flex items-center gap-1">
-                           ⏱️ <span id="quizTimeRemaining">20</span>s
+                           ⏱️ <span id="quizTimeRemaining">30</span>s
                        </div>
                        <span id="quizProgress" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1 rounded-full">Question 1 of 10</span>
                    </div>
@@ -580,6 +296,8 @@
                <div id="quizContainer">
                    <h3 id="questionText" class="text-base font-semibold text-slate-200 mb-4"></h3>
                    <div id="optionsContainer" class="grid grid-cols-1 gap-3"></div>
+                   <div id="feedbackBanner" class="hidden mt-4 p-3 rounded-xl text-xs font-bold text-center"></div>
+                   <button id="nextQuestionBtn" onclick="proceedToNextQuestion()" class="hidden mt-4 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Next Question →</button>
                </div>
 
                <div id="scoreScreen" class="hidden text-center py-8 space-y-4">
@@ -603,9 +321,9 @@
                        <div>
                            <label class="block text-xs font-semibold text-slate-300 mb-1">Select Difficulty Round:</label>
                            <select id="teacherRoundSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
-                                <option value="easy">Easy Round (10 Qs - 20s/item)</option>
-                                <option value="average">Average Round (10 Qs - 30s/item)</option>
-                                <option value="difficult">Difficult Round (10 Worded Problems - 60s/item)</option>
+                                <option value="easy">Easy Round (50 Qs Bank - Right & Oblique)</option>
+                                <option value="average">Average Round (50 Qs Bank - Right & Oblique)</option>
+                                <option value="difficult">Difficult Round (50 Qs Bank - Worded Problems)</option>
                            </select>
                        </div>
                        <button onclick="broadcastNewGameRound()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition">Broadcast Cloud PIN</button>
@@ -622,14 +340,14 @@
 
                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
-                       <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2"><span>🏆 Live Podium & Leaderboard</span></h4>
+                       <h4 class="text-sm font-bold text-amber-400">🏆 Live Podium & Leaderboard</h4>
                        <div id="podiumContainer" class="space-y-2 text-xs">
                            <p class="text-slate-500 italic">Waiting for active submissions...</p>
                        </div>
                    </div>
 
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
-                       <h4 class="text-sm font-bold text-rose-400 flex items-center gap-2"><span>📊 Diagnostic Class Analytics</span></h4>
+                       <h4 class="text-sm font-bold text-rose-400">📊 Diagnostic Class Analytics</h4>
                        <div id="analyticsContainer" class="space-y-2 text-xs text-slate-300">
                            <p class="text-slate-500 italic">No live submission data recorded yet.</p>
                        </div>
@@ -638,9 +356,10 @@
 
                <div>
                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-                       <h3 class="text-base font-bold text-white">📋 Live Student Submissions (Practice Quizzes Excluded)</h3>
+                       <h3 class="text-base font-bold text-white">📋 Live Student Submissions & Records Management</h3>
                        <div class="flex gap-2">
-                            <button onclick="exportTableToCSV('trig_novations_report.csv')" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">📥 Export CSV Report</button>
+                           <button onclick="exportTableToCSV('trig_novations_report.csv')" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">📥 Export CSV Report</button>
+                           <button onclick="clearAllSubmissions()" class="bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">🗑️ Clear All Submissions</button>
                            <button onclick="loadDashboardData()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Refresh</button>
                        </div>
                    </div>
@@ -654,10 +373,11 @@
                                    <th class="p-3">Score</th>
                                    <th class="p-3">Percentage</th>
                                    <th class="p-3">Timestamp</th>
+                                   <th class="p-3 text-right">Actions</th>
                                </tr>
                            </thead>
                            <tbody id="submissionsTableBody" class="divide-y divide-slate-800">
-                               <tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No submissions found.</td></tr>
+                               <tr><td colspan="7" class="p-4 text-center text-slate-500 italic">No submissions found.</td></tr>
                            </tbody>
                        </table>
                    </div>
@@ -675,26 +395,21 @@
 
     <!-- FIREBASE CONFIG & APP SCRIPT -->
     <script>
-        // ==========================================
-        // FIREBASE CONFIG & INITIALIZATION
-        // ==========================================
         const firebaseConfig = {
-  apiKey: "AIzaSyCDqhVYsSknmSMYn-9ZaZU0KM7Sg62VTqc",
-  authDomain: "trignovationv2.firebaseapp.com",
-  projectId: "trignovationv2",
-  storageBucket: "trignovationv2.firebasestorage.app",
-  messagingSenderId: "390069789816",
-  appId: "1:390069789816:web:d70ba64d238cee5bc6f98d"
-};
+            apiKey: "AIzaSyCDqhVYsSknmSMYn-9ZaZU0KM7Sg62VTqc",
+            authDomain: "trignovationv2.firebaseapp.com",
+            projectId: "trignovationv2",
+            storageBucket: "trignovationv2.firebasestorage.app",
+            messagingSenderId: "390069789816",
+            appId: "1:390069789816:web:d70ba64d238cee5bc6f98d"
+        };
 
-        // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Application State Variables
         let currentUser = null;
         let currentRole = 'guest';
         let activeQuizMode = 'live';
@@ -704,9 +419,8 @@
         let score = 0;
         let activeGamePin = null;
         let activeQuizTimer = null;
-        let timeLeft = 20;
+        let timeLeft = 30;
 
-        // Question Banks
         const questionBanks = {
             easy: [
                 { q: "What is the primary trigonometric ratio for Sine in a right triangle?", options: ["Opposite / Hypotenuse", "Adjacent / Hypotenuse", "Opposite / Adjacent", "Hypotenuse / Opposite"], correct: 0 },
@@ -718,7 +432,47 @@
                 { q: "What is tan(45°)?", options: ["1", "0", "0.5", "undefined"], correct: 0 },
                 { q: "What is the Pythagorean identity relating sine and cosine?", options: ["sin²θ + cos²θ = 1", "1 + tan²θ = sec²θ", "sin θ / cos θ = tan θ", "cos²θ - sin²θ = 1"], correct: 0 },
                 { q: "In SOH-CAH-TOA, what does 'CAH' stand for?", options: ["Cosine = Adjacent / Hypotenuse", "Cosine = Opposite / Hypotenuse", "Cosecant = Adjacent / Hypotenuse", "Cotangent = Adjacent / Hypotenuse"], correct: 0 },
-                { q: "What is the sum of angles in any standard triangle?", options: ["180°", "360°", "90°", "270°"], correct: 0 }
+                { q: "What is the sum of interior angles in any standard triangle?", options: ["180°", "360°", "90°", "270°"], correct: 0 },
+                { q: "In an oblique triangle, what theorem relates the ratio of the sine of an angle to its opposite side?", options: ["Law of Sines", "Law of Cosines", "Pythagorean Theorem", "Midpoint Theorem"], correct: 0 },
+                { q: "What is the value of cos(90°)?", options: ["0", "1", "-1", "0.5"], correct: 0 },
+                { q: "What is the value of sin(90°)?", options: ["1", "0", "-1", "0.5"], correct: 0 },
+                { q: "What is the reciprocal of Sine?", options: ["Cosecant", "Secant", "Cotangent", "Cosine"], correct: 0 },
+                { q: "What is the reciprocal of Tangent?", options: ["Cotangent", "Cosecant", "Secant", "Sine"], correct: 0 },
+                { q: "In a right triangle, if the opposite side is 4 and adjacent side is 4, what is tan(θ)?", options: ["1", "0", "0.5", "2"], correct: 0 },
+                { q: "What is the sum of angles in a right-angled triangle other than the right angle?", options: ["90°", "180°", "45°", "360°"], correct: 0 },
+                { q: "What is the cosine of 60°?", options: ["0.5", "0.866", "0.707", "1.0"], correct: 0 },
+                { q: "What is the sine of 60°?", options: ["0.866 (√3/2)", "0.5", "1.0", "0.707"], correct: 0 },
+                { q: "What is the sine of 45°?", options: ["0.707 (√2/2)", "0.5", "0.866", "1.0"], correct: 0 },
+                { q: "What is the cosine of 45°?", options: ["0.707 (√2/2)", "0.5", "0.866", "0.0"], correct: 0 },
+                { q: "Which trigonometric function is equal to Opposite / Adjacent?", options: ["Tangent", "Sine", "Cosine", "Secant"], correct: 0 },
+                { q: "What is sec(0°)?", options: ["1", "0", "Undefined", "0.5"], correct: 0 },
+                { q: "What is csc(90°)?", options: ["1", "0", "Undefined", "2"], correct: 0 },
+                { q: "In a right triangle with legs 6 and 8, what is the hypotenuse?", options: ["10", "14", "12", "7"], correct: 0 },
+                { q: "What do you call a triangle with no right angles?", options: ["Oblique triangle", "Equilateral triangle", "Right triangle", "Isosceles triangle"], correct: 0 },
+                { q: "The Law of Cosines is an extension of which theorem?", options: ["Pythagorean Theorem", "Fundamental Theorem of Algebra", "Binomial Theorem", "Remainder Theorem"], correct: 0 },
+                { q: "What is the value of cot(45°)?", options: ["1", "0", "Undefined", "-1"], correct: 0 },
+                { q: "What is the standard abbreviation for cosecant?", options: ["csc", "cos", "cot", "sec"], correct: 0 },
+                { q: "What is the standard abbreviation for cotangent?", options: ["cot", "tan", "csc", "cos"], correct: 0 },
+                { q: "What is the standard abbreviation for secant?", options: ["sec", "sin", "csc", "cot"], correct: 0 },
+                { q: "In Quadrant II, which primary trigonometric function is positive?", options: ["Sine", "Cosine", "Tangent", "All are positive"], correct: 0 },
+                { q: "In Quadrant III, which primary trigonometric function is positive?", options: ["Tangent", "Sine", "Cosine", "None"], correct: 0 },
+                { q: "In Quadrant IV, which primary trigonometric function is positive?", options: ["Cosine", "Sine", "Tangent", "All"], correct: 0 },
+                { q: "What is the period of the cosine function y = cos(x)?", options: ["2π", "π", "π/2", "4π"], correct: 0 },
+                { q: "What is the maximum value of the function y = sin(x)?", options: ["1", "0", "π", "2"], correct: 0 },
+                { q: "What is the minimum value of the function y = cos(x)?", options: ["-1", "0", "1", "-2"], correct: 0 },
+                { q: "If two angles add up to 90°, they are called:", options: ["Complementary", "Supplementary", "Vertical", "Adjacent"], correct: 0 },
+                { q: "If two angles add up to 180°, they are called:", options: ["Supplementary", "Complementary", "Vertical", "Conjugate"], correct: 0 },
+                { q: "What is the radian measure equivalent to 180°?", options: ["π", "2π", "π/2", "3π/2"], correct: 0 },
+                { q: "What is the radian measure equivalent to 90°?", options: ["π/2", "π", "2π", "π/4"], correct: 0 },
+                { q: "What is the radian measure equivalent to 360°?", options: ["2π", "π", "π/2", "4π"], correct: 0 },
+                { q: "What is the radian measure equivalent to 30°?", options: ["π/6", "π/3", "π/4", "π/2"], correct: 0 },
+                { q: "What is the radian measure equivalent to 45°?", options: ["π/4", "π/6", "π/3", "π/2"], correct: 0 },
+                { q: "What is the radian measure equivalent to 60°?", options: ["π/3", "π/6", "π/4", "π/2"], correct: 0 },
+                { q: "Which law is used to solve an SAS (Side-Angle-Side) triangle?", options: ["Law of Cosines", "Law of Sines", "Pythagorean Theorem", "Law of Tangents"], correct: 0 },
+                { q: "Which law is used to solve an AAS (Angle-Angle-Side) triangle?", options: ["Law of Sines", "Law of Cosines", "Pythagorean Theorem", "Heron's Formula"], correct: 0 },
+                { q: "What is the sine of 0°?", options: ["0", "1", "-1", "0.5"], correct: 0 },
+                { q: "What is the tangent of 0°?", options: ["0", "1", "Undefined", "-1"], correct: 0 },
+                { q: "What is the unit circle radius?", options: ["1", "0", "π", "10"], correct: 0 }
             ],
             average: [
                 { q: "If sin(θ) = 3/5 in Quadrant I, what is cos(θ)?", options: ["4/5", "3/4", "5/3", "1/2"], correct: 0 },
@@ -730,33 +484,120 @@
                 { q: "If tan(θ) = 7/24, what is cot(θ)?", options: ["24/7", "7/25", "24/25", "25/7"], correct: 0 },
                 { q: "What is the value of sin(90°) + cos(0°)?", options: ["2", "1", "0", "-1"], correct: 0 },
                 { q: "In a right triangle, if opposite = 8 and adjacent = 8, what is angle θ?", options: ["45°", "30°", "60°", "90°"], correct: 0 },
-                { q: "What is the exact value of tan(60°)?", options: ["√3", "1/√3", "1", "2"], correct: 0 }
-            ],
-            difficult: [
+                { q: "What is the exact value of tan(60°)?", options: ["√3", "1/√3", "1", "2"], correct: 0 },
                 { q: "In ΔABC, a = 7, b = 10, and C = 60°. What is side c using the Law of Cosines?", options: ["√79 ≈ 8.89", "√149 ≈ 12.2", "9.50", "8.00"], correct: 0 },
                 { q: "In ΔABC, A = 30°, B = 45°, and a = 12. What is side b using the Law of Sines?", options: ["16.97", "14.20", "12.50", "18.30"], correct: 0 },
                 { q: "What is the area of ΔABC with sides a = 8, b = 11, and included angle C = 50°?", options: ["33.70 sq units", "44.00 sq units", "28.50 sq units", "39.20 sq units"], correct: 0 },
                 { q: "In ΔABC, sides are a = 5, b = 7, and c = 10. What is angle C using the Law of Cosines?", options: ["111.8°", "95.4°", "120.0°", "105.2°"], correct: 0 },
                 { q: "Two ships leave port at an angle of 58°. Ship 1 travels 40 km, Ship 2 travels 55 km. Find the distance between them.", options: ["47.89 km", "52.10 km", "45.00 km", "58.40 km"], correct: 0 },
-                { q: "If sin(θ) = -3/5 and θ lies in Quadrant III, what is tan(θ)?", options: ["3/4", "-3/4", "-4/3", "4/3"], correct: 0 },
-                { q: "What is the exact value of sin(75°) using angle addition identities?", options: ["(√6 + √2) / 4", "(√6 - √2) / 4", "(√3 + 1) / 2", "√3 / 2"], correct: 0 },
-                { q: "Solve for x in the trigonometric equation: 2 sin²(x) - sin(x) - 1 = 0 on [0, 2π).", options: ["π/6, 5π/6, 3π/2", "π/3, 2π/3", "π/2, 3π/2", "π/4, 7π/4"], correct: 0 },
-                { q: "In ΔABC, a = 12, b = 16, and A = 30°. What are the possible values for angle B (Ambiguous Case)?", options: ["41.8° or 138.2°", "53.4° only", "41.8° only", "No solution"], correct: 0 },
-                { q: "What is the exact value of cos(15°)?", options: ["(√6 + √2) / 4", "(√6 - √2) / 4", "√3 / 2", "1 / 2"], correct: 0 }
+                { q: "If cos(θ) = -4/5 and θ is in Quadrant II, what is sin(θ)?", options: ["3/5", "-3/5", "4/5", "-4/5"], correct: 0 },
+                { q: "What is the reference angle for 300°?", options: ["60°", "30°", "45°", "90°"], correct: 0 },
+                { q: "What is the reference angle for 135°?", options: ["45°", "30°", "60°", "55°"], correct: 0 },
+                { q: "If sin(θ) = 1/2 and θ is in Quadrant II, what is θ?", options: ["150°", "30°", "120°", "135°"], correct: 0 },
+                { q: "If cos(θ) = -1/2 and θ is in Quadrant III, what is θ?", options: ["240°", "210°", "225°", "300°"], correct: 0 },
+                { q: "What is the exact value of sin(120°)?", options: ["√3 / 2", "1/2", "-√3 / 2", "-1/2"], correct: 0 },
+                { q: "What is the exact value of cos(135°)?", options: ["-√2 / 2", "√2 / 2", "-1/2", "1/2"], correct: 0 },
+                { q: "What is the exact value of tan(150°)?", options: ["-1/√3", "1/√3", "-√3", "√3"], correct: 0 },
+                { q: "Find csc(30°).", options: ["2", "1/2", "√3", "2/√3"], correct: 0 },
+                { q: "Find sec(60°).", options: ["2", "√2", "2/√3", "1/2"], correct: 0 },
+                { q: "Find cot(30°).", options: ["√3", "1/√3", "1", "2"], correct: 0 },
+                { q: "What is the amplitude of y = 3 sin(2x)?", options: ["3", "2", "1", "6"], correct: 0 },
+                { q: "What is the frequency / period of y = sin(4x)?", options: ["π / 2", "2π", "4π", "π"], correct: 0 },
+                { q: "If tan(θ) = 4/3 in Quadrant III, what is sin(θ)?", options: ["-4/5", "4/5", "-3/5", "3/5"], correct: 0 },
+                { q: "If sec(θ) = -13/5 in Quadrant II, what is tan(θ)?", options: ["-12/5", "12/5", "-5/12", "5/12"], correct: 0 },
+                { q: "What is the cosine of 180°?", options: ["-1", "1", "0", "undefined"], correct: 0 },
+                { q: "What is the sine of 270°?", options: ["-1", "1", "0", "undefined"], correct: 0 },
+                { q: "What is the tangent of 180°?", options: ["0", "1", "-1", "undefined"], correct: 0 },
+                { q: "In ΔABC, if a = 10, b = 10, and C = 90°, what is side c?", options: ["10√2", "20", "10", "5√2"], correct: 0 },
+                { q: "In ΔABC, if a = 5 and b = 12 in a right triangle, what is sin(A)?", options: ["5/13", "12/13", "5/12", "12/5"], correct: 0 },
+                { q: "In ΔABC, if a = 5 and b = 12 in a right triangle, what is cos(A)?", options: ["12/13", "5/13", "5/12", "13/5"], correct: 0 },
+                { q: "What is the trigonometric identity for 1 + tan²(θ)?", options: ["sec²(θ)", "csc²(θ)", "cot²(θ)", "sin²(θ)"], correct: 0 },
+                { q: "What is the trigonometric identity for 1 + cot²(θ)?", options: ["csc²(θ)", "sec²(θ)", "tan²(θ)", "cos²(θ)"], correct: 0 },
+                { q: "If sin(θ) = 0.8, what is cos(90° - θ)?", options: ["0.8", "0.6", "1.0", "0.5"], correct: 0 },
+                { q: "If cos(θ) = 0.3, what is sin(90° - θ)?", options: ["0.3", "0.7", "0.9", "0.5"], correct: 0 },
+                { q: "In ΔABC, if ∠A = 40° and ∠B = 60°, what is ∠C?", options: ["80°", "90°", "70°", "100°"], correct: 0 },
+                { q: "What is the area of a right triangle with legs 7 and 10?", options: ["35", "70", "17", "7.5"], correct: 0 },
+                { q: "What is the area of an equilateral triangle with side length 6?", options: ["9√3", "18", "36", "6√3"], correct: 0 },
+                { q: "If sin(θ) = cos(θ), what is acute angle θ?", options: ["45°", "30°", "60°", "90°"], correct: 0 },
+                { q: "What is the value of sin²(30°) + cos²(30°)?", options: ["1", "0.5", "2", "0"], correct: 0 },
+                { q: "What is the value of sin²(60°) + cos²(60°)?", options: ["1", "0.5", "2", "√3"], correct: 0 },
+                { q: "In ΔABC, if c = 10 and ∠C = 90°, what is sin(C)?", options: ["1", "0", "0.5", "10"], correct: 0 },
+                { q: "What is the angle of depression equal to in angle measurements?", options: ["Angle of elevation", "Complementary angle", "Supplementary angle", "Right angle"], correct: 0 },
+                { q: "If a ladder 10m long leans against a wall making 60° with the ground, how high does it reach?", options: ["5√3 m", "5 m", "10 m", "10√3 m"], correct: 0 },
+                { q: "What is the perimeter of a right triangle with legs 9 and 12, and hypotenuse 15?", options: ["36", "30", "42", "27"], correct: 0 }
+            ],
+            difficult: [
+                { q: "Worded Problem: A ladder 15 meters long leans against a vertical wall. If the ladder makes an angle of 65° with the ground, how high up the wall does the ladder reach?", options: ["13.60 meters", "12.45 meters", "14.10 meters", "11.80 meters"], correct: 0 },
+                { q: "Worded Problem: Two ships leave a harbor simultaneously. Ship A travels due north at 20 knots, and Ship B travels at 30 knots in a direction 40° east of north. What is the distance between the two ships after 2 hours?", options: ["39.45 miles", "45.20 miles", "32.10 miles", "48.60 miles"], correct: 0 },
+                { q: "Worded Problem: From a point on the ground 50 meters away from the base of a monument, the angle of elevation to the top of the monument is 42°. Find the height of the monument.", options: ["45.02 meters", "50.40 meters", "38.90 meters", "55.10 meters"], correct: 0 },
+                { q: "Worded Problem: An airplane takes off and climbs at a constant angle of 18° relative to the horizontal ground. When it has traveled a slant distance of 8 kilometers through the air, what is its altitude (height)?", options: ["2.47 kilometers", "3.10 kilometers", "2.05 kilometers", "4.00 kilometers"], correct: 0 },
+                { q: "Worded Problem: A triangular parcel of land has side lengths 120 meters, 150 meters, and 200 meters. Find the measure of the largest angle of this parcel.", options: ["82.8°", "75.4°", "88.5°", "91.2°"], correct: 0 },
+                { q: "Worded Problem: A surveyor wants to find the distance across a small lake. She measures a distance of 300 meters from point A to point B along one shore, and finds that the angle from B to a target tree C across the lake is 65°, while from A to C is 55°. Find the distance AC across the lake.", options: ["294.5 meters", "310.2 meters", "275.4 meters", "325.0 meters"], correct: 0 },
+                { q: "Worded Problem: A guy wire is attached to the top of a 20-meter cellular tower and anchored to the ground at an angle of 52° with the horizontal. What is the length of the wire?", options: ["25.34 meters", "22.10 meters", "28.50 meters", "24.00 meters"], correct: 0 },
+                { q: "Worded Problem: Two observers standing 4 miles apart on level ground look up at a hot air balloon directly between them. Their angles of elevation are 55° and 70° respectively. What is the height of the balloon?", options: ["4.82 miles", "3.95 miles", "5.40 miles", "4.20 miles"], correct: 0 },
+                { q: "Worded Problem: A pilot flies 100 miles in the direction 30° east of north, then turns and flies 150 miles due east. How far is the pilot from the starting point?", options: ["223.15 miles", "210.40 miles", "240.50 miles", "195.80 miles"], correct: 0 },
+                { q: "Worded Problem: A ship sails 50 km on a bearing of N 30° E, then 70 km on a bearing of S 60° E. What is the direct distance from the starting point to the final position?", options: ["86.02 km", "92.40 km", "78.50 km", "95.10 km"], correct: 0 },
+                { q: "Worded Problem: A bridge builder needs to span a gorge. From a post on one side, the angle to the left anchor point is 48° and to the right anchor point is 72°. The distance between the two anchor points is 85 meters. Find the distance from the post to the further anchor point.", options: ["68.45 meters", "74.20 meters", "63.10 meters", "79.80 meters"], correct: 0 },
+                { q: "Worded Problem: A triangular garden has sides of lengths 8 meters, 11 meters, and 14 meters. What is the area of this garden?", options: ["43.85 sq meters", "38.50 sq meters", "48.20 sq meters", "40.10 sq meters"], correct: 0 },
+                { q: "Worded Problem: A baseball diamond is a square with sides 90 feet long. If a runner hits a ball and runs halfway from home plate to first base, how far is the runner from second base?", options: ["90.14 feet", "85.20 feet", "95.50 feet", "80.00 feet"], correct: 0 },
+                { q: "Worded Problem: An architectural arch is shaped like an isosceles triangle with a base of 24 meters and two equal sides of 20 meters each. Find the vertex angle at the top of the arch.", options: ["73.74°", "68.20°", "80.50°", "65.10°"], correct: 0 },
+                { q: "Worded Problem: A security camera mounted on a 12-meter pole points down at a parking lot car with an angle of depression of 38°. How far is the car from the base of the pole?", options: ["15.36 meters", "13.40 meters", "16.80 meters", "14.20 meters"], correct: 0 },
+                { q: "Worded Problem: Two hiking trails diverge at an angle of 75°. Hiker A walks at 4 km/h, and Hiker B walks at 5 km/h. How far apart are they after 3 hours?", options: ["37.38 km", "34.20 km", "41.50 km", "32.10 km"], correct: 0 },
+                { q: "Worded Problem: A 10-meter telephone pole casts a shadow of 6.5 meters on level ground when the sun is at a certain angle. What is the angle of elevation of the sun?", options: ["56.97°", "52.40°", "60.10°", "48.50°"], correct: 0 },
+                { q: "Worded Problem: A regular pentagon is inscribed in a circle of radius 10 cm. Find the length of each side of the pentagon using trigonometry.", options: ["11.76 cm", "10.20 cm", "12.50 cm", "9.80 cm"], correct: 0 },
+                { q: "Worded Problem: A circular running track has a radius of 50 meters. If a runner starts at the easternmost point and jogs along the circumference through a central angle of 130°, what is the straight-line distance (chord length) back to the starting point?", options: ["93.97 meters", "88.40 meters", "98.10 meters", "85.20 meters"], correct: 0 },
+                { q: "Worded Problem: A roof truss is constructed as a triangle with sides 12m, 14m, and 18m. Find the cosine of the smallest angle in the truss.", options: ["0.7559", "0.6820", "0.8120", "0.6140"], correct: 0 },
+                { q: "Worded Problem: A radar station tracks a drone flying horizontally at an altitude of 3 km. At a given moment, the angle of elevation from the radar station to the drone is 25°. How far is the drone horizontally along the ground from the radar station?", options: ["6.43 km", "5.80 km", "7.10 km", "6.00 km"], correct: 0 },
+                { q: "Worded Problem: A water slide extends 40 meters horizontally from its starting tower and has a vertical drop of 25 meters. What angle does the slide make with the horizontal ground?", options: ["32.01°", "28.50°", "35.40°", "30.20°"], correct: 0 },
+                { q: "Worded Problem: A triangular plot of farmland has two sides measuring 400m and 500m, with an enclosed angle of 68°. Find the area of the plot.", options: ["92,718 sq meters", "85,400 sq meters", "98,200 sq meters", "89,100 sq meters"], correct: 0 },
+                { q: "Worded Problem: A surveyor sets up a transit at point T and measures the distance to point X as 520m and to point Y as 680m. The angle between the lines of sight to X and Y is 74°. Find the distance between X and Y.", options: ["762.45 meters", "720.10 meters", "795.30 meters", "740.80 meters"], correct: 0 },
+                { q: "Worded Problem: A hot air balloon is rising vertically at a constant speed. An observer 150 meters away notes that the angle of elevation changes from 30° to 60° in 5 minutes. How high did the balloon rise during this time?", options: ["173.21 meters", "150.00 meters", "190.50 meters", "160.40 meters"], correct: 0 },
+                { q: "Worded Problem: A triangular sail on a sailboat has side lengths 5 meters, 6 meters, and 7 meters. Find the measure of the angle opposite the 7-meter side.", options: ["78.46°", "72.10°", "83.20°", "75.00°"], correct: 0 },
+                { q: "Worded Problem: A cable car ascends a mountain slope that is inclined at 28° to the horizontal. If the cable car travels a distance of 1200 meters up the slope, what is its vertical gain in height?", options: ["563.38 meters", "520.10 meters", "601.40 meters", "545.20 meters"], correct: 0 },
+                { q: "Worded Problem: Two lookout towers, A and B, are 15 km apart along a straight coast. Tower A spots a forest fire at an angle of 52° relative to the coastline, while Tower B spots the same fire at an angle of 68°. How far is the fire from Tower A?", options: ["14.54 km", "12.80 km", "16.10 km", "13.90 km"], correct: 0 },
+                { q: "Worded Problem: A decorative triangular tile has sides measuring 10 cm, 24 cm, and 26 cm. What is the area of this tile?", options: ["120 sq cm", "130 sq cm", "110 sq cm", "144 sq cm"], correct: 0 },
+                { q: "Worded Problem: An airplane flying at an altitude of 10,000 feet spots an airport terminal at an angle of depression of 22°. What is the straight-line distance from the plane to the terminal?", options: ["26,694 feet", "24,500 feet", "28,100 feet", "25,800 feet"], correct: 0 },
+                { q: "Worded Problem: A flagpole is secured by three wires attached 12 meters up the pole. Each wire is anchored to the ground 5 meters from the base. What is the total length of wire required for all three wires?", options: ["39.00 meters", "36.50 meters", "42.10 meters", "33.80 meters"], correct: 0 },
+                { q: "Worded Problem: A triangular park has sides of 300m, 400m, and 500m. A sprinkler at the circumcenter waters the park. What is the radius of the circle circumscribed about this park?", options: ["250 meters", "200 meters", "300 meters", "225 meters"], correct: 0 },
+                { q: "Worded Problem: A ramp for wheelchair access rises 1.2 meters over a horizontal run of 15 meters. What angle does the ramp make with the ground?", options: ["4.58°", "5.10°", "3.90°", "6.20°"], correct: 0 },
+                { q: "Worded Problem: A lighthouse keeper spots a boat at an angle of depression of 18°. If the lighthouse is 45 meters tall above sea level, how far is the boat from the base of the lighthouse?", options: ["138.48 meters", "125.10 meters", "145.20 meters", "130.00 meters"], correct: 0 },
+                { q: "Worded Problem: A triangular glass panel has sides 50 cm, 60 cm, and 70 cm. Find the measure of the middle angle.", options: ["68.96°", "64.20°", "72.10°", "61.50°"], correct: 0 },
+                { q: "Worded Problem: Two vehicles start from the same intersection along straight roads that diverge at 110°. Vehicle 1 travels 45 mph for 2 hours, Vehicle 2 travels 60 mph for 2 hours. How far apart are they?", options: ["221.45 miles", "205.10 miles", "235.80 miles", "210.30 miles"], correct: 0 },
+                { q: "Worded Problem: A ladder 8 meters long is placed against a wall. If the bottom of the ladder slips outward at a rate such that the angle with the ground decreases to 45°, what was the original height if the angle was 60°?", options: ["4√3 ≈ 6.93 meters", "6.00 meters", "7.50 meters", "5.80 meters"], correct: 0 },
+                { q: "Worded Problem: A triangular sign has sides of 14 inches, 14 inches, and 20 inches. Find the height of the sign from the base to the vertex.", options: ["9.79 inches", "10.50 inches", "8.90 inches", "11.20 inches"], correct: 0 },
+                { q: "Worded Problem: An observer on a cliff 100 meters above sea level observes two fishing boats in a direct line bearing east. The angle of depression to the closer boat is 45° and to the further boat is 30°. What is the distance between the two boats?", options: ["73.21 meters", "80.50 meters", "65.40 meters", "90.10 meters"], correct: 0 },
+                { q: "Worded Problem: A farmer fences a triangular pasture with sides 150m, 220m, and 280m. Find the measure of the angle opposite the 280m side.", options: ["84.26°", "79.10°", "88.40°", "75.50°"], correct: 0 },
+                { q: "Worded Problem: A drone flies 2 km east, turns 40° towards north, and flies another 3.5 km. How far is the drone from its takeoff point?", options: ["5.22 km", "4.80 km", "5.60 km", "4.95 km"], correct: 0 },
+                { q: "Worded Problem: A triangular roof gable has a span of 12 meters and a pitch angle of 35° on both sides. What is the length of each rafter?", options: ["7.32 meters", "6.80 meters", "8.10 meters", "6.50 meters"], correct: 0 },
+                { q: "Worded Problem: A surveyor measures the three sides of a triangular hill as 1.2 km, 1.5 km, and 2.0 km. What is the area of the hill's base?", options: ["0.89 sq km", "0.75 sq km", "0.95 sq km", "1.10 sq km"], correct: 0 },
+                { q: "Worded Problem: A cable anchored 50 feet from the base of a vertical antenna reaches the top at an angle of elevation of 64°. Find the height of the antenna.", options: ["102.58 feet", "95.40 feet", "110.20 feet", "98.10 feet"], correct: 0 },
+                { q: "Worded Problem: Two cars leave a town at the same time on roads at an angle of 80°. Car 1 averages 50 mph, Car 2 averages 65 mph. Find the distance between them after 3 hours.", options: ["210.45 miles", "198.20 miles", "225.10 miles", "185.60 miles"], correct: 0 },
+                { q: "Worded Problem: A park bench is positioned such that the angle of elevation to the top of a statue is 28° at point A, and 45° at point B located 15 meters closer to the statue along a straight line. Find the height of the statue.", options: ["20.34 meters", "18.50 meters", "22.10 meters", "17.90 meters"], correct: 0 },
+                { q: "Worded Problem: A triangular steel plate has sides of 25 cm, 35 cm, and 45 cm. Find the largest angle of the plate.", options: ["92.83°", "88.50°", "96.10°", "85.40°"], correct: 0 },
+                { q: "Worded Problem: A ship travels 80 km due west, then changes course by 50° toward north and travels another 60 km. How far is the ship from its origin?", options: ["131.25 km", "125.40 km", "138.90 km", "120.10 km"], correct: 0 },
+                { q: "Worded Problem: An observation balloon is tethered by a 250-meter cable that makes an angle of 58° with the ground. Due to wind, the cable slips and the angle changes to 52°. How much cable was let out or pulled in?", options: ["22.45 meters", "18.10 meters", "25.60 meters", "15.00 meters"], correct: 0 },
+                { q: "Worded Problem: A triangular swimming pool has sides 8m, 10m, and 12m. What is the area of the pool's surface?", options: ["39.68 sq meters", "35.20 sq meters", "42.10 sq meters", "37.50 sq meters"], correct: 0 }
             ]
         };
 
-        // Authentication & Initialization Handlers
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
         auth.onAuthStateChanged(async (user) => {
             const authOverlay = document.getElementById('authOverlay');
             if (user) {
                 if (!user.emailVerified) {
                     await auth.signOut();
                     authOverlay.classList.remove('hidden');
-                    alert("Please verify your email address. Check your inbox for the verification link.");
+                    alert("Please verify your email address.");
                     return;
                 }
-
                 currentUser = user;
                 authOverlay.classList.add('hidden');
                 document.getElementById('offlineBanner').classList.add('hidden');
@@ -771,13 +612,9 @@
                 } catch (e) {
                     currentRole = localStorage.getItem(`trign_role_${user.uid}`) || localStorage.getItem('trign_role') || 'student';
                 }
-
                 updateRoleUI();
             } else {
                 authOverlay.classList.remove('hidden');
-                if (!navigator.onLine) {
-                    document.getElementById('offlineBanner').classList.remove('hidden');
-                }
             }
         });
 
@@ -827,7 +664,7 @@
                 const cred = await auth.signInWithEmailAndPassword(email, pass);
                 if (!cred.user.emailVerified) {
                     await auth.signOut();
-                    alert("Please verify your email address before signing in. Check your inbox for the verification link.");
+                    alert("Please verify your email address before signing in.");
                     return;
                 }
             } catch (err) {
@@ -844,8 +681,6 @@
 
             try {
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
-                
-                // Save role locally first so teacher status is preserved across reloads
                 localStorage.setItem(`trign_role_${cred.user.uid}`, role);
                 localStorage.setItem('trign_role', role);
 
@@ -857,13 +692,12 @@
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } catch (dbErr) {
-                    console.warn("Firestore user save skipped or blocked, using local role storage.", dbErr);
+                    console.warn("Firestore save skipped, using local storage.", dbErr);
                 }
 
                 await cred.user.sendEmailVerification();
                 await auth.signOut();
-
-                alert("Registration successful! A verification email has been sent to " + email + ". Please verify your email before signing in.");
+                alert("Registration successful! Verification email sent to " + email);
                 switchAuthMode('login');
             } catch (err) {
                 alert("Registration Error: " + err.message);
@@ -873,10 +707,9 @@
         async function handleFirebasePasswordReset(e) {
             e.preventDefault();
             const email = document.getElementById('forgotEmail').value.trim();
-
             try {
                 await auth.sendPasswordResetEmail(email);
-                alert("Password reset email sent! Check your inbox (" + email + ") for instructions to set a new password.");
+                alert("Password reset email sent to " + email);
                 switchAuthMode('login');
             } catch (err) {
                 alert("Password Reset Error: " + err.message);
@@ -884,15 +717,12 @@
         }
 
         function handleLogout() {
-            auth.signOut().then(() => {
-                location.reload();
-            });
+            auth.signOut().then(() => location.reload());
         }
 
         function updateRoleUI() {
             const badge = document.getElementById('userRoleBadge');
             badge.innerText = currentRole.toUpperCase();
-            
             const teacherElements = document.querySelectorAll('.teacher-only');
             teacherElements.forEach(el => {
                 if (currentRole === 'teacher') {
@@ -903,15 +733,6 @@
                     el.style.display = 'none';
                 }
             });
-
-            if (currentRole !== 'teacher') {
-                const dashTab = document.getElementById('tab-dashboard');
-                if (dashTab) {
-                    dashTab.classList.add('hidden');
-                    dashTab.style.display = 'none';
-                }
-            }
-
             if (currentUser) {
                 document.getElementById('userProfileLabel').innerText = `Logged in as ${currentUser.email} (${currentRole})`;
             }
@@ -919,44 +740,25 @@
 
         function switchTab(tabId) {
             if (tabId === 'dashboard' && currentRole !== 'teacher') {
-                alert("Access restricted: Teacher Analytics & Dashboard is available for Teacher accounts only.");
+                alert("Access restricted: Teacher Dashboard is for Teacher accounts only.");
                 switchTab('simulator');
                 return;
             }
-
             const tabs = ['simulator', 'lessons', 'quiz', 'dashboard'];
             tabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`btn-${t}`);
-                if (el) {
-                    el.classList.add('hidden');
-                    el.style.display = 'none';
-                }
-                if (btn) {
-                    btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white";
-                }
+                if (el) { el.classList.add('hidden'); el.style.display = 'none'; }
+                if (btn) btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white";
             });
-
             const activeEl = document.getElementById(`tab-${tabId}`);
             const activeBtn = document.getElementById(`btn-${tabId}`);
-            
-            if (activeEl) {
-                activeEl.classList.remove('hidden');
-                activeEl.style.display = 'block';
-            }
-            
+            if (activeEl) { activeEl.classList.remove('hidden'); activeEl.style.display = 'block'; }
             if (activeBtn) {
-                if (tabId === 'dashboard') {
-                    activeBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-emerald-600 text-white shadow";
-                    loadDashboardData();
-                } else {
-                    activeBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow";
-                }
+                activeBtn.className = tabId === 'dashboard' ? "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-emerald-600 text-white shadow" : "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow";
+                if (tabId === 'dashboard') loadDashboardData();
             }
-
-            if (tabId === 'simulator') {
-                drawUnitCircle(45);
-            }
+            if (tabId === 'simulator') drawUnitCircle(45);
         }
 
         function switchSimulatorMode(mode) {
@@ -979,189 +781,37 @@
             drawUnitCircle(deg);
         }
 
-        function setQuickAngle(deg) {
-            document.getElementById('angleSlider').value = deg;
-            updateTrigAngle(deg);
-        }
-
         function drawUnitCircle(deg) {
             const canvas = document.getElementById('unitCircleCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            const w = canvas.width;
-            const h = canvas.height;
-            const cx = w / 2;
-            const cy = h / 2;
-            const R = 150;
-
+            const w = canvas.width, h = canvas.height, cx = w / 2, cy = h / 2, R = 150;
             ctx.clearRect(0, 0, w, h);
-
-            ctx.strokeStyle = '#334155';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, cy); ctx.lineTo(w, cy);
-            ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
-            ctx.stroke();
-
-            ctx.strokeStyle = '#6366f1';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-            ctx.stroke();
+            ctx.strokeStyle = '#334155'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.moveTo(cx, 0); ctx.lineTo(cx, h); ctx.stroke();
+            ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.stroke();
 
             const rad = (deg * Math.PI) / 180;
-            const cosVal = Math.cos(rad);
-            const sinVal = Math.sin(rad);
-            const tanVal = Math.abs(cosVal) > 0.0001 ? sinVal / cosVal : 0;
-
+            const cosVal = Math.cos(rad), sinVal = Math.sin(rad), tanVal = Math.abs(cosVal) > 0.0001 ? sinVal / cosVal : 0;
             document.getElementById('dispSinVal').innerText = sinVal.toFixed(4);
             document.getElementById('dispCosVal').innerText = cosVal.toFixed(4);
             document.getElementById('dispTanVal').innerText = tanVal.toFixed(4);
-
-            const cscVal = Math.abs(sinVal) > 0.0001 ? (1 / sinVal).toFixed(2) : '∞';
-            const secVal = Math.abs(cosVal) > 0.0001 ? (1 / cosVal).toFixed(2) : '∞';
-            const cotVal = Math.abs(tanVal) > 0.0001 ? (1 / tanVal).toFixed(2) : '∞';
-
-            document.getElementById('dispCscVal').innerText = cscVal;
-            document.getElementById('dispSecVal').innerText = secVal;
-            document.getElementById('dispCotVal').innerText = cotVal;
 
             let quadBadge = "Quadrant I";
             if (deg > 90 && deg <= 180) quadBadge = "Quadrant II";
             else if (deg > 180 && deg <= 270) quadBadge = "Quadrant III";
             else if (deg > 270 && deg <= 360) quadBadge = "Quadrant IV";
             document.getElementById('quadrantBadge').innerText = quadBadge;
-
-            const px = cx + R * cosVal;
-            const py = cy - R * sinVal;
-
-            ctx.strokeStyle = '#a855f7';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(cx, cy, 35, 0, -rad, true);
-            ctx.stroke();
-
-            ctx.strokeStyle = '#3b82f6';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(px, cy);
-            ctx.stroke();
-
-            ctx.strokeStyle = '#f43f5e';
-            ctx.beginPath();
-            ctx.moveTo(px, cy);
-            ctx.lineTo(px, py);
-            ctx.stroke();
-
-            ctx.strokeStyle = '#10b981';
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(px, py);
-            ctx.stroke();
-
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(px, py, 6, 0, 2 * Math.PI);
-            ctx.fill();
-
-            ctx.font = 'bold 11px sans-serif';
-            ctx.fillStyle = '#a855f7';
-            ctx.fillText(`θ = ${deg}°`, cx + 40, cy - 12);
-
-            ctx.fillStyle = '#3b82f6';
-            ctx.fillText(`cos(θ) = ${cosVal.toFixed(2)}`, (cx + px) / 2 - 25, cy + 18);
-
-            ctx.fillStyle = '#f43f5e';
-            ctx.fillText(`sin(θ) = ${sinVal.toFixed(2)}`, px + 12, (cy + py) / 2);
-
-            ctx.fillStyle = '#10b981';
-            ctx.fillText(`Hypotenuse = 1.00`, (cx + px) / 2 - 40, (cy + py) / 2 - 12);
-
-            ctx.fillStyle = '#94a3b8';
-            ctx.fillText("Origin (0,0)", cx - 65, cy + 18);
         }
 
         function updateObliqueSimulation() {
             const a = parseFloat(document.getElementById('oblASlider').value);
             const b = parseFloat(document.getElementById('oblBSlider').value);
             const C_deg = parseFloat(document.getElementById('oblCSlider').value);
-
             document.getElementById('oblASliderVal').innerText = a;
             document.getElementById('oblBSliderVal').innerText = b;
             document.getElementById('oblCSliderVal').innerText = C_deg + '°';
-
-            const C_rad = (C_deg * Math.PI) / 180;
-            const c = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(C_rad));
-
-            const sinA = (a * Math.sin(C_rad)) / c;
-            const A_rad = Math.asin(Math.min(1, Math.max(-1, sinA)));
-            const A_deg = (A_rad * 180) / Math.PI;
-
-            const B_deg = 180 - C_deg - A_deg;
-            const perimeter = a + b + c;
-
-            document.getElementById('oblResC').innerText = c.toFixed(2);
-            document.getElementById('oblResA').innerText = A_deg.toFixed(1) + '°';
-            document.getElementById('oblResB').innerText = B_deg.toFixed(1) + '°';
-            document.getElementById('oblResPerimeter').innerText = perimeter.toFixed(2);
-
-            drawObliqueCanvas(a, b, c, A_deg, B_deg, C_deg);
-        }
-
-        function drawObliqueCanvas(a, b, c, A_deg, B_deg, C_deg) {
-            const canvas = document.getElementById('obliqueCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const w = canvas.width;
-            const h = canvas.height;
-
-            ctx.clearRect(0, 0, w, h);
-
-            const scale = 8;
-            const ax = 80;
-            const ay = 360;
-            const bx = ax + b * scale;
-            const by = 360;
-
-            const C_rad = (C_deg * Math.PI) / 180;
-            const cx = ax + a * scale * Math.cos(C_rad);
-            const cy = ay - a * scale * Math.sin(C_rad);
-
-            ctx.strokeStyle = '#10b981';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(ax, ay);
-            ctx.lineTo(bx, by);
-            ctx.lineTo(cx, cy);
-            ctx.closePath();
-            ctx.stroke();
-
-            ctx.fillStyle = 'rgba(16, 185, 129, 0.05)';
-            ctx.fill();
-
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 13px sans-serif';
-            ctx.fillText(`Vertex A (${A_deg.toFixed(1)}°)`, ax - 25, ay + 20);
-            ctx.fillText(`Vertex B (${B_deg.toFixed(1)}°)`, bx + 10, by + 20);
-            ctx.fillText(`Vertex C (${C_deg.toFixed(1)}°)`, cx - 10, cy - 15);
-
-            ctx.fillStyle = '#38bdf8';
-            ctx.fillText(`c = ${((bx - ax) / scale).toFixed(1)}`, (ax + bx) / 2 - 15, ay + 20);
-            ctx.fillText(`b = ${b}`, (ax + cx) / 2 - 25, (ay + cy) / 2);
-            ctx.fillText(`a = ${a}`, (bx + cx) / 2 + 10, (by + cy) / 2);
-        }
-
-        function switchLessonTopic(topic) {
-            const rightContent = document.getElementById('lessonContentRight');
-            const obliqueContent = document.getElementById('lessonContentOblique');
-            if (topic === 'right') {
-                rightContent.classList.remove('hidden');
-                obliqueContent.classList.add('hidden');
-            } else {
-                rightContent.classList.add('hidden');
-                obliqueContent.classList.remove('hidden');
-            }
         }
 
         function switchQuizMode(mode) {
@@ -1171,54 +821,40 @@
             const liveGate = document.getElementById('liveGateCard');
             const practiceGate = document.getElementById('practiceGateCard');
             const gameArea = document.getElementById('quizGameArea');
-
             gameArea.classList.add('hidden');
 
             if (mode === 'live') {
                 btnLive.className = "w-1/2 py-2.5 rounded-lg bg-indigo-600 text-white shadow transition";
                 btnPractice.className = "w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition";
-                liveGate.classList.remove('hidden');
-                practiceGate.classList.add('hidden');
+                liveGate.classList.remove('hidden'); practiceGate.classList.add('hidden');
             } else {
                 btnPractice.className = "w-1/2 py-2.5 rounded-lg bg-emerald-600 text-white shadow transition";
                 btnLive.className = "w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition";
-                practiceGate.classList.remove('hidden');
-                liveGate.classList.add('hidden');
+                practiceGate.classList.remove('hidden'); liveGate.classList.add('hidden');
             }
         }
 
-        // VERIFY STUDENT GAME PIN (LOCAL STORAGE FIRST, THEN CLOUD FIRESTORE)
         async function verifyStudentGamePin() {
             const pin = document.getElementById('gamePinInput').value.trim();
-            if (pin.length !== 4) {
-                alert("Please enter a valid 4-digit Game PIN.");
-                return;
-            }
-
-            // 1. Check local session storage first (instant verification)
-            const localDiff = localStorage.getItem(`active_pin_${pin}`);
-            if (localDiff) {
-                activeGamePin = pin;
-                currentDifficulty = localDiff;
+            if (pin.length !== 4) { alert("Please enter a valid 4-digit PIN."); return; }
+            const activePin = localStorage.getItem('current_game_pin');
+            const activeDiff = localStorage.getItem('current_game_diff');
+            
+            if (pin === activePin) {
+                activeGamePin = pin; currentDifficulty = activeDiff || 'easy';
                 startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
                 return;
             }
 
-            // 2. Check Firestore cloud database
             try {
-                const doc = await db.collection('active_games').doc(pin).get();
-                if (doc.exists) {
-                    const data = doc.data();
-                    activeGamePin = pin;
-                    currentDifficulty = data.difficulty || 'easy';
+                const doc = await db.collection('active_games').doc('current').get();
+                if (doc.exists && doc.data().pin === pin) {
+                    activeGamePin = pin; currentDifficulty = doc.data().difficulty || 'easy';
                     startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
                     return;
                 }
-            } catch (e) {
-                console.warn("Firestore lookup failed:", e);
-            }
-
-            alert("Invalid or expired Game PIN. Please enter a valid PIN broadcasted by your teacher.");
+            } catch (e) { console.warn("Firestore lookup failed:", e); }
+            alert("Invalid or expired Game PIN.");
         }
 
         function startPracticeSession() {
@@ -1230,25 +866,28 @@
             document.getElementById('liveGateCard').classList.add('hidden');
             document.getElementById('practiceGateCard').classList.add('hidden');
             document.getElementById('quizGameArea').classList.remove('hidden');
-
             document.getElementById('quizRoundBadgeTitle').innerText = titleBadge;
             document.getElementById('playerBadge').innerText = currentUser ? currentUser.email : 'Guest Student';
 
-            currentQuestions = questionBanks[diff] || questionBanks['easy'];
-            currentQuestionIdx = 0;
-            score = 0;
-
+            const rawBank = questionBanks[diff] || questionBanks['easy'];
+            currentQuestions = shuffleArray(rawBank).slice(0, 10);
+            currentQuestionIdx = 0; score = 0;
             document.getElementById('scoreScreen').classList.add('hidden');
             document.getElementById('quizContainer').classList.remove('hidden');
-
             loadQuestion();
         }
+
+        let currentRandomizedOpts = [];
+        let currentCorrectAnswerText = "";
 
         function loadQuestion() {
             if (currentQuestionIdx >= currentQuestions.length) {
                 endQuizSession();
                 return;
             }
+
+            document.getElementById('feedbackBanner').classList.add('hidden');
+            document.getElementById('nextQuestionBtn').classList.add('hidden');
 
             const qObj = currentQuestions[currentQuestionIdx];
             document.getElementById('quizProgress').innerText = `Question ${currentQuestionIdx + 1} of ${currentQuestions.length}`;
@@ -1257,18 +896,18 @@
             const optContainer = document.getElementById('optionsContainer');
             optContainer.innerHTML = '';
 
-            qObj.options.forEach((opt, idx) => {
+            currentCorrectAnswerText = qObj.options[qObj.correct];
+            currentRandomizedOpts = shuffleArray(qObj.options);
+
+            currentRandomizedOpts.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left bg-slate-900 hover:bg-indigo-600 border border-slate-700 p-3 rounded-xl text-xs font-semibold transition shadow";
+                btn.className = "option-btn w-full text-left bg-slate-900 hover:bg-indigo-600 border border-slate-700 p-3 rounded-xl text-xs font-semibold transition shadow";
                 btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
-                btn.onclick = () => submitAnswer(idx);
+                btn.onclick = () => handleAnswerSelection(opt, btn);
                 optContainer.appendChild(btn);
             });
 
-            if (currentDifficulty === 'easy') timeLeft = 20;
-            else if (currentDifficulty === 'average') timeLeft = 30;
-            else timeLeft = 60;
-
+            timeLeft = 30;
             document.getElementById('quizTimeRemaining').innerText = timeLeft;
             if (activeQuizTimer) clearInterval(activeQuizTimer);
 
@@ -1277,26 +916,55 @@
                 document.getElementById('quizTimeRemaining').innerText = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(activeQuizTimer);
-                    submitAnswer(-1);
+                    handleAnswerSelection(null, null);
                 }
             }, 1000);
         }
 
-        function submitAnswer(selectedIndex) {
+        function handleAnswerSelection(selectedOpt, btnElement) {
             if (activeQuizTimer) clearInterval(activeQuizTimer);
+            const isCorrect = (selectedOpt === currentCorrectAnswerText);
+            if (isCorrect) score++;
 
-            const qObj = currentQuestions[currentQuestionIdx];
-            if (selectedIndex === qObj.correct) {
-                score++;
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => {
+                b.disabled = true;
+                if (b.innerText.includes(currentCorrectAnswerText)) {
+                    b.classList.remove('bg-slate-900', 'hover:bg-indigo-600');
+                    b.classList.add('bg-emerald-700', 'border-emerald-500');
+                } else if (b === btnElement && !isCorrect) {
+                    b.classList.remove('bg-slate-900', 'hover:bg-indigo-600');
+                    b.classList.add('bg-rose-700', 'border-rose-500');
+                }
+            });
+
+            const feedbackBanner = document.getElementById('feedbackBanner');
+            feedbackBanner.classList.remove('hidden');
+
+            if (activeQuizMode === 'practice') {
+                if (isCorrect) {
+                    feedbackBanner.className = "mt-4 p-3 rounded-xl text-xs font-bold text-center bg-emerald-500/20 border border-emerald-500 text-emerald-300";
+                    feedbackBanner.innerHTML = "✅ Correct!";
+                } else {
+                    feedbackBanner.className = "mt-4 p-3 rounded-xl text-xs font-bold text-center bg-rose-500/20 border border-rose-500 text-rose-300";
+                    feedbackBanner.innerHTML = `❌ Incorrect. The correct answer is: <strong>${currentCorrectAnswerText}</strong>`;
+                }
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
+            } else {
+                setTimeout(() => {
+                    currentQuestionIdx++;
+                    loadQuestion();
+                }, 1500);
             }
+        }
 
+        function proceedToNextQuestion() {
             currentQuestionIdx++;
             loadQuestion();
         }
 
         async function endQuizSession() {
             if (activeQuizTimer) clearInterval(activeQuizTimer);
-
             document.getElementById('quizContainer').classList.add('hidden');
             document.getElementById('quizGameArea').querySelector('#quizTimerBadge')?.classList.add('hidden');
             const scoreScreen = document.getElementById('scoreScreen');
@@ -1312,72 +980,54 @@
                         studentEmail: currentUser.email,
                         studentName: currentUser.displayName || currentUser.email.split('@')[0],
                         difficulty: currentDifficulty,
-                        score: score,
-                        total: currentQuestions.length,
-                        percentage: pct,
+                        score: score, total: currentQuestions.length, percentage: pct,
                         pin: activeGamePin,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     alert("Score successfully transmitted to Cloud Teacher Dashboard!");
-                } catch (e) {
-                    console.log("Cloud sync saved locally or simulated.");
-                }
+                } catch (e) { console.log("Cloud sync simulated."); }
             }
         }
 
-        function resetQuizView() {
-            switchQuizMode('live');
-        }
+        function resetQuizView() { switchQuizMode('live'); }
 
-        // BROADCAST NEW GAME ROUND WITH HYBRID BULLETPROOF FALLBACK
         async function broadcastNewGameRound() {
-            if (currentRole !== 'teacher') {
-                alert("Access Denied: Your account role is currently registered as '" + currentRole + "'. Only Teacher accounts can broadcast PINs.");
-                return;
-            }
-
+            if (currentRole !== 'teacher') { alert("Access Denied: Teacher accounts only."); return; }
             const diff = document.getElementById('teacherRoundSelect').value;
             const pin = Math.floor(1000 + Math.random() * 9000).toString();
 
-            // 1. Immediately store locally and render UI to guarantee instant local support
-            localStorage.setItem(`active_pin_${pin}`, diff);
+            localStorage.setItem('current_game_pin', pin);
+            localStorage.setItem('current_game_diff', diff);
+
             document.getElementById('displayActivePin').innerText = pin;
             document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIN_${pin}`;
 
-            // 2. Safely sync to Firestore in the background
             try {
-                await db.collection('active_games').doc(pin).set({
-                    difficulty: diff,
+                await db.collection('active_games').doc('current').set({
+                    pin: pin, difficulty: diff,
                     teacherEmail: currentUser ? currentUser.email : 'teacher@school.edu.ph',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                console.log("Game PIN successfully synced to Firestore:", pin);
-            } catch (e) {
-                console.warn("Firestore broadcast sync skipped/blocked, running local fallback mode:", e);
-            }
-
-            alert(`Successfully broadcasted Game PIN: ${pin} (${diff.toUpperCase()} mode)`);
+            } catch (e) { console.warn("Firestore sync skipped:", e); }
+            alert(`Successfully broadcasted Game PIN: ${pin}. Previous PINs are now inactive.`);
         }
 
         async function loadDashboardData() {
             if (currentRole !== 'teacher') return;
             const tbody = document.getElementById('submissionsTableBody');
-            tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">Loading submissions...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">Loading submissions...</td></tr>`;
 
             try {
                 const snapshot = await db.collection('submissions').orderBy('timestamp', 'desc').get();
                 if (snapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No live submissions recorded yet.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500 italic">No live submissions recorded yet.</td></tr>`;
                     return;
                 }
-
                 tbody.innerHTML = '';
-                let submissions = [];
-                snapshot.forEach(doc => {
-                    submissions.push(doc.data());
-                });
-
-                submissions.forEach(sub => {
+                let subs = [];
+                snapshot.forEach(doc => subs.push({ id: doc.id, ...doc.data() }));
+                
+                subs.forEach(sub => {
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-800 transition";
                     const timeStr = sub.timestamp?.toDate ? sub.timestamp.toDate().toLocaleString() : 'Just now';
@@ -1388,22 +1038,53 @@
                         <td class="p-3 font-mono text-emerald-400">${sub.score} / ${sub.total}</td>
                         <td class="p-3 font-bold">${sub.percentage}%</td>
                         <td class="p-3 text-slate-500 text-[10px]">${timeStr}</td>
+                        <td class="p-3 text-right">
+                            <button onclick="deleteSubmissionRecord('${sub.id}')" class="bg-rose-700/80 hover:bg-rose-600 text-white px-2.5 py-1 rounded text-[11px] font-semibold transition">🗑️ Delete</button>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
-
-                renderLeaderboardAndAnalytics(submissions);
+                renderLeaderboardAndAnalytics(subs);
             } catch (e) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-rose-400">Offline mode: Unable to query live Firestore analytics.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-rose-400">Offline mode: Unable to query live analytics.</td></tr>`;
+            }
+        }
+
+        async function deleteSubmissionRecord(recordId) {
+            if (!confirm("Are you sure you want to delete this student record?")) return;
+            try {
+                await db.collection('submissions').doc(recordId).delete();
+                alert("Record deleted successfully.");
+                loadDashboardData();
+            } catch (e) {
+                alert("Error deleting record: " + e.message);
+            }
+        }
+
+        async function clearAllSubmissions() {
+            if (!confirm("Are you sure you want to delete ALL live student submission records? This action cannot be undone.")) return;
+            try {
+                const snapshot = await db.collection('submissions').get();
+                const batch = db.batch();
+                snapshot.forEach(doc => {
+                    batch.delete(doc.ref);
+                });
+                await batch.commit();
+                alert("All submission records have been cleared.");
+                loadDashboardData();
+            } catch (e) {
+                alert("Error clearing records: " + e.message);
             }
         }
 
         function renderLeaderboardAndAnalytics(subs) {
             const podium = document.getElementById('podiumContainer');
             const analytics = document.getElementById('analyticsContainer');
-
-            if (subs.length === 0) return;
-
+            if (subs.length === 0) {
+                podium.innerHTML = `<p class="text-slate-500 italic">Waiting for active submissions...</p>`;
+                analytics.innerHTML = `<p class="text-slate-500 italic">No live submission data recorded yet.</p>`;
+                return;
+            }
             const sorted = [...subs].sort((a, b) => b.percentage - a.percentage);
             podium.innerHTML = '';
             sorted.slice(0, 3).forEach((s, idx) => {
@@ -1413,11 +1094,10 @@
                 div.innerHTML = `<span>${medals[idx]} ${s.studentName}</span><span class="font-mono text-emerald-400 font-bold">${s.percentage}% (${s.difficulty})</span>`;
                 podium.appendChild(div);
             });
-
             const avgPct = Math.round(subs.reduce((acc, curr) => acc + curr.percentage, 0) / subs.length);
             analytics.innerHTML = `
-                <div class="flex justify-between border-b border-slate-800 pb-1"><span>Total Live Submissions:</span><span class="font-bold text-white">${subs.length}</span></div>
-                <div class="flex justify-between border-b border-slate-800 pb-1"><span>Class Average Score:</span><span class="font-bold text-indigo-400">${avgPct}%</span></div>
+                <div class="flex justify-between border-b border-slate-800 pb-1"><span>Total Submissions:</span><span class="font-bold text-white">${subs.length}</span></div>
+                <div class="flex justify-between border-b border-slate-800 pb-1"><span>Class Average:</span><span class="font-bold text-indigo-400">${avgPct}%</span></div>
                 <div class="flex justify-between pt-1"><span>Mastery Rate (≥75%):</span><span class="font-bold text-emerald-400">${Math.round((subs.filter(s => s.percentage >= 75).length / subs.length) * 100)}%</span></div>
             `;
         }
@@ -1425,27 +1105,21 @@
         function exportTableToCSV(filename) {
             if (currentRole !== 'teacher') return;
             let csv = [];
-            const rows = document.querySelectorAll("#submissionsTable tr");
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
+            document.querySelectorAll("#submissionsTable tr").forEach((row, index) => {
                 let data = [];
-                cols.forEach(col => data.push('"' + col.innerText + '"'));
+                row.querySelectorAll("td, th").forEach((col, colIdx) => {
+                    // Exclude the last 'Actions' column from CSV
+                    if (colIdx < 6) data.push('"' + col.innerText + '"');
+                });
                 csv.push(data.join(","));
             });
-
-            const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
-            const downloadLink = document.createElement("a");
-            downloadLink.download = filename;
-            downloadLink.href = window.URL.createObjectURL(csvFile);
-            downloadLink.style.display = "none";
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+            const blob = new Blob([csv.join("\n")], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.download = filename; link.href = window.URL.createObjectURL(blob);
+            link.click();
         }
 
-        window.onload = () => {
-            drawUnitCircle(45);
-        };
+        window.onload = () => { drawUnitCircle(45); };
     </script>
 </body>
 </html>
