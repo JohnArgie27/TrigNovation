@@ -699,7 +699,7 @@
         let score = 0;
         let activeGamePin = null;
         let activeQuizTimer = null;
-        let timeLeft = 30;
+        let timeLeft = 20;
 
         const questionBanks = {
             easy: [
@@ -1300,7 +1300,15 @@
                 optContainer.appendChild(btn);
             });
 
-            timeLeft = 30;
+            // Set dynamic timer based on difficulty level
+            if (currentDifficulty === 'difficult') {
+                timeLeft = 90;
+            } else if (currentDifficulty === 'average') {
+                timeLeft = 45;
+            } else {
+                timeLeft = 20;
+            }
+
             document.getElementById('quizTimeRemaining').innerText = timeLeft;
             if (activeQuizTimer) clearInterval(activeQuizTimer);
 
