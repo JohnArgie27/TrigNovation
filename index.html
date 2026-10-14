@@ -93,12 +93,13 @@
                </div>
             </div>
 
-            <!-- Role-Based Navigation Tabs -->
+            <!-- Navigation Tabs (Teacher Analytics hidden by default, shown strictly for Teacher role) -->
             <div class="mt-4 md:mt-0 flex flex-wrap gap-1 bg-indigo-950 p-1 rounded-xl border border-indigo-800">
                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Simulators</button>
                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes</button>
                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
-               <!-- Teacher Only Tabs -->
+               
+               <!-- STRICT TEACHER ONLY TAB -->
                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics & Dashboard</button>
                
                <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Sign Out</button>
@@ -372,7 +373,7 @@
                    </div>
                 </div>
 
-                <!-- LESSON CONTENT B: OBLIQUE TRIANGLES (Using proper mathematical symbols & notation) -->
+                <!-- LESSON CONTENT B: OBLIQUE TRIANGLES (Mathematical Symbols & Proper Notations) -->
                 <div id="lessonContentOblique" class="hidden space-y-8">
                    <!-- LAW OF SINES & COSINES OVERVIEW -->
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
@@ -402,7 +403,7 @@
                        </div>
                    </div>
 
-                   <!-- 10 OBLIQUE WORKED EXAMPLES (Proper Mathematical Symbols) -->
+                   <!-- 10 OBLIQUE WORKED EXAMPLES -->
                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
                        <h3 class="text-emerald-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Oblique Triangle Worked Examples</h3>
                        <div class="grid grid-cols-1 gap-4 text-xs">
@@ -606,7 +607,7 @@
             </div>
         </section>
 
-        <!-- TAB 4: TEACHER DASHBOARD & ANALYTICS -->
+        <!-- TAB 4: TEACHER DASHBOARD & ANALYTICS (RESTRICTED TO TEACHER ROLE) -->
         <section id="tab-dashboard" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
                <!-- PIN BROADCASTER -->
@@ -850,7 +851,7 @@
             });
         }
 
-        // Role-Based UI Configuration: Student has Simulators, Lesson Notes, Interactive Quiz (NO dashboard tab). Teacher has ALL features including Dashboard.
+        // Strict Role-Based UI Display: Student gets ONLY Simulators, Lessons, Quiz. Teacher gets Dashboard as well.
         function updateRoleUI() {
             const badge = document.getElementById('userRoleBadge');
             badge.innerText = currentRole.toUpperCase();
@@ -864,6 +865,14 @@
                 }
             });
 
+            // Ensure if current role is student, they are routed to simulator tab if on dashboard
+            if (currentRole !== 'teacher') {
+                const dashTab = document.getElementById('tab-dashboard');
+                if (dashTab && !dashTab.classList.contains('hidden')) {
+                    switchTab('simulator');
+                }
+            }
+
             if (currentUser) {
                 document.getElementById('userProfileLabel').innerText = `Logged in as ${currentUser.email} (${currentRole})`;
             }
@@ -871,6 +880,12 @@
 
         // Tab Navigation
         function switchTab(tabId) {
+            // Guard clause: non-teachers cannot switch to dashboard
+            if (tabId === 'dashboard' && currentRole !== 'teacher') {
+                alert("Access restricted: Teacher Analytics & Dashboard is available for Teacher accounts only.");
+                return;
+            }
+
             const tabs = ['simulator', 'lessons', 'quiz', 'dashboard'];
             tabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
