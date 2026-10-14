@@ -3,7 +3,7 @@
 <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrigNovation: Advanced Math Fair Edition</title>
+    <title>TrigNovation: Interactive Unit Circle & Cloud Analytics Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -11,16 +11,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4f46e5">
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col">
 
     <!-- OFFLINE FALLBACK BANNER -->
     <div id="offlineBanner" class="hidden bg-amber-600 text-slate-950 font-bold text-xs py-1 px-4 text-center sticky top-0 z-50 shadow">
-        ⚡ Offline Mode Active — Local Trigonometry Engine & Adaptive Practice Running
+        ⚡ Offline Mode Active — Local Trigonometry Engine & Simulator Running
     </div>
 
     <!-- AUTHENTICATION & REAL EMAIL VERIFICATION MODAL -->
@@ -28,12 +26,12 @@
         <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl max-w-md w-full space-y-6 shadow-2xl text-center">
             
             <div class="flex justify-center">
-                <div class="w-16 h-16 rounded-full border-2 border-indigo-500 flex items-center justify-center bg-indigo-600/20 text-3xl font-bold text-indigo-400">📐</div>
+                <img src="logo.png" alt="TrigNovation Logo" class="w-16 h-16 rounded-full border-2 border-indigo-500 object-cover bg-white">
             </div>
 
             <div>
                 <h2 class="text-xl font-black text-white">TrigNovation Portal</h2>
-                <p class="text-xs text-slate-400 mt-1">Sign in or register with secure authentication.</p>
+                <p class="text-xs text-slate-400 mt-1">Sign in or register with real email verification.</p>
             </div>
 
             <!-- TOGGLE LOGIN VS REGISTER -->
@@ -76,7 +74,7 @@
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Password (min 6 chars):</label>
                     <input type="password" id="regPassword" minlength="6" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Register Account</button>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Register & Send Verification Email</button>
             </form>
 
         </div>
@@ -86,23 +84,22 @@
     <header class="bg-indigo-900 border-b border-indigo-800 py-3 px-6 shadow-lg">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-lg text-white">📐</div>
+                <img src="logo.png" alt="TrigNovation Logo" class="w-12 h-12 rounded-full border-2 border-indigo-400 shadow object-cover bg-white">
                 <div>
                     <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
                         TrigNovation <span id="userRoleBadge" class="bg-indigo-600 text-[10px] px-2 py-0.5 rounded uppercase tracking-wider">Guest</span>
                     </h1>
-                    <p id="userProfileLabel" class="text-indigo-300 text-xs">Interactive Unit Circle & Adaptive Learning Hub</p>
+                    <p id="userProfileLabel" class="text-indigo-300 text-xs">Interactive Unit Circle & Real-Time Cloud Analytics Hub</p>
                 </div>
             </div>
 
             <!-- Role-Based Navigation Tabs -->
             <div class="mt-4 md:mt-0 flex flex-wrap gap-1 bg-indigo-950 p-1 rounded-xl border border-indigo-800">
-                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Unit Circle</button>
-                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lessons</button>
-                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Adaptive Quiz & Boss</button>
-                <button onclick="switchTab('badges')" id="btn-badges" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Badges</button>
+                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Unit Circle Visualizer</button>
+                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes</button>
+                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
                 <!-- Teacher Only Tabs -->
-                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Heatmap & Dashboard</button>
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics & Dashboard</button>
                 
                 <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Sign Out</button>
             </div>
@@ -110,10 +107,10 @@
     </header>
 
     <!-- Main Workspace Container -->
-    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
 
         <!-- TAB 1: UNIT CIRCLE & TRIGONOMETRY VISUALIZER -->
-        <section id="tab-simulator" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <section id="tab-simulator" class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
             <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 flex flex-col justify-between space-y-6">
                 <div>
                     <h2 class="text-sm font-bold uppercase tracking-wider text-indigo-400 mb-4 border-b border-slate-700 pb-2">Angle & Ratio Controller</h2>
@@ -121,7 +118,7 @@
                     <div class="space-y-4">
                         <div>
                             <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-                                <span>Angle (&theta;):</span>
+                                <span>Angle (θ):</span>
                                 <span id="angleDegreeVal" class="font-bold text-indigo-400">45°</span>
                             </div>
                             <input type="range" id="angleSlider" min="0" max="360" value="45" class="w-full accent-indigo-500 cursor-pointer bg-slate-900" oninput="updateTrigAngle(this.value)">
@@ -145,18 +142,24 @@
 
                 <!-- REAL-TIME DYNAMIC TRIG RATIOS DISPLAY -->
                 <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 space-y-2 font-mono text-xs">
-                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Live Primary Ratios</span>
+                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Live Primary Ratios (SOH-CAH-TOA)</span>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-rose-400 font-bold">sin(&theta;):</span>
+                        <span class="text-rose-400 font-bold">sin(θ) [Opp]:</span>
                         <span id="dispSinVal" class="text-white font-bold">0.7071</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-blue-400 font-bold">cos(&theta;):</span>
+                        <span class="text-blue-400 font-bold">cos(θ) [Adj]:</span>
                         <span id="dispCosVal" class="text-white font-bold">0.7071</span>
                     </div>
                     <div class="flex justify-between border-b border-slate-800 pb-1">
-                        <span class="text-emerald-400 font-bold">tan(&theta;):</span>
+                        <span class="text-emerald-400 font-bold">tan(θ) [Opp/Adj]:</span>
                         <span id="dispTanVal" class="text-white font-bold">1.0000</span>
+                    </div>
+                    <div class="pt-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Reciprocal Ratios</div>
+                    <div class="grid grid-cols-3 gap-1 text-[11px] text-center pt-1">
+                        <div class="bg-slate-800 p-1 rounded">csc: <span id="dispCscVal" class="text-indigo-300">1.41</span></div>
+                        <div class="bg-slate-800 p-1 rounded">sec: <span id="dispSecVal" class="text-indigo-300">1.41</span></div>
+                        <div class="bg-slate-800 p-1 rounded">cot: <span id="dispCotVal" class="text-indigo-300">1.00</span></div>
                     </div>
                 </div>
             </div>
@@ -164,182 +167,253 @@
             <!-- DYNAMIC HTML5 CANVAS UNIT CIRCLE GRAPH -->
             <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
                 <div class="flex justify-between items-center mb-3 px-2">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Interactive Unit Circle Visualizer</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Interactive Unit Circle, Hypotenuse & Side Lengths</span>
                     <span id="quadrantBadge" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1 rounded-full">Quadrant I</span>
                 </div>
                 
-                <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[380px]">
-                    <canvas id="unitCircleCanvas" width="400" height="400" class="cursor-pointer max-w-full h-auto"></canvas>
+                <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
+                    <canvas id="unitCircleCanvas" width="460" height="460" class="cursor-pointer max-w-full h-auto"></canvas>
                 </div>
-                <p class="text-[11px] text-slate-400 text-center mt-2">Click or drag anywhere on the Unit Circle to explore real-time coordinate ratios.</p>
+                <p class="text-[11px] text-slate-400 text-center mt-2">Click or drag anywhere on the Unit Circle to dynamically view angle arcs, hypotenuse, and side lengths.</p>
             </div>
         </section>
 
-        <!-- TAB 2: LESSON NOTES -->
+        <!-- TAB 2: COMPREHENSIVE LESSON NOTES -->
         <section id="tab-lessons" class="hidden space-y-6">
-            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-6">
-                <h2 class="text-xl font-bold text-white mb-2">Pedagogical Trigonometry Review Module</h2>
-                <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-3 text-sm text-slate-300">
-                    <h3 class="text-indigo-400 font-bold">The Circular Functions & Pythagorean Identity</h3>
-                    <p>Let $(x, y)$ be the point on the unit circle corresponding to angle $\theta$. The primary circular functions are defined as $\cos(\theta) = x$, $\sin(\theta) = y$, and $\tan(\theta) = \frac{y}{x}$. The fundamental Pythagorean identity states that $\sin^2(\theta) + \cos^2(\theta) = 1$.</p>
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-8">
+                <div>
+                    <h2 class="text-xl font-bold text-white mb-2">Teacher's Pedagogical Trigonometry Review Module</h2>
+                    <p class="text-slate-400 text-sm">Comprehensive review notes with complete, step-by-step mathematical solutions covering main ratios, reciprocals, Pythagorean theorem, and right-triangle problem solving.</p>
                 </div>
+
+                <!-- MAIN RATIOS & RECIPROCALS OVERVIEW -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                    <h3 class="text-indigo-400 font-bold text-base border-b border-slate-800 pb-2">Core Trigonometric Definitions & Reciprocals</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
+                            <span class="text-emerald-400 font-bold uppercase">Primary Ratios (SOH-CAH-TOA)</span>
+                            <p class="text-slate-300">Sine (sin θ) = Opposite / Hypotenuse</p>
+                            <p class="text-slate-300">Cosine (cos θ) = Adjacent / Hypotenuse</p>
+                            <p class="text-slate-300">Tangent (tan θ) = Opposite / Adjacent = sin θ / cos θ</p>
+                        </div>
+                        <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
+                            <span class="text-indigo-400 font-bold uppercase">Reciprocal Ratios</span>
+                            <p class="text-slate-300">Cosecant (csc θ) = 1 / sin θ = Hypotenuse / Opposite</p>
+                            <p class="text-slate-300">Secant (sec θ) = 1 / cos θ = Hypotenuse / Adjacent</p>
+                            <p class="text-slate-300">Cotangent (cot θ) = 1 / tan θ = Adjacent / Opposite</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10 WORKED EXAMPLES -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Problem Solving Examples</h3>
+                    <div class="grid grid-cols-1 gap-4 text-xs">
+                        
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 1: Using Pythagorean Theorem</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> In a right-angled triangle, leg a = 6 and leg b = 8. Find the hypotenuse c.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. c² = a² + b²<br>2. c² = 6² + 8² = 36 + 64 = 100<br>3. c = √100 = 10<br><strong>Answer: Hypotenuse c = 10</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 2: Finding Sine Ratio</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Right triangle has opposite side = 5 and hypotenuse = 13. Find sin θ and csc θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin θ = Opp / Hyp = 5/13<br>2. csc θ = 1 / sin θ = 13/5<br><strong>Answer: sin θ = 5/13, csc θ = 13/5</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 3: Finding Cosine and Adjacent Side</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse = 10 and cos θ = 0.8. Find the adjacent side length.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cos θ = Adj / Hyp → 0.8 = Adj / 10<br>2. Adj = 0.8 × 10 = 8<br><strong>Answer: Adjacent side = 8</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 4: Using Tangent to Find Opposite Side</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Adjacent side = 12 and tan θ = 3/4. Find the opposite side.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan θ = Opp / Adj → 3/4 = Opp / 12<br>2. Opp = 12 × (3/4) = 9<br><strong>Answer: Opposite side = 9</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 5: Finding Missing Leg via Pythagorean Theorem</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse c = 15 and leg a = 9. Find leg b.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. b² = c² - a² = 15² - 9² = 225 - 81 = 144<br>2. b = √144 = 12<br><strong>Answer: Leg b = 12</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 6: Reciprocal Secant Calculation</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> If cos θ = 4/5, find sec θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sec θ = 1 / cos θ<br>2. sec θ = 1 / (4/5) = 5/4<br><strong>Answer: sec θ = 5/4</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 7: Cotangent Calculation</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> If tan θ = 7/24, find cot θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cot θ = 1 / tan θ<br>2. cot θ = 24/7<br><strong>Answer: cot θ = 24/7</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 8: Finding Angle using Inverse Sine</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> In a right triangle, sin θ = 0.5. Find angle θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. θ = arcsin(0.5)<br>2. θ = 30° (or π/6 rad)<br><strong>Answer: θ = 30°</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 9: Using Pythagorean Identity</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> If sin θ = 3/5 in Quadrant I, find cos θ.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin² θ + cos² θ = 1 → (3/5)² + cos² θ = 1<br>2. 9/25 + cos² θ = 1 → cos² θ = 16/25<br>3. cos θ = √(16/25) = 4/5<br><strong>Answer: cos θ = 4/5</strong></p>
+                        </div>
+
+                        <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                            <span class="text-emerald-400 font-bold uppercase">Example 10: Complete Triangle Evaluation</span>
+                            <p class="text-slate-300"><strong>Problem:</strong> Angle θ = 45° and adjacent side = 7. Find opposite side and hypotenuse.</p>
+                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan(45°) = 1 → Opposite = Adjacent = 7<br>2. Hypotenuse c = √(7² + 7²) = √98 = 7√2<br><strong>Answer: Opposite = 7, Hypotenuse = 7√2</strong></p>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- TAB 3: ADAPTIVE QUIZ & BOSS BATTLES -->
+        <!-- TAB 3: QUIZ (LIVE ARENA + PRACTICE QUIZ PORTAL) -->
         <section id="tab-quiz" class="hidden max-w-2xl mx-auto space-y-6">
-            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
-                <div id="quiz-setup" class="space-y-4">
-                    <h2 class="text-xl font-bold text-indigo-400">Intelligent Adaptive Quiz & TrigBoss Mode</h2>
-                    <p class="text-sm text-slate-400">Choose your quiz mode and difficulty level (Easy: 20s, Average: 30s, Difficult: 60s).</p>
-                    
+            
+            <!-- QUIZ MODE SELECTOR BAR -->
+            <div class="flex bg-slate-800 p-1.5 rounded-xl border border-slate-700 text-xs font-bold text-center">
+                <button onclick="switchQuizMode('live')" id="btnQuizLive" class="w-1/2 py-2.5 rounded-lg bg-indigo-600 text-white shadow transition">📡 Live Broadcast Arena (Game PIN)</button>
+                <button onclick="switchQuizMode('practice')" id="btnQuizPractice" class="w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition">🎯 Student Practice Quiz (Self-Paced)</button>
+            </div>
+
+            <!-- MODE 1: LIVE BROADCAST GATE -->
+            <div id="liveGateCard" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6 text-center">
+                <span class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cloud Broadcast Mode</span>
+                <h2 class="text-2xl font-black text-white">Enter Game PIN</h2>
+                <p class="text-slate-400 text-xs">Enter the 4-digit PIN broadcasted by your teacher to submit scores live.</p>
+
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4 max-w-sm mx-auto">
                     <div>
-                        <label class="block text-sm font-medium mb-1">Quiz Mode</label>
-                        <select id="selectedQuizMode" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white text-xs">
-                            <option value="adaptive">Adaptive Scaffolding Quiz (Self-Paced)</option>
-                            <option value="boss">TrigBoss Battle (Live Cooperative Classroom)</option>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Teacher Game PIN:</label>
+                        <input type="text" id="gamePinInput" maxlength="4" placeholder="e.g., 8842" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-center text-xl font-mono tracking-widest text-indigo-400">
+                    </div>
+                    <button onclick="verifyStudentGamePin()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Live Challenge</button>
+                </div>
+            </div>
+
+            <!-- MODE 2: PRACTICE QUIZ GATE -->
+            <div id="practiceGateCard" class="hidden bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6 text-center">
+                <span class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Practice Portal</span>
+                <h2 class="text-2xl font-black text-white">Self-Paced Practice Drill</h2>
+                <p class="text-slate-400 text-xs">Practice drill scores stay private on your device and are <strong>never recorded</strong> on the Teacher Dashboard.</p>
+
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4 max-w-sm mx-auto text-left">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Select Practice Difficulty:</label>
+                        <select id="practiceDifficultySelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                            <option value="easy">Easy Level (10 Questions)</option>
+                            <option value="average">Average Level (10 Questions)</option>
+                            <option value="difficult">Difficult Level (10 Worded Problems)</option>
                         </select>
                     </div>
+                    <button onclick="startPracticeSession()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Practice Quiz</button>
+                </div>
+            </div>
 
+            <!-- ACTIVE QUIZ GAME ENGINE -->
+            <div id="quizGameArea" class="hidden bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
                     <div>
-                        <label class="block text-sm font-medium mb-1">Difficulty Level (Controls Timer)</label>
-                        <select id="selectedDifficulty" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white text-xs">
-                            <option value="easy">Easy (20 seconds per item)</option>
-                            <option value="average">Average (30 seconds per item)</option>
-                            <option value="difficult">Difficult (1 minute per item)</option>
-                        </select>
+                        <h2 id="quizRoundBadgeTitle" class="text-base font-bold text-white">TrigNovation Challenge</h2>
+                        <p id="playerBadge" class="text-xs text-indigo-400 font-semibold"></p>
                     </div>
-
-                    <button onclick="startActiveQuiz()" class="w-full bg-indigo-600 hover:bg-indigo-500 font-bold py-3 rounded-xl text-xs transition">Launch Session</button>
+                    <span id="quizProgress" class="text-xs bg-indigo-600 text-white font-bold px-3 py-1 rounded-full">Question 1 of 10</span>
                 </div>
 
-                <div id="quiz-active" class="hidden space-y-4">
-                    <div id="boss-hud" class="hidden bg-slate-900 p-4 rounded-xl border border-red-900/50 space-y-2">
-                        <div class="flex justify-between text-xs font-bold text-red-400">
-                            <span>⚔️ MATH BOSS HP</span>
-                            <span id="bossHpText">100 / 100</span>
-                        </div>
-                        <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
-                            <div id="bossHpBar" class="bg-red-500 h-full transition-all duration-300" style="width: 100%"></div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between text-xs text-slate-400 font-mono border-b border-slate-700 pb-2">
-                        <span id="quizProg">Item 1</span>
-                        <span id="timerDisplay" class="text-amber-400 font-bold">⏱️ Time: 30s</span>
-                        <span id="streakCounter">Streak: 0 🔥</span>
-                    </div>
-
-                    <div id="questionContainer" class="bg-slate-900 p-5 rounded-xl border border-slate-700 text-sm font-medium">
-                        Loading...
-                    </div>
-
-                    <!-- Dynamic Scaffolding Hint Box -->
-                    <div id="scaffoldHintBox" class="hidden bg-amber-950/40 border border-amber-600/50 p-4 rounded-xl text-amber-200 text-xs space-y-1">
-                        <p class="font-bold">💡 Adaptive Scaffolding Hint:</p>
-                        <p id="hintText">Review the sign conventions and reference angles across quadrants!</p>
-                    </div>
-
+                <div id="quizContainer">
+                    <h3 id="questionText" class="text-base font-semibold text-slate-200 mb-4"></h3>
                     <div id="optionsContainer" class="grid grid-cols-1 gap-3"></div>
                 </div>
-            </div>
-        </section>
 
-        <!-- TAB 4: BADGES & ACHIEVEMENTS -->
-        <section id="tab-badges" class="hidden space-y-6">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
-                <h2 class="text-xl font-bold text-indigo-400">Achievement & Milestone Badges</h2>
-                <p class="text-sm text-slate-400">Earn digital honors as you master trigonometric competencies.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                    <div class="bg-slate-900 p-5 rounded-xl border border-indigo-500/50 flex items-center space-x-4">
-                        <div class="text-3xl bg-indigo-600/20 p-3 rounded-xl">🎯</div>
-                        <div>
-                            <h3 class="font-bold text-white text-sm">Unit Circle Master</h3>
-                            <p class="text-slate-400 mt-1">Achieve 100% accuracy on special angle drills.</p>
-                            <span class="inline-block mt-2 bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">Unlocked ✅</span>
-                        </div>
-                    </div>
-                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 flex items-center space-x-4 opacity-70">
-                        <div class="text-3xl bg-slate-800 p-3 rounded-xl">🛡️</div>
-                        <div>
-                            <h3 class="font-bold text-white text-sm">Perseverance Badge</h3>
-                            <p class="text-slate-400 mt-1">Complete 5 difficult word problems without failing.</p>
-                            <span class="inline-block mt-2 bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Locked 🔒</span>
-                        </div>
-                    </div>
-                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 flex items-center space-x-4 opacity-70">
-                        <div class="text-3xl bg-slate-800 p-3 rounded-xl">⚡</div>
-                        <div>
-                            <h3 class="font-bold text-white text-sm">TrigBoss Slayer</h3>
-                            <p class="text-slate-400 mt-1">Contribute to defeating 3 cooperative class bosses.</p>
-                            <span class="inline-block mt-2 bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Locked 🔒</span>
-                        </div>
-                    </div>
+                <div id="scoreScreen" class="hidden text-center py-8 space-y-4">
+                    <div id="scoreIcon" class="inline-block bg-indigo-600 text-white text-3xl font-black p-4 rounded-full mb-2">🏆</div>
+                    <h3 class="text-2xl font-bold text-white">Round Completed!</h3>
+                    <p id="finalScoreText" class="text-slate-300 text-sm"></p>
+                    <p id="scoreSubText" class="text-emerald-400 text-xs font-semibold"></p>
+                    <button onclick="resetQuizView()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs px-4 py-2 rounded-lg transition">Return to Menu</button>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 5: TEACHER DASHBOARD & HEATMAP -->
+        <!-- TAB 4: TEACHER DASHBOARD & ANALYTICS -->
         <section id="tab-dashboard" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
-                <!-- HEATMAP & REMEDIATION -->
-                <div class="space-y-4 border-b border-slate-700 pb-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <!-- PIN BROADCASTER -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-indigo-800/50 space-y-4">
+                    <h3 class="text-base font-bold text-indigo-400 flex items-center gap-2">
+                        <span>📡 Live Cloud Game PIN Broadcaster</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
                         <div>
-                            <h3 class="text-base font-bold text-indigo-400">Classroom Misconception Heatmap (MATATAG Framework)</h3>
-                            <p class="text-xs text-slate-400">Real-time diagnostic competency tracking across student sessions.</p>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Select Difficulty Round:</label>
+                            <select id="teacherRoundSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
+                                <option value="easy">Easy Round (10 Qs)</option>
+                                <option value="average">Average Round (10 Qs)</option>
+                                <option value="difficult">Difficult Round (10 Worded Problems)</option>
+                            </select>
                         </div>
-                        <button onclick="generateRemediationWorksheet()" class="bg-emerald-600 hover:bg-emerald-500 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
-                            📄 Generate Automated Remediation Worksheet
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                        <div class="bg-slate-900 p-4 rounded-xl border border-red-500/40 space-y-1">
-                            <span class="font-bold text-red-400 uppercase text-[10px]">Critical Gap (78% Struggle)</span>
-                            <h4 class="font-semibold text-white">Contextual Word Problems (Elevation / Depression)</h4>
-                            <p class="text-slate-400">Students misalign angle of depression with alternate interior angles.</p>
+                        <button onclick="broadcastNewGameRound()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition">Broadcast Cloud PIN</button>
+                        
+                        <div class="md:col-span-2 bg-slate-800 p-3 rounded-lg border border-slate-700 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-slate-400 uppercase font-bold">Active Cloud PIN</span>
+                                <div id="displayActivePin" class="text-xl font-mono font-black text-emerald-400">NONE</div>
+                            </div>
+                            <img id="displayRoundQR" src="" alt="QR" class="w-12 h-12 bg-white p-1 rounded border border-slate-600">
                         </div>
-                        <div class="bg-slate-900 p-4 rounded-xl border border-amber-500/40 space-y-1">
-                            <span class="font-bold text-amber-400 uppercase text-[10px]">Moderate Gap (54% Struggle)</span>
-                            <h4 class="font-semibold text-white">Quadrant II Sign Conventions (cos &theta; &lt; 0)</h4>
-                            <p class="text-slate-400">Confusion between reference angles and actual coordinate signs.</p>
-                        </div>
-                        <div class="bg-slate-900 p-4 rounded-xl border border-emerald-500/40 space-y-1">
-                            <span class="font-bold text-emerald-400 uppercase text-[10px]">Mastered (18% Struggle)</span>
-                            <h4 class="font-semibold text-white">Special Right Triangles (30°, 60°, 90°)</h4>
-                            <p class="text-slate-400">Strong grasp of radical ratios and exact values.</p>
-                        </div>
-                    </div>
-
-                    <!-- Remediation Output Preview -->
-                    <div id="remediationPreview" class="hidden bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
-                        <h4 class="font-bold text-indigo-300 text-sm">Generated Remediation Worksheet Preview</h4>
-                        <div id="remediationTextContent" class="bg-slate-800 p-4 rounded font-mono text-xs text-slate-300 whitespace-pre-wrap"></div>
-                        <button onclick="alert('Worksheet downloaded successfully!')" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded text-xs font-bold">Download File</button>
                     </div>
                 </div>
 
-                <!-- SUBMISSIONS & CSV EXPORT -->
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-base font-bold text-white">📋 Live Student Submissions</h3>
-                        <button onclick="exportTableToCSV('trignovation_report.csv')" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">📥 Export CSV Report</button>
+                <!-- LIVE LEADERBOARD & DIAGNOSTIC ANALYTICS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                        <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2"><span>🏆 Live Podium & Leaderboard</span></h4>
+                        <div id="podiumContainer" class="space-y-2 text-xs">
+                            <p class="text-slate-500 italic">Waiting for active submissions...</p>
+                        </div>
                     </div>
+
+                    <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                        <h4 class="text-sm font-bold text-rose-400 flex items-center gap-2"><span>📊 Diagnostic Class Analytics</span></h4>
+                        <div id="analyticsContainer" class="space-y-2 text-xs text-slate-300">
+                            <p class="text-slate-500 italic">No live submission data recorded yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBMISSIONS TABLE & CSV EXPORT -->
+                <div>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+                        <h3 class="text-base font-bold text-white">📋 Live Student Submissions (Practice Quizzes Excluded)</h3>
+                        <div class="flex gap-2">
+                            <button onclick="exportTableToCSV('trig_novations_report.csv')" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">📥 Export CSV Report</button>
+                            <button onclick="loadDashboardData()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Refresh</button>
+                            <button onclick="clearDashboardData()" class="bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Clear Records</button>
+                        </div>
+                    </div>
+
                     <div class="overflow-x-auto border border-slate-700 rounded-xl">
-                        <table class="w-full text-left text-xs text-slate-300">
-                            <thead class="bg-slate-900 border-b border-slate-700 text-indigo-300">
+                        <table id="submissionsTable" class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-900 text-slate-400 uppercase font-bold border-b border-slate-700">
                                 <tr>
                                     <th class="p-3">Student Name</th>
+                                    <th class="p-3">Email</th>
+                                    <th class="p-3">Round</th>
                                     <th class="p-3">Score</th>
-                                    <th class="p-3">Difficulty</th>
-                                    <th class="p-3">Timestamp</th>
+                                    <th class="p-3">Percentage</th>
+                                    <th class="p-3">Date & Time Taken</th>
                                 </tr>
                             </thead>
-                            <tbody id="teacherSubmissionsTableBody">
-                                <tr><td colspan="4" class="p-4 text-center text-slate-500 italic">No cloud submissions recorded yet.</td></tr>
-                            </tbody>
+                            <tbody id="dashboardTableBody" class="divide-y divide-slate-700"></tbody>
                         </table>
                     </div>
                 </div>
@@ -348,99 +422,225 @@
 
     </main>
 
-    <!-- Core JavaScript Logic -->
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
+        TrigNovation Teaching Device &bull; Real-time Firebase Cloud Sync &bull; 0 Maintenance Cost
+    </footer>
+
     <script>
-        // Tab Navigation
-        function switchTab(tabId) {
-            ['simulator', 'lessons', 'quiz', 'badges', 'dashboard'].forEach(id => {
-                const el = document.getElementById('tab-' + id);
-                if (el) el.classList.add('hidden');
-                const btn = document.getElementById('btn-' + id);
-                if (btn) {
-                    btn.classList.remove('bg-indigo-600', 'text-white', 'shadow');
-                    btn.classList.add('text-indigo-300');
+        // --- OFFLINE STATUS LISTENER ---
+        function updateOnlineStatus() {
+            const banner = document.getElementById('offlineBanner');
+            if (navigator.onLine) {
+                banner.classList.add('hidden');
+            } else {
+                banner.classList.remove('hidden');
+            }
+        }
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+
+        // --- WEB AUDIO API SOUND EFFECTS ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playAudioFeedback(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else {
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15); // Low buzz
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            }
+        }
+
+        const firebaseConfig = {
+  apiKey: "AIzaSyAHjIzF3_9cc8cI3lXKj7ec3dhGJinIcB8",
+  authDomain: "conicmaster-961bf.firebaseapp.com",
+  projectId: "conicmaster-961bf",
+  storageBucket: "conicmaster-961bf.firebasestorage.app",
+  messagingSenderId: "95380702057",
+  appId: "1:95380702057:web:91ed894b9b9cba502f33f8"
+};
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUserData = null;
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                if (user.emailVerified) {
+                    let localRole = localStorage.getItem(`role_${user.uid}`) || 'student';
+                    let localName = user.displayName || user.email.split('@')[0];
+                    currentUserData = { name: localName, email: user.email, role: localRole };
+                    
+                    document.getElementById('authOverlay').classList.add('hidden');
+                    document.getElementById('userRoleBadge').innerText = localRole.toUpperCase();
+                    document.getElementById('userProfileLabel').innerText = `${localName} (${user.email})`;
+
+                    document.querySelectorAll('.teacher-only').forEach(el => {
+                        el.classList.toggle('hidden', localRole !== 'teacher');
+                    });
+                } else {
+                    alert("Please verify your email address via the link sent to your inbox.");
+                    auth.signOut();
                 }
-            });
-
-            const targetTab = document.getElementById('tab-' + tabId);
-            if (targetTab) targetTab.classList.remove('hidden');
-            const targetBtn = document.getElementById('btn-' + tabId);
-            if (targetBtn) {
-                targetBtn.classList.add('bg-indigo-600', 'text-white', 'shadow');
-                targetBtn.classList.remove('text-indigo-300');
+            } else {
+                document.getElementById('authOverlay').classList.remove('hidden');
             }
-        }
+        });
 
-        // Auth Mode Switch
         function switchAuthMode(mode) {
-            if (mode === 'login') {
-                document.getElementById('formLogin').classList.remove('hidden');
-                document.getElementById('formRegister').classList.add('hidden');
-                document.getElementById('btnAuthLogin').className = "w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition";
-                document.getElementById('btnAuthRegister').className = "w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition";
-            } else {
-                document.getElementById('formLogin').classList.add('hidden');
-                document.getElementById('formRegister').classList.remove('hidden');
-                document.getElementById('btnAuthRegister').className = "w-1/2 py-2 font-bold rounded-lg bg-emerald-600 text-white transition";
-                document.getElementById('btnAuthLogin').className = "w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition";
-            }
+            document.getElementById('formLogin').classList.toggle('hidden', mode !== 'login');
+            document.getElementById('formRegister').classList.toggle('hidden', mode !== 'register');
+            document.getElementById('btnAuthLogin').className = mode === 'login' ? "w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition" : "w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition";
+            document.getElementById('btnAuthRegister').className = mode === 'register' ? "w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition" : "w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition";
         }
 
-        // Simulated Login / Registration Handlers for demo & offline usage
-        function handleFirebaseLogin(e) {
+        async function handleFirebaseRegister(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            authenticateUser(email, "Student User", email.includes('teacher') || email.includes('admin') ? 'teacher' : 'student');
-        }
-
-        function handleFirebaseRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('regName').value;
-            const email = document.getElementById('regEmail').value;
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
             const role = document.getElementById('regRole').value;
-            authenticateUser(email, name, role);
+            const password = document.getElementById('regPassword').value;
+
+            try {
+                const cred = await auth.createUserWithEmailAndPassword(email, password);
+                await cred.user.updateProfile({ displayName: name });
+                await cred.user.sendEmailVerification();
+                localStorage.setItem(`role_${cred.user.uid}`, role);
+                alert(`Success! Verification email sent to ${email}.`);
+                auth.signOut();
+                switchAuthMode('login');
+            } catch (err) { alert("Registration Error: " + err.message); }
         }
 
-        function authenticateUser(email, name, role) {
-            document.getElementById('authOverlay').classList.add('hidden');
-            document.getElementById('userRoleBadge').innerText = role;
-            document.getElementById('userProfileLabel').innerText = `${name} (${email})`;
-            if (role === 'teacher') {
-                document.querySelectorAll('.teacher-only').forEach(el => el.classList.remove('hidden'));
-            } else {
-                document.querySelectorAll('.teacher-only').forEach(el => el.classList.add('hidden'));
-            }
+        async function handleFirebaseLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+            } catch (err) { alert("Login Error: " + err.message); }
         }
 
-        function handleLogout() {
-            document.getElementById('authOverlay').classList.remove('hidden');
+        function handleLogout() { auth.signOut(); }
+
+        function switchTab(tabName) {
+            ['simulator', 'lessons', 'quiz', 'dashboard'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`btn-${t}`).classList.remove('bg-indigo-600', 'text-white', 'shadow');
+                document.getElementById(`btn-${t}`).classList.add('text-indigo-300');
+            });
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`btn-${tabName}`).classList.add('bg-indigo-600', 'text-white', 'shadow');
+            document.getElementById(`btn-${tabName}`).classList.remove('text-indigo-300');
+
+            if(tabName === 'dashboard') loadDashboardData();
         }
 
-        // Offline detection
-        window.addEventListener('online', () => document.getElementById('offlineBanner').classList.add('hidden'));
-        window.addEventListener('offline', () => document.getElementById('offlineBanner').classList.remove('hidden'));
-        if (!navigator.onLine) document.getElementById('offlineBanner').classList.remove('hidden');
+        // UNIT CIRCLE CANVAS LOGIC
+        const canvas = document.getElementById('unitCircleCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentAngleDeg = 45;
 
-        // Unit Circle Canvas Visualizer
-        function updateTrigAngle(deg) {
-            document.getElementById('angleDegreeVal').innerText = deg + '°';
-            const rad = (deg * Math.PI) / 180;
-            const cos = Math.cos(rad);
-            const sin = Math.sin(rad);
-            const tan = Math.abs(cos) > 0.001 ? (sin / cos) : (sin > 0 ? Infinity : -Infinity);
+        function drawUnitCircle(deg) {
+            const width = canvas.width;
+            const height = canvas.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = 150;
 
-            document.getElementById('dispSinVal').innerText = sin.toFixed(4);
-            document.getElementById('dispCosVal').innerText = cos.toFixed(4);
-            document.getElementById('dispTanVal').innerText = tan === Infinity ? 'Undefined' : tan.toFixed(4);
+            ctx.clearRect(0, 0, width, height);
 
-            // Quadrant badge
-            let q = "Quadrant I";
-            if (deg > 90 && deg <= 180) q = "Quadrant II";
-            else if (deg > 180 && deg <= 270) q = "Quadrant III";
-            else if (deg > 270) q = "Quadrant IV";
-            document.getElementById('quadrantBadge').innerText = q;
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(30, cy); ctx.lineTo(width - 30, cy);
+            ctx.moveTo(cx, 30); ctx.lineTo(cx, height - 30);
+            ctx.stroke();
 
-            drawUnitCircle(deg);
+            ctx.strokeStyle = '#6366f1';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            const rad = deg * (Math.PI / 180);
+            const px = cx + radius * Math.cos(rad);
+            const py = cy - radius * Math.sin(rad);
+
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 40, 0, -rad, true);
+            ctx.stroke();
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = 'bold 12px monospace';
+            let arcLabelRad = -rad / 2;
+            let arcLabelX = cx + 55 * Math.cos(arcLabelRad);
+            let arcLabelY = cy + 55 * Math.sin(arcLabelRad);
+            ctx.fillText(`θ=${deg}°`, arcLabelX - 15, arcLabelY + 5);
+
+            ctx.strokeStyle = '#60a5fa';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, cy); ctx.stroke();
+            ctx.fillStyle = '#60a5fa';
+            ctx.fillText(`cos = ${Math.cos(rad).toFixed(2)}`, (cx + px) / 2 - 25, cy + 18);
+
+            ctx.strokeStyle = '#fb7185';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, py); ctx.stroke();
+            ctx.fillStyle = '#fb7185';
+            ctx.fillText(`sin = ${Math.sin(rad).toFixed(2)}`, px + 8, (cy + py) / 2);
+
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
+            ctx.fillStyle = '#34d399';
+            ctx.fillText(`Hyp = 1.00`, (cx + px) / 2 - 40, (cy + py) / 2 - 10);
+
+            ctx.fillStyle = '#a855f7';
+            ctx.beginPath(); ctx.arc(px, py, 6, 0, 2 * Math.PI); ctx.fill();
+
+            const sinVal = Math.sin(rad);
+            const cosVal = Math.cos(rad);
+            const tanVal = Math.abs(cosVal) < 0.0001 ? "Undefined" : (sinVal / cosVal).toFixed(4);
+
+            document.getElementById('dispSinVal').innerText = sinVal.toFixed(4);
+            document.getElementById('dispCosVal').innerText = cosVal.toFixed(4);
+            document.getElementById('dispTanVal').innerText = tanVal;
+            document.getElementById('dispCscVal').innerText = Math.abs(sinVal) < 0.0001 ? "Inf" : (1 / sinVal).toFixed(2);
+            document.getElementById('dispSecVal').innerText = Math.abs(cosVal) < 0.0001 ? "Inf" : (1 / cosVal).toFixed(2);
+            document.getElementById('dispCotVal').innerText = Math.abs(sinVal) < 0.0001 ? "Inf" : (cosVal / sinVal).toFixed(2);
+
+            let quad = "Quadrant I";
+            if (deg > 90 && deg <= 180) quad = "Quadrant II";
+            else if (deg > 180 && deg <= 270) quad = "Quadrant III";
+            else if (deg > 270 && deg <= 360) quad = "Quadrant IV";
+            document.getElementById('quadrantBadge').innerText = quad;
+        }
+
+        function updateTrigAngle(val) {
+            currentAngleDeg = parseFloat(val);
+            document.getElementById('angleDegreeVal').innerText = `${currentAngleDeg}°`;
+            drawUnitCircle(currentAngleDeg);
         }
 
         function setQuickAngle(deg) {
@@ -448,180 +648,318 @@
             updateTrigAngle(deg);
         }
 
-        function drawUnitCircle(deg) {
-            const canvas = document.getElementById('unitCircleCanvas');
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left - canvas.width / 2;
+            const y = -(e.clientY - rect.top - canvas.height / 2);
+            let rad = Math.atan2(y, x);
+            if (rad < 0) rad += 2 * Math.PI;
+            setQuickAngle(Math.round(rad * (180 / Math.PI)));
+        });
+        drawUnitCircle(45);
 
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            const r = 130;
-            const rad = (deg * Math.PI) / 180;
+        // --- QUIZ QUESTION BANKS (10 ITEMS EACH LEVEL, PROPER MATH SYMBOLS & DIFFICULT WORDED PROBLEMS) ---
+        const liveQuizBanks = {
+            easy: [
+                { q: "What is sin(θ) equal to in right triangle trigonometry?", options: ["Opposite / Hypotenuse", "Adjacent / Hypotenuse", "Opposite / Adjacent", "Hypotenuse / Opposite"], correct: 0 },
+                { q: "What is cos(θ) equal to in right triangle trigonometry?", options: ["Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Opposite / Adjacent", "Adjacent / Opposite"], correct: 0 },
+                { q: "What is tan(θ) equal to in SOH-CAH-TOA?", options: ["Opposite / Adjacent", "Adjacent / Hypotenuse", "Opposite / Hypotenuse", "Hypotenuse / Opposite"], correct: 0 },
+                { q: "What is the value of sin(90°)?", options: ["1", "0", "-1", "Undefined"], correct: 0 },
+                { q: "What is the value of cos(0°)?", options: ["1", "0", "-1", "0.5"], correct: 0 },
+                { q: "Which ratio is reciprocal to sine?", options: ["csc θ", "sec θ", "cot θ", "cos θ"], correct: 0 },
+                { q: "Which ratio is reciprocal to cosine?", options: ["sec θ", "csc θ", "cot θ", "tan θ"], correct: 0 },
+                { q: "Which ratio is reciprocal to tangent?", options: ["cot θ", "csc θ", "sec θ", "sin θ"], correct: 0 },
+                { q: "What is the hypotenuse of a right triangle with legs 3 and 4?", options: ["5", "7", "6", "25"], correct: 0 },
+                { q: "What is sin(30°)?", options: ["1/2", "√3/2", "√2/2", "1"], correct: 0 }
+            ],
+            average: [
+                { q: "What is tan(30°) in exact radical form?", options: ["√3/3", "√3", "1", "1/2"], correct: 0 },
+                { q: "What is tan(60°) in exact radical form?", options: ["√3", "√3/3", "1", "2"], correct: 0 },
+                { q: "What is the value of sin(120°)?", options: ["√3/2", "-√3/2", "1/2", "-1/2"], correct: 0 },
+                { q: "What is the value of cos(120°)?", options: ["-1/2", "1/2", "-√3/2", "√3/2"], correct: 0 },
+                { q: "Simplify 1 + tan²(θ).", options: ["sec²(θ)", "csc²(θ)", "cot²(θ)", "sin²(θ)"], correct: 0 },
+                { q: "Simplify 1 + cot²(θ).", options: ["csc²(θ)", "sec²(θ)", "tan²(θ)", "cos²(θ)"], correct: 0 },
+                { q: "What is sin(-θ) equal to?", options: ["-sin(θ)", "sin(θ)", "cos(θ)", "-cos(θ)"], correct: 0 },
+                { q: "What is cos(-θ) equal to?", options: ["cos(θ)", "-cos(θ)", "sin(θ)", "-sin(θ)"], correct: 0 },
+                { q: "Convert 3π/4 radians to degrees.", options: ["135°", "120°", "150°", "225°"], correct: 0 },
+                { q: "Convert 5π/6 radians to degrees.", options: ["150°", "120°", "135°", "210°"], correct: 0 }
+            ],
+            difficult: [
+                { q: "A 12-meter ladder leans against a vertical wall making an angle of 60° with the ground. How high up the wall does the ladder reach?", options: ["6√3 m", "6 m", "12√3 m", "3√3 m"], correct: 0 },
+                { q: "A surveyor stands 50 meters away from the base of a building and measures the angle of elevation to the top to be 30°. How tall is the building?", options: ["50√3/3 m", "50√3 m", "25 m", "50 m"], correct: 0 },
+                { q: "A lighthouse keeper at a height of 80 meters observes a boat with an angle of depression of 45°. How far is the boat from the base of the lighthouse?", options: ["80 m", "80√2 m", "40 m", "80√3 m"], correct: 0 },
+                { q: "A drone flies horizontally at an altitude of 120 meters. At a specific moment, the angle of elevation from a radar station on the ground is 30°. What is the direct distance from the radar to the drone?", options: ["240 m", "120√3 m", "240√3 m", "120 m"], correct: 0 },
+                { q: "An airplane ascends at a steady angle of 15° relative to the ground. After traveling 4,000 meters along its flight path, what is its vertical altitude (nearest meter)?", options: ["1,035 m", "3,864 m", "1,072 m", "2,000 m"], correct: 0 },
+                { q: "A ramp is to be constructed to reach a platform 3 meters high. If safety regulations require the angle of inclination to be at most 30°, what is the minimum required ramp length?", options: ["6 m", "3√3 m", "6√3 m", "9 m"], correct: 0 },
+                { q: "From the top of a 50-meter cliff, the angles of depression to two ships directly in line with the observer are 60° and 30°. What is the distance between the two ships?", options: ["100√3/3 m", "50√3 m", "50√3/3 m", "100 m"], correct: 0 },
+                { q: "A kite is flying at a height of 45 meters attached to a taut string inclined at 45° to the horizontal. How long is the kite string?", options: ["45√2 m", "90 m", "45√3 m", "30√2 m"], correct: 0 },
+                { q: "A ship sails 10 km due East, then turns and sails 10√3 km due North. What is the bearing angle of the ship relative to its starting point?", options: ["N 30° E (or 60° elevation from East)", "N 45° E", "N 60° E", "N 15° E"], correct: 0 },
+                { q: "A flagpole casts a shadow 15 meters long when the sun's angle of elevation is 60°. What is the height of the flagpole?", options: ["15√3 m", "15√3/3 m", "30 m", "15 m"], correct: 0 }
+            ]
+        };
 
-            // Axes
-            ctx.strokeStyle = '#334155';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, cy); ctx.lineTo(canvas.width, cy);
-            ctx.moveTo(cx, 0); ctx.lineTo(cx, canvas.height);
-            ctx.stroke();
+        const practiceQuizBanks = {
+            easy: [
+                { q: "What is tan(45°)?", options: ["1", "0", "√3", "1/2"], correct: 0 },
+                { q: "What is the hypotenuse of a right triangle with legs 6 and 8?", options: ["10", "14", "12", "100"], correct: 0 },
+                { q: "If opposite = 5 and hypotenuse = 13, what is sin(θ)?", options: ["5/13", "12/13", "5/12", "13/5"], correct: 0 },
+                { q: "What is cos(60°)?", options: ["1/2", "√3/2", "√2/2", "0"], correct: 0 },
+                { q: "In a unit circle, what coordinate represents cos(θ)?", options: ["x-coordinate", "y-coordinate", "Radius", "Slope"], correct: 0 },
+                { q: "In a unit circle, what coordinate represents sin(θ)?", options: ["y-coordinate", "x-coordinate", "Radius", "Angle"], correct: 0 },
+                { q: "Convert π/2 radians to degrees.", options: ["90°", "180°", "45°", "360°"], correct: 0 },
+                { q: "Convert π radians to degrees.", options: ["180°", "360°", "90°", "270°"], correct: 0 },
+                { q: "What is the value of sin(0°)?", options: ["0", "1", "-1", "Undefined"], correct: 0 },
+                { q: "What is the value of cos(90°)?", options: ["0", "1", "-1", "Undefined"], correct: 0 }
+            ],
+            average: [
+                { q: "In Quadrant II, which primary ratio is positive?", options: ["Sine", "Cosine", "Tangent", "None"], correct: 0 },
+                { q: "In Quadrant III, which primary ratio is positive?", options: ["Tangent", "Sine", "Cosine", "All"], correct: 0 },
+                { q: "In Quadrant IV, which primary ratio is positive?", options: ["Cosine", "Sine", "Tangent", "None"], correct: 0 },
+                { q: "Evaluate sin(135°).", options: ["√2/2", "-√2/2", "1/2", "-1/2"], correct: 0 },
+                { q: "Evaluate cos(135°).", options: ["-√2/2", "√2/2", "-1/2", "1/2"], correct: 0 },
+                { q: "Evaluate tan(135°).", options: ["-1", "1", "√3", "-√3"], correct: 0 },
+                { q: "What is csc(30°)?", options: ["2", "√2", "2/√3", "1/2"], correct: 0 },
+                { q: "What is sec(45°)?", options: ["√2", "2", "2/√3", "1"], correct: 0 },
+                { q: "What is cot(60°)?", options: ["√3/3", "√3", "1", "2"], correct: 0 },
+                { q: "If sin(θ) = 3/5 in Q2, what is cos(θ)?", options: ["-4/5", "4/5", "-3/5", "3/4"], correct: 0 }
+            ],
+            difficult: [
+                { q: "A rescue helicopter hovers 200 meters above a search area. The pilot spots a raft at an angle of depression of 30°. How far must the rescue boat travel horizontally from directly below the helicopter to reach the raft?", options: ["200√3 m", "200 m", "400 m", "100√3 m"], correct: 0 },
+                { q: "A 10-meter telephone pole is supported by a guy wire anchored to the ground making a 45° angle with the horizontal. What is the length of the guy wire?", options: ["10√2 m", "20 m", "10√3 m", "5√2 m"], correct: 0 },
+                { q: "An observer on a watchtower 40 meters tall sees a firespotted at an angle of depression of 60°. What is the ground distance from the base of the tower to the fire?", options: ["40√3/3 m", "40√3 m", "20 m", "80 m"], correct: 0 },
+                { q: "A shadow cast by a tree changes from 20 meters to 20√3/3 meters as the sun rises. What was the shift in the sun's angle of elevation?", options: ["From 30° to 60° (increased by 30°)", "From 45° to 60°", "From 30° to 45°", "From 15° to 45°"], correct: 0 },
+                { q: "A mountain climber measures the angle of elevation to a peak as 30°. After walking 1,000 meters closer along a flat plain, the angle of elevation increases to 60°. What is the height of the mountain peak?", options: ["500√3 m", "500 m", "1,000√3 m", "250√3 m"], correct: 0 },
+                { q: "A security camera mounted 6 meters above the ground pans down at an angle of depression of 30° to focus on an entrance door. How far is the door from the wall directly below the camera?", options: ["6√3 m", "6 m", "12 m", "3√3 m"], correct: 0 },
+                { q: "A cable car spans a river connecting two hills. The higher station is 150 meters above the lower station, and the cable forms a 30° angle with the horizontal. What is the length of the cable?", options: ["300 m", "150√3 m", "300√3 m", "150 m"], correct: 0 },
+                { q: "A solar panel is tilted at an angle of 30° to the horizontal roof. If the panel length is 2 meters, what is the vertical height of its upper edge above the roof?", options: ["1 m", "√3 m", "0.5 m", "2√3 m"], correct: 0 },
+                { q: "An archer shoots an arrow at an angle of elevation of 45° toward a target 30 meters away horizontally. Assuming a straight flight path, what height does the arrow reach at the target line?", options: ["30 m", "30√2 m", "15 m", "15√2 m"], correct: 0 },
+                { q: "Two points A and B on opposite sides of a river are observed from a bridge 25 meters high. The angles of depression to A and B are 45° and 30° respectively. What is the distance between A and B?", options: ["25(1 + √3) m", "25√3 m", "50 m", "25(√3 - 1) m"], correct: 0 }
+            ]
+        };
 
-            // Circle
-            ctx.strokeStyle = '#6366f1';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-            ctx.stroke();
+        let activeQuizQuestions = [], currentQuestion = 0, score = 0, activeTotalQuestions = 10;
+        let isPracticeMode = false;
 
-            // Point calculation
-            const x = cx + r * Math.cos(rad);
-            const y = cy - r * Math.sin(rad);
+        function switchQuizMode(mode) {
+            isPracticeMode = (mode === 'practice');
+            document.getElementById('liveGateCard').classList.toggle('hidden', isPracticeMode);
+            document.getElementById('practiceGateCard').classList.toggle('hidden', !isPracticeMode);
+            document.getElementById('quizGameArea').classList.add('hidden');
 
-            // Projection lines
-            ctx.strokeStyle = '#38bdf8';
-            ctx.beginPath();
-            ctx.moveTo(cx, cy); ctx.lineTo(x, y);
-            ctx.lineTo(x, cy); ctx.lineTo(cx, cy);
-            ctx.stroke();
-
-            // Point dot
-            ctx.fillStyle = '#f43f5e';
-            ctx.beginPath();
-            ctx.arc(x, y, 6, 0, 2 * Math.PI);
-            ctx.fill();
+            document.getElementById('btnQuizLive').className = !isPracticeMode ? "w-1/2 py-2.5 rounded-lg bg-indigo-600 text-white shadow transition" : "w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition";
+            document.getElementById('btnQuizPractice').className = isPracticeMode ? "w-1/2 py-2.5 rounded-lg bg-emerald-600 text-white shadow transition" : "w-1/2 py-2.5 rounded-lg text-slate-400 hover:text-white transition";
         }
-        updateTrigAngle(45);
 
-        // Adaptive Quiz Engine & Timers
-        let currentQIndex = 0;
-        let consecutiveMisses = 0;
-        let bossHp = 100;
-        let streak = 0;
-        let activeMode = 'adaptive';
-        let timeRemaining = 30;
-        let timerInterval = null;
+        async function verifyStudentGamePin() {
+            const inputPin = document.getElementById('gamePinInput').value.trim();
+            try {
+                const doc = await db.collection("game_sessions").doc("active_session").get();
+                if(!doc.exists || inputPin !== doc.data().pin) {
+                    alert("Invalid or inactive Game PIN!");
+                    return;
+                }
+                document.getElementById('liveGateCard').classList.add('hidden');
+                document.getElementById('quizGameArea').classList.remove('hidden');
+                document.getElementById('playerBadge').innerText = `${currentUserData.name} | Round: ${doc.data().round.toUpperCase()}`;
+                
+                isPracticeMode = false;
+                startQuizSession(doc.data().round, liveQuizBanks);
+            } catch(err) { alert("Error: " + err.message); }
+        }
 
-        const questions = [
-            { q: "What is the exact value of sin(30°)?", opts: ["1/2", "√3/2", "√2/2", "1"], correct: 0 },
-            { q: "Evaluate cos(120°) in Quadrant II.", opts: ["-1/2", "1/2", "-√3/2", "√3/2"], correct: 0 },
-            { q: "What is the angle of depression if a surveyor looks down at an angle of 35° from a cliff?", opts: ["35°", "55°", "90°", "180°"], correct: 0 }
-        ];
-
-        function startActiveQuiz() {
-            activeMode = document.getElementById('selectedQuizMode').value;
-            const diff = document.getElementById('selectedDifficulty').value;
+        function startPracticeSession() {
+            const diff = document.getElementById('practiceDifficultySelect').value;
+            document.getElementById('practiceGateCard').classList.add('hidden');
+            document.getElementById('quizGameArea').classList.remove('hidden');
+            document.getElementById('playerBadge').innerText = `${currentUserData.name} | PRACTICE: ${diff.toUpperCase()}`;
             
-            if (diff === 'easy') timeRemaining = 20;
-            else if (diff === 'average') timeRemaining = 30;
-            else if (diff === 'difficult') timeRemaining = 60;
+            isPracticeMode = true;
+            startQuizSession(diff, practiceQuizBanks);
+        }
 
-            document.getElementById('quiz-setup').classList.add('hidden');
-            document.getElementById('quiz-active').classList.remove('hidden');
-
-            if (activeMode === 'boss') {
-                document.getElementById('boss-hud').classList.remove('hidden');
-            } else {
-                document.getElementById('boss-hud').classList.add('hidden');
-            }
+        function startQuizSession(round, bankSource) {
+            let bank = bankSource[round] || bankSource.easy;
+            activeQuizQuestions = [...bank].sort(() => Math.random() - 0.5);
+            activeTotalQuestions = activeQuizQuestions.length;
+            currentQuestion = 0;
+            score = 0;
             
-            currentQIndex = 0;
-            streak = 0;
-            bossHp = 100;
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('scoreScreen').classList.add('hidden');
             loadQuestion();
         }
 
         function loadQuestion() {
-            if (timerInterval) clearInterval(timerInterval);
-
-            if (currentQIndex >= questions.length) {
-                document.getElementById('questionContainer').innerText = "🎉 Assessment complete! Excellent mastery demonstrated.";
-                document.getElementById('optionsContainer').innerHTML = '';
-                document.getElementById('scaffoldHintBox').classList.add('hidden');
-                document.getElementById('timerDisplay').innerText = "⏱️ Completed";
+            if(currentQuestion >= activeQuizQuestions.length) {
+                document.getElementById('quizContainer').classList.add('hidden');
+                document.getElementById('scoreScreen').classList.remove('hidden');
+                document.getElementById('finalScoreText').innerText = `${currentUserData.name}, you scored ${score} out of ${activeTotalQuestions}!`;
+                
+                if (isPracticeMode) {
+                    document.getElementById('scoreIcon').innerText = '🎯';
+                    document.getElementById('scoreSubText').innerText = 'Practice completed! Score kept local to device (not recorded on Teacher Dashboard).';
+                } else {
+                    document.getElementById('scoreIcon').innerText = '🏆';
+                    document.getElementById('scoreSubText').innerText = 'Your score and timestamp have been logged live to the Cloud Teacher Dashboard!';
+                    saveLiveQuizSubmission(currentUserData.name, currentUserData.email, score);
+                }
                 return;
             }
 
-            const diff = document.getElementById('selectedDifficulty').value;
-            if (diff === 'easy') timeRemaining = 20;
-            else if (diff === 'average') timeRemaining = 30;
-            else if (diff === 'difficult') timeRemaining = 60;
+            document.getElementById('quizProgress').innerText = `Question ${currentQuestion + 1} of ${activeTotalQuestions}`;
+            const q = activeQuizQuestions[currentQuestion];
+            document.getElementById('questionText').innerText = q.q;
 
-            document.getElementById('timerDisplay').innerText = `⏱️ Time: ${timeRemaining}s`;
+            const optsContainer = document.getElementById('optionsContainer');
+            optsContainer.innerHTML = '';
 
-            timerInterval = setInterval(() => {
-                timeRemaining--;
-                document.getElementById('timerDisplay').innerText = `⏱️ Time: ${timeRemaining}s`;
-                if (timeRemaining <= 0) {
-                    clearInterval(timerInterval);
-                    handleAnswer(false);
-                }
-            }, 1000);
+            let optionsWithIndex = q.options.map((opt, idx) => ({ opt, isCorrect: idx === q.correct })).sort(() => Math.random() - 0.5);
+            const colors = ['bg-rose-600 hover:bg-rose-500', 'bg-blue-600 hover:bg-blue-500', 'bg-amber-600 hover:bg-amber-500', 'bg-emerald-600 hover:bg-emerald-500'];
 
-            const item = questions[currentQIndex];
-            document.getElementById('quizProg').innerText = `Item ${currentQIndex + 1} of ${questions.length}`;
-            document.getElementById('questionContainer').innerText = item.q;
-            
-            const container = document.getElementById('optionsContainer');
-            container.innerHTML = '';
-            
-            item.opts.forEach((opt, idx) => {
+            optionsWithIndex.forEach((item, idx) => {
                 const btn = document.createElement('button');
-                btn.className = "bg-slate-900 border border-slate-700 hover:border-indigo-500 p-3 rounded-xl text-left transition font-mono text-xs text-white";
-                btn.innerText = opt;
+                btn.className = `${colors[idx]} text-white p-4 rounded-xl font-semibold text-xs text-left shadow transition transform active:scale-98`;
+                btn.innerText = item.opt;
                 btn.onclick = () => {
-                    clearInterval(timerInterval);
-                    handleAnswer(idx === item.correct);
+                    if(item.isCorrect) {
+                        score++;
+                        playAudioFeedback('correct');
+                    } else {
+                        playAudioFeedback('wrong');
+                    }
+                    currentQuestion++;
+                    loadQuestion();
                 };
-                container.appendChild(btn);
+                optsContainer.appendChild(btn);
             });
         }
 
-        function handleAnswer(isCorrect) {
-            const hintBox = document.getElementById('scaffoldHintBox');
-            if (isCorrect) {
-                streak++;
-                consecutiveMisses = 0;
-                hintBox.classList.add('hidden');
-                if (activeMode === 'boss') {
-                    bossHp = Math.max(0, bossHp - 34);
-                    document.getElementById('bossHpText').innerText = `${bossHp} / 100`;
-                    document.getElementById('bossHpBar').style.width = `${bossHp}%`;
-                }
-                currentQIndex++;
+        function resetQuizView() {
+            document.getElementById('quizGameArea').classList.add('hidden');
+            if (isPracticeMode) {
+                document.getElementById('practiceGateCard').classList.remove('hidden');
             } else {
-                streak = 0;
-                consecutiveMisses++;
-                hintBox.classList.remove('hidden');
-                document.getElementById('hintText').innerText = timeRemaining <= 0 ? "⏰ Time's up! Pay close attention to unit circle quadrants and key values." : "AI Scaffolding Alert: Incorrect selection. Review quadrant sign rules.";
+                document.getElementById('liveGateCard').classList.remove('hidden');
             }
-            document.getElementById('streakCounter').innerText = `Streak: ${streak} 🔥`;
-            loadQuestion();
         }
 
-        // Automated Remediation Worksheet Generator
-        function generateRemediationWorksheet() {
-            const preview = document.getElementById('remediationPreview');
-            preview.classList.remove('hidden');
-            document.getElementById('remediationTextContent').innerText = 
-`PINAGLABANAN NATIONAL HIGH SCHOOL - SENIOR HIGH SCHOOL
-MATATAG CURRICULUM REMEDIATION WORKSHEET: GENERAL MATHEMATICS
-Focus Competency: Contextual Word Problems (Angles of Elevation & Depression)
+        async function saveLiveQuizSubmission(name, email, finalScore) {
+            try {
+                const doc = await db.collection("game_sessions").doc("active_session").get();
+                const roundName = doc.exists ? doc.data().round.toUpperCase() : 'EASY';
 
-1. A ladder leaning against a 10-meter wall makes an angle of 60° with the ground. Find the distance from the foot of the ladder to the wall.
-2. From the top of a lighthouse 50m high, the angle of depression of a boat is 30°. Calculate the distance of the boat from the base of the lighthouse.
-3. Diagnostic Reflection: Explain why the angle of elevation equals the angle of depression due to alternate interior angles.`;
+                const now = new Date();
+                const formattedDateTime = now.toLocaleString();
+
+                await db.collection("submissions").add({
+                    name: name,
+                    email: email,
+                    round: roundName,
+                    score: finalScore,
+                    total: activeTotalQuestions,
+                    dateTaken: formattedDateTime,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch(err) { console.error("Error logging score:", err); }
         }
 
-        // CSV Export Helper
+        async function broadcastNewGameRound() {
+            const round = document.getElementById('teacherRoundSelect').value;
+            const newPin = Math.floor(1000 + Math.random() * 9000).toString();
+            try {
+                await db.collection("game_sessions").doc("active_session").set({
+                    pin: newPin,
+                    round: round,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('displayActivePin').innerText = newPin;
+                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.href + '?pin=' + newPin)}`;
+                alert(`Cloud PIN ${newPin} broadcasted!`);
+            } catch(err) { alert("Error: " + err.message); }
+        }
+
+        function loadDashboardData() {
+            const tbody = document.getElementById('dashboardTableBody');
+            const podium = document.getElementById('podiumContainer');
+            const analytics = document.getElementById('analyticsContainer');
+
+            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400">Loading Cloud Analytics...</td></tr>';
+
+            db.collection("submissions").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+                tbody.innerHTML = '';
+                podium.innerHTML = '';
+                analytics.innerHTML = '';
+
+                if(snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No student live submissions recorded yet.</td></tr>`;
+                    podium.innerHTML = `<p class="text-slate-500 italic">No podium entries yet.</p>`;
+                    analytics.innerHTML = `<p class="text-slate-500 italic">No live submission data recorded yet.</p>`;
+                    return;
+                }
+
+                let submissions = [];
+                snapshot.forEach(doc => submissions.push(doc.data()));
+
+                let sorted = [...submissions].sort((a, b) => b.score - a.score);
+                sorted.slice(0, 3).forEach((s, idx) => {
+                    const rankEmoji = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
+                    const div = document.createElement('div');
+                    div.className = 'flex justify-between bg-slate-800 p-2 rounded border border-slate-700';
+                    div.innerHTML = `<span>${rankEmoji} <strong>${s.name}</strong></span> <span class="text-emerald-400 font-bold">${s.score} / ${s.total || 10}</span>`;
+                    podium.appendChild(div);
+                });
+
+                analytics.innerHTML = `
+                    <p class="text-indigo-300 font-semibold">Total Live Submissions: ${submissions.length}</p>
+                    <p class="text-emerald-300 font-semibold">Average Class Score: ${(submissions.reduce((acc, curr) => acc + curr.score, 0) / submissions.length).toFixed(1)} / 10</p>
+                    <p class="text-slate-400 text-[11px]">Note: Practice quiz attempts are excluded automatically.</p>
+                `;
+
+                submissions.forEach(sub => {
+                    let totalQ = sub.total || 10;
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-900/50';
+                    tr.innerHTML = `
+                        <td class="p-3 font-semibold text-white">${sub.name}</td>
+                        <td class="p-3 text-slate-400">${sub.email}</td>
+                        <td class="p-3 font-bold text-indigo-300">${sub.round}</td>
+                        <td class="p-3 font-bold text-indigo-300">${sub.score} / ${totalQ}</td>
+                        <td class="p-3 font-bold text-emerald-400">${((sub.score / totalQ) * 100).toFixed(0)}%</td>
+                        <td class="p-3 text-slate-300 font-mono">${sub.dateTaken || 'N/A'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
         function exportTableToCSV(filename) {
-            const csv = ["StudentName,Score,Difficulty,Timestamp", "Juan Dela Cruz,10/10,Average,2026-10-14 07:45:00"].join("\n");
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.setAttribute("download", filename);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            let csv = [];
+            let rows = document.querySelectorAll("#submissionsTable tr");
+            for (let i = 0; i < rows.length; i++) {
+                let row = [], cols = rows[i].querySelectorAll("td, th");
+                for (let j = 0; j < cols.length; j++) row.push('"' + cols[j].innerText + '"');
+                csv.push(row.join(","));
+            }
+            let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+            let downloadLink = document.createElement("a");
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        async function clearDashboardData(confirmPrompt = true) {
+            if(!confirmPrompt || confirm("Clear all student live records from Cloud Database?")) {
+                try {
+                    const snapshot = await db.collection("submissions").get();
+                    const batch = db.batch();
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                    await batch.commit();
+                    loadDashboardData();
+                } catch(err) { console.error("Error clearing DB:", err); }
+            }
         }
     </script>
 </body>
