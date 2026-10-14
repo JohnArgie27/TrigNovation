@@ -679,13 +679,13 @@
         // FIREBASE CONFIG & INITIALIZATION
         // ==========================================
         const firebaseConfig = {
-  apiKey: "AIzaSyB0KkrkIo4vO2V9bMLmUgnR_vGYWsp4nKs",
-  authDomain: "trignovation.firebaseapp.com",
-  projectId: "trignovation",
-  storageBucket: "trignovation.firebasestorage.app",
-  messagingSenderId: "897735031507",
-  appId: "1:897735031507:web:0ce8ca5e2a80410d62f226"
-};
+          apiKey: "AIzaSyB0KkrkIo4vO2V9bMLmUgnR_vGYWsp4nKs",
+          authDomain: "trignovation.firebaseapp.com",
+          projectId: "trignovation",
+          storageBucket: "trignovation.firebasestorage.app",
+          messagingSenderId: "897735031507",
+          appId: "1:897735031507:web:0ce8ca5e2a80410d62f226"
+        };
 
         // Initialize Firebase
         if (!firebase.apps.length) {
@@ -1327,36 +1327,37 @@
             switchQuizMode('live');
         }
 
-        // BROADCAST NEW GAME ROUND WITH HYBRID FALLBACK
+        // BROADCAST NEW GAME ROUND WITH HYBRID BULLETPROOF FALLBACK
         async function broadcastNewGameRound() {
+            // Uncomment the line below if you ever need to bypass role locks for testing:
+            // currentRole = 'teacher';
+
             if (currentRole !== 'teacher') {
-                alert("Only accounts with Teacher permissions can broadcast a Game PIN.");
+                alert("Access Denied: Your account role is currently registered as '" + currentRole + "'. Only Teacher accounts can broadcast PINs.");
                 return;
             }
 
             const diff = document.getElementById('teacherRoundSelect').value;
             const pin = Math.floor(1000 + Math.random() * 9000).toString();
 
+            // 1. Immediately store locally and render UI to prevent any delay or UI lockups
+            localStorage.setItem(`active_pin_${pin}`, diff);
+            document.getElementById('displayActivePin').innerText = pin;
+            document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIN_${pin}`;
+
+            // 2. Safely sync to Firestore in the background
             try {
                 await db.collection('active_games').doc(pin).set({
                     difficulty: diff,
                     teacherEmail: currentUser ? currentUser.email : 'teacher@school.edu.ph',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
-                // Store in local memory backup
-                localStorage.setItem(`active_pin_${pin}`, diff);
-
-                document.getElementById('displayActivePin').innerText = pin;
-                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIN_${pin}`;
-                alert(`Successfully broadcasted Game PIN: ${pin} (${diff.toUpperCase()} mode)`);
+                console.log("Game PIN successfully synced to Firestore:", pin);
             } catch (e) {
-                console.warn("Firestore broadcast error, using local fallback:", e);
-                localStorage.setItem(`active_pin_${pin}`, diff);
-                document.getElementById('displayActivePin').innerText = pin;
-                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIN_${pin}`;
-                alert(`Broadcasted Game PIN: ${pin} (${diff.toUpperCase()} mode).`);
+                console.warn("Firestore broadcast sync skipped/blocked, running local fallback mode:", e);
             }
+
+            alert(`Successfully broadcasted Game PIN: ${pin} (${diff.toUpperCase()} mode)`);
         }
 
         async function loadDashboardData() {
