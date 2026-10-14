@@ -31,7 +31,7 @@
 
            <div>
                 <h2 id="authTitle" class="text-xl font-black text-white">TrigNovation Portal</h2>
-                <p id="authSubtitle" class="text-xs text-slate-400 mt-1">Sign in or register with real email verification.</p>
+                <p id="authSubtitle" class="text-xs text-slate-400 mt-1">Sign in or register with real email verification[cite: 2].</p>
            </div>
 
            <!-- TOGGLE LOGIN VS REGISTER -->
@@ -49,7 +49,6 @@
                <div>
                    <div class="flex justify-between items-center mb-1">
                        <label class="text-xs font-semibold text-slate-300">Password:</label>
-                       <!-- FORGOT PASSWORD TRIGGER LINK -->
                        <button type="button" onclick="switchAuthMode('forgot')" class="text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 transition">Forgot Password?</button>
                    </div>
                    <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
@@ -113,10 +112,7 @@
                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Simulators</button>
                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes</button>
                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
-               
-               <!-- STRICT TEACHER ONLY TAB -->
                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics & Dashboard</button>
-               
                <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Sign Out</button>
             </div>
         </div>
@@ -130,13 +126,13 @@
             <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h2 class="text-base font-black text-white">Trigonometry Simulators Hub</h2>
-                    <p class="text-xs text-slate-400">Select between the Unit Circle interactive visualizer or the Oblique Triangles calculator.</p>
+                    <p class="text-xs text-slate-400">Select between the Unit Circle interactive visualizer or the Oblique Triangles calculator[cite: 2].</p>
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto">
                     <label class="text-xs font-semibold text-slate-300 whitespace-nowrap">Choose Simulator:</label>
                     <select id="simulatorDropdown" onchange="switchSimulatorMode(this.value)" class="bg-slate-900 border border-indigo-500 rounded-lg p-2.5 text-xs text-white font-bold w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="unitcircle">Unit Circle & Right Triangle Visualizer</option>
-                        <option value="oblique">Oblique Triangles (Law of Sines & Cosines)</option>
+                        <option value="unitcircle">Unit Circle & Right Triangle Visualizer[cite: 2]</option>
+                        <option value="oblique">Oblique Triangles (Law of Sines & Cosines)[cite: 2]</option>
                     </select>
                 </div>
             </div>
@@ -155,6 +151,20 @@
                                 </div>
                                 <input type="range" id="angleSlider" min="0" max="360" value="45" class="w-full accent-indigo-500 cursor-pointer bg-slate-900" oninput="updateTrigAngle(this.value)">
                             </div>
+
+                            <div>
+                                <span class="block text-xs font-semibold text-slate-300 mb-2">Quick Jump Special Angles:</span>
+                                <div class="grid grid-cols-4 gap-2 text-xs font-mono">
+                                     <button onclick="setQuickAngle(0)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">0°</button>
+                                     <button onclick="setQuickAngle(30)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">30°</button>
+                                     <button onclick="setQuickAngle(45)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">45°</button>
+                                     <button onclick="setQuickAngle(60)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">60°</button>
+                                     <button onclick="setQuickAngle(90)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">90°</button>
+                                     <button onclick="setQuickAngle(120)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">120°</button>
+                                     <button onclick="setQuickAngle(180)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">180°</button>
+                                     <button onclick="setQuickAngle(270)" class="bg-slate-900 hover:bg-indigo-600 p-2 rounded text-center border border-slate-700">270°</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -169,9 +179,15 @@
                             <span class="text-blue-400 font-bold">cos(θ) [Adj]:</span>
                             <span id="dispCosVal" class="text-white font-bold">0.7071</span>
                         </div>
-                        <div class="flex justify-between">
+                        <div class="flex justify-between border-b border-slate-800 pb-1">
                             <span class="text-emerald-400 font-bold">tan(θ) [Opp/Adj]:</span>
                             <span id="dispTanVal" class="text-white font-bold">1.0000</span>
+                        </div>
+                        <div class="pt-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Reciprocal Ratios</div>
+                        <div class="grid grid-cols-3 gap-1 text-[11px] text-center pt-1">
+                            <div class="bg-slate-800 p-1 rounded">csc: <span id="dispCscVal" class="text-indigo-300">1.41</span></div>
+                            <div class="bg-slate-800 p-1 rounded">sec: <span id="dispSecVal" class="text-indigo-300">1.41</span></div>
+                            <div class="bg-slate-800 p-1 rounded">cot: <span id="dispCotVal" class="text-indigo-300">1.00</span></div>
                         </div>
                     </div>
                 </div>
@@ -186,6 +202,7 @@
                     <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
                          <canvas id="unitCircleCanvas" width="460" height="460" class="cursor-pointer max-w-full h-auto"></canvas>
                     </div>
+                    <p class="text-[11px] text-slate-400 text-center mt-2">Click or drag anywhere on the Unit Circle to dynamically view angle arcs, hypotenuse, and side lengths.</p>
                 </div>
             </div>
 
@@ -193,7 +210,9 @@
             <div id="simObliqueContainer" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 flex flex-col justify-between space-y-6">
                     <div>
-                        <h2 class="text-sm font-bold uppercase tracking-wider text-emerald-400 mb-4 border-b border-slate-700 pb-2">Oblique Triangle Solver</h2>
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-emerald-400 mb-4 border-b border-slate-700 pb-2">Oblique Triangle Solver[cite: 2]</h2>
+                        <p class="text-xs text-slate-300 mb-4">Configure side lengths or angles. Labels match standard triangle notation (A, B, C for vertices/angles; a, b, c for opposite sides)[cite: 2].</p>
+                        
                         <div class="space-y-4">
                             <div>
                                 <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
@@ -218,12 +237,40 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- OBLIQUE RESULTS SUMMARY -->
+                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 space-y-2 font-mono text-xs">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Computed Triangle Properties</span>
+                        <div class="flex justify-between border-b border-slate-800 pb-1">
+                            <span class="text-emerald-400 font-bold">Side c (Law of Cosines):</span>
+                            <span id="oblResC" class="text-white font-bold">11.83</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1">
+                            <span class="text-indigo-400 font-bold">Angle A (Law of Sines):</span>
+                            <span id="oblResA" class="text-white font-bold">50.3°</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1">
+                            <span class="text-amber-400 font-bold">Angle B:</span>
+                            <span id="oblResB" class="text-white font-bold">64.7°</span>
+                        </div>
+                        <div class="flex justify-between pt-1">
+                            <span class="text-slate-300">Perimeter:</span>
+                            <span id="oblResPerimeter" class="text-white font-bold">33.83</span>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- OBLIQUE CANVAS VISUALIZER -->
                 <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-3 px-2">
+                         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Oblique Triangle Scale Diagram (A, B, C & a, b, c)</span>
+                         <span class="text-xs bg-emerald-600 text-white font-bold px-3 py-1 rounded-full">SAS / SSS / AAS Solver</span>
+                    </div>
+                    
                     <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
                          <canvas id="obliqueCanvas" width="460" height="460" class="max-w-full h-auto"></canvas>
                     </div>
+                    <p class="text-[11px] text-slate-400 text-center mt-2">Proper symbols and label markings (A, B, C vertices and a, b, c side lengths) corresponding directly to standard trigonometry conventions[cite: 2].</p>
                 </div>
             </div>
         </section>
@@ -231,8 +278,241 @@
         <!-- TAB 2: COMPREHENSIVE LESSON NOTES -->
         <section id="tab-lessons" class="hidden space-y-6">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-6">
-                <h2 class="text-xl font-bold text-white mb-1">Teacher's Pedagogical Trigonometry Review Module</h2>
-                <p class="text-slate-400 text-sm">Review definitions of right triangles, unit circle, and oblique triangle laws (Law of Sines & Cosines).</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-700 pb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white mb-1">Teacher's Pedagogical Trigonometry Review Module[cite: 2]</h2>
+                        <p class="text-slate-400 text-sm">Comprehensive review notes with complete step-by-step mathematical solutions[cite: 2].</p>
+                    </div>
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <label class="text-xs font-semibold text-slate-300 whitespace-nowrap">Select Lesson Topic:</label>
+                        <select id="lessonNotesDropdown" onchange="switchLessonTopic(this.value)" class="bg-slate-900 border border-indigo-500 rounded-lg p-2.5 text-xs text-white font-bold w-full md:w-72 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="right">Right Triangles & Unit Circle (10 Worked Examples)[cite: 2]</option>
+                            <option value="oblique">Oblique Triangles: Law of Sines & Cosines (10 Worked Examples)[cite: 2]</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- LESSON CONTENT A: RIGHT TRIANGLES -->
+                <div id="lessonContentRight" class="space-y-8">
+                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                       <h3 class="text-indigo-400 font-bold text-base border-b border-slate-800 pb-2">Core Trigonometric Definitions & Reciprocals[cite: 2]</h3>
+                       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                           <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
+                               <span class="text-emerald-400 font-bold uppercase">Primary Ratios (SOH-CAH-TOA)</span>
+                               <p class="text-slate-300">Sine (sin θ) = Opposite / Hypotenuse[cite: 2]</p>
+                               <p class="text-slate-300">Cosine (cos θ) = Adjacent / Hypotenuse[cite: 2]</p>
+                               <p class="text-slate-300">Tangent (tan θ) = Opposite / Adjacent = sin θ / cos θ[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-1">
+                               <span class="text-indigo-400 font-bold uppercase">Reciprocal Ratios</span>
+                               <p class="text-slate-300">Cosecant (csc θ) = 1 / sin θ = Hypotenuse / Opposite[cite: 2]</p>
+                               <p class="text-slate-300">Secant (sec θ) = 1 / cos θ = Hypotenuse / Adjacent[cite: 2]</p>
+                               <p class="text-slate-300">Cotangent (cot θ) = 1 / tan θ = Adjacent / Opposite[cite: 2]</p>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
+                       <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Right Triangle Problem Solving Examples[cite: 2]</h3>
+                       <div class="grid grid-cols-1 gap-4 text-xs">
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 1: Using Pythagorean Theorem</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> In a right-angled triangle, leg a = 6 and leg b = 8. Find the hypotenuse c[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. c² = a² + b²<br>2. c² = 6² + 8² = 36 + 64 = 100<br>3. c = √100 = 10<br><strong>Answer: Hypotenuse c = 10</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 2: Finding Sine Ratio</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Right triangle has opposite side = 5 and hypotenuse = 13. Find sin θ and csc θ[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin θ = Opp / Hyp = 5/13<br>2. csc θ = 1 / sin θ = 13/5<br><strong>Answer: sin θ = 5/13, csc θ = 13/5</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 3: Finding Cosine and Adjacent Side</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse = 10 and cos θ = 0.8. Find the adjacent side length[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cos θ = Adj / Hyp → 0.8 = Adj / 10<br>2. Adj = 0.8 × 10 = 8<br><strong>Answer: Adjacent side = 8</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 4: Using Tangent to Find Opposite Side</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Adjacent side = 12 and tan θ = 3/4. Find the opposite side[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan θ = Opp / Adj → 3/4 = Opp / 12<br>2. Opp = 12 × (3/4) = 9<br><strong>Answer: Opposite side = 9</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 5: Finding Missing Leg via Pythagorean Theorem</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Hypotenuse c = 15 and leg a = 9. Find leg b[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. b² = c² - a² = 15² - 9² = 225 - 81 = 144<br>2. b = √144 = 12<br><strong>Answer: Leg b = 12</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 6: Reciprocal Secant Calculation</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> If cos θ = 4/5, find sec θ[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sec θ = 1 / cos θ<br>2. sec θ = 1 / (4/5) = 5/4<br><strong>Answer: sec θ = 5/4</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 7: Cotangent Calculation</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> If tan θ = 7/24, find cot θ[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. cot θ = 1 / tan θ<br>2. cot θ = 24/7<br><strong>Answer: cot θ = 24/7</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 8: Finding Angle using Inverse Sine</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> In a right triangle, sin θ = 0.5. Find angle θ[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. θ = arcsin(0.5)<br>2. θ = 30° (or π/6 rad)<br><strong>Answer: θ = 30°</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 9: Using Pythagorean Identity</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> If sin θ = 3/5 in Quadrant I, find cos θ[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. sin² θ + cos² θ = 1 → (3/5)² + cos² θ = 1<br>2. 9/25 + cos² θ = 1 → cos² θ = 16/25<br>3. cos θ = √(16/25) = 4/5<br><strong>Answer: cos θ = 4/5</strong>[cite: 2]</p>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 10: Complete Triangle Evaluation</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Angle θ = 45° and adjacent side = 7. Find opposite side and hypotenuse[cite: 2].</p>
+                               <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Solution:</strong><br>1. tan(45°) = 1 → Opposite = Adjacent = 7<br>2. Hypotenuse c = √(7² + 7²) = √98 = 7√2<br><strong>Answer: Opposite = 7, Hypotenuse = 7√2</strong>[cite: 2]</p>
+                           </div>
+                       </div>
+                   </div>
+                </div>
+
+                <!-- LESSON CONTENT B: OBLIQUE TRIANGLES -->
+                <div id="lessonContentOblique" class="hidden space-y-8">
+                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                       <h3 class="text-emerald-400 font-bold text-base border-b border-slate-800 pb-2">Oblique Triangles: Law of Sines & Law of Cosines[cite: 2]</h3>
+                       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                           <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-2">
+                               <span class="text-emerald-400 font-bold uppercase">Law of Sines</span>
+                               <p class="text-slate-300">Used when solving AAS, ASA, or SSA (Ambiguous Case) triangles[cite: 2].</p>
+                               <div class="bg-slate-900 p-2.5 rounded text-center text-indigo-300 font-mono text-sm font-bold border border-slate-700">
+                                   <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
+                                   <span>───────────&nbsp;=&nbsp;───────────&nbsp;=&nbsp;───────────</span><br>
+                                   <span>&nbsp;&nbsp;sin(A)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin(B)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin(C)&nbsp;&nbsp;</span>
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-3 rounded border border-slate-700 space-y-2">
+                               <span class="text-indigo-400 font-bold uppercase">Law of Cosines</span>
+                               <p class="text-slate-300">Used when solving SAS (Side-Angle-Side) or SSS (Side-Side-Side) triangles[cite: 2].</p>
+                               <div class="bg-slate-900 p-2.5 rounded text-center text-indigo-300 font-mono text-xs font-bold border border-slate-700 space-y-1">
+                                   <div>c² = a² + b² − 2ab · cos(C)[cite: 2]</div>
+                                   <div class="pt-1 border-t border-slate-800">
+                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a² + b² − c²<br>
+                                       cos(C) = ───────────────<br>
+                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2ab
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
+                       <h3 class="text-emerald-400 font-bold text-lg border-b border-slate-800 pb-2">10 Step-by-Step Oblique Triangle Worked Examples[cite: 2]</h3>
+                       <div class="grid grid-cols-1 gap-4 text-xs">
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 1 (Law of Sines - AAS): Finding a Side</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, ∠A = 30°, ∠B = 45°, and side a = 12. Find side b[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. Apply Law of Sines[cite: 2]: <br>
+                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b<br>
+                                   ─────────── = ─────────── ⇒ 12 / sin(30°) = b / sin(45°)<br>
+                                   &nbsp;&nbsp;sin(A)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin(B)<br>
+                                   2. b = [ 12 · sin(45°) ] / sin(30°) = [ 12 · 0.7071 ] / 0.5 = 16.97<br>
+                                   <strong>Answer: Side b ≈ 16.97</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 2 (Law of Sines - ASA): Finding a Side</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, ∠A = 50°, ∠C = 60°, and side c = 15. Find side a[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. Apply Law of Sines: a / sin(A) = c / sin(C) ⇒ a / sin(50°) = 15 / sin(60°)<br>
+                                   2. a = [ 15 · sin(50°) ] / sin(60°) = [ 15 · 0.7660 ] / 0.8660 = 13.27<br>
+                                   <strong>Answer: Side a ≈ 13.27</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 3 (Law of Cosines - SAS): Finding Third Side</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 7, side b = 10, and ∠C = 60°. Find side c[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. Apply Law of Cosines: c² = a² + b² − 2ab · cos(C)<br>
+                                   2. c² = 7² + 10² − 2(7)(10) · cos(60°) = 49 + 100 − 140(0.5) = 149 − 70 = 79<br>
+                                   3. c = √79 = 8.89<br>
+                                   <strong>Answer: Side c ≈ 8.89</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 4 (Law of Cosines - SSS): Finding an Angle</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 5, side b = 7, and side c = 10. Find ∠C[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. Apply Law of Cosines: cos(C) = (a² + b² − c²) / (2ab)<br>
+                                   2. cos(C) = (5² + 7² − 10²) / [2(5)(7)] = (25 + 49 − 100) / 70 = −26 / 70 = −0.3714<br>
+                                   3. ∠C = arccos(−0.3714) = 111.8°<br>
+                                   <strong>Answer: Angle ∠C ≈ 111.8°</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 5 (Law of Sines): Finding an Angle</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 10, side b = 14, and ∠A = 35°. Find ∠B[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. sin(B) / b = sin(A) / a ⇒ sin(B) = [ 14 · sin(35°) ] / 10 = [ 14 · 0.5736 ] / 10 = 0.8030<br>
+                                   2. ∠B = arcsin(0.8030) = 53.4°<br>
+                                   <strong>Answer: Angle ∠B ≈ 53.4°</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 6 (SAS Triangle Area): Finding Area</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Find the area of ΔABC where side a = 8, side b = 11, and ∠C = 50°[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. Area = ½ · a · b · sin(C)<br>
+                                   2. Area = 0.5 · 8 · 11 · sin(50°) = 44 · 0.7660 = 33.70<br>
+                                   <strong>Answer: Area ≈ 33.70 square units</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 7 (Law of Cosines - Navigation): Distance Problem</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Two ships leave port at an angle of 58°. Ship 1 travels 40 km, Ship 2 travels 55 km. Find the distance d between them[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. d² = 40² + 55² − 2(40)(55) · cos(58°)<br>
+                                   2. d² = 1600 + 3025 − 4400(0.5299) = 4625 − 2331.56 = 2293.44<br>
+                                   3. d = √2293.44 = 47.89 km<br>
+                                   <strong>Answer: Distance d = 47.89 km</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 8 (Law of Sines - Complete Triangle): ASA Case</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Solve ΔABC given ∠A = 40°, ∠B = 70°, and side c = 12[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. ∠C = 180° − (40° + 70°) = 70°<br>
+                                   2. side a = [ c · sin(A) ] / sin(C) = [ 12 · sin(40°) ] / sin(70°) = [ 12 · 0.6428 ] / 0.9397 = 8.21<br>
+                                   3. side b = [ c · sin(B) ] / sin(C) = [ 12 · sin(70°) ] / sin(70°) = 12<br>
+                                   <strong>Answer: ∠C = 70°, a = 8.21, b = 12</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 9 (Law of Cosines - SSS): Smallest Angle</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> Find the smallest angle in a triangle with sides a = 6, b = 8, and c = 12[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. The smallest angle ∠A is opposite the shortest side a = 6.<br>
+                                   2. cos(A) = (b² + c² − a²) / (2bc) = (8² + 12² − 6²) / [2(8)(12)] = (64 + 144 − 36) / 192 = 172 / 192 = 0.8958<br>
+                                   3. ∠A = arccos(0.8958) = 26.4°<br>
+                                   <strong>Answer: Smallest angle ∠A ≈ 26.4°</strong>[cite: 2]
+                               </div>
+                           </div>
+                           <div class="bg-slate-800 p-4 rounded-lg space-y-2 border border-slate-700">
+                               <span class="text-emerald-400 font-bold uppercase">Example 10 (Ambiguous Case - SSA): Two Triangles Check</span>
+                               <p class="text-slate-300"><strong>Problem:</strong> In ΔABC, side a = 12, side b = 16, and ∠A = 30°. Determine possible values for ∠B[cite: 2].</p>
+                               <div class="text-indigo-200 font-mono bg-slate-900 p-3 rounded border border-slate-700 leading-relaxed">
+                                   <strong>Solution:</strong><br>
+                                   1. sin(B) = [ b · sin(A) ] / a = [ 16 · sin(30°) ] / 12 = [ 16 · 0.5 ] / 12 = 8 / 12 = 0.6667<br>
+                                   2. ∠B₁ = arcsin(0.6667) = 41.8°<br>
+                                   3. ∠B₂ = 180° − 41.8° = 138.2° (Valid since ∠A + ∠B₂ = 30° + 138.2° = 168.2° &lt; 180°)<br>
+                                   <strong>Answer: ∠B can be 41.8° or 138.2°</strong>[cite: 2]
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                </div>
             </div>
         </section>
 
@@ -421,6 +701,7 @@
         let activeQuizTimer = null;
         let timeLeft = 30;
 
+        // 50 QUESTIONS PER BANK (3 LEVELS = 150 TOTAL QUESTIONS, MIXING RIGHT & OBLIQUE; DIFFICULT = WORDED PROBLEMS)
         const questionBanks = {
             easy: [
                 { q: "What is the primary trigonometric ratio for Sine in a right triangle?", options: ["Opposite / Hypotenuse", "Adjacent / Hypotenuse", "Opposite / Adjacent", "Hypotenuse / Opposite"], correct: 0 },
@@ -781,6 +1062,11 @@
             drawUnitCircle(deg);
         }
 
+        function setQuickAngle(deg) {
+            document.getElementById('angleSlider').value = deg;
+            updateTrigAngle(deg);
+        }
+
         function drawUnitCircle(deg) {
             const canvas = document.getElementById('unitCircleCanvas');
             if (!canvas) return;
@@ -798,20 +1084,92 @@
             document.getElementById('dispCosVal').innerText = cosVal.toFixed(4);
             document.getElementById('dispTanVal').innerText = tanVal.toFixed(4);
 
+            const cscVal = Math.abs(sinVal) > 0.0001 ? (1 / sinVal).toFixed(2) : '∞';
+            const secVal = Math.abs(cosVal) > 0.0001 ? (1 / cosVal).toFixed(2) : '∞';
+            const cotVal = Math.abs(tanVal) > 0.0001 ? (1 / tanVal).toFixed(2) : '∞';
+            document.getElementById('dispCscVal').innerText = cscVal;
+            document.getElementById('dispSecVal').innerText = secVal;
+            document.getElementById('dispCotVal').innerText = cotVal;
+
             let quadBadge = "Quadrant I";
             if (deg > 90 && deg <= 180) quadBadge = "Quadrant II";
             else if (deg > 180 && deg <= 270) quadBadge = "Quadrant III";
             else if (deg > 270 && deg <= 360) quadBadge = "Quadrant IV";
             document.getElementById('quadrantBadge').innerText = quadBadge;
+
+            const px = cx + R * cosVal;
+            const py = cy - R * sinVal;
+
+            ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(cx, cy, 35, 0, -rad, true); ctx.stroke();
+
+            ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, cy); ctx.stroke();
+
+            ctx.strokeStyle = '#f43f5e';
+            ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px, py); ctx.stroke();
+
+            ctx.strokeStyle = '#10b981';
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
         }
 
         function updateObliqueSimulation() {
             const a = parseFloat(document.getElementById('oblASlider').value);
             const b = parseFloat(document.getElementById('oblBSlider').value);
             const C_deg = parseFloat(document.getElementById('oblCSlider').value);
+
             document.getElementById('oblASliderVal').innerText = a;
             document.getElementById('oblBSliderVal').innerText = b;
             document.getElementById('oblCSliderVal').innerText = C_deg + '°';
+
+            const C_rad = (C_deg * Math.PI) / 180;
+            const c = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(C_rad));
+            const sinA = (a * Math.sin(C_rad)) / c;
+            const A_rad = Math.asin(Math.min(1, Math.max(-1, sinA)));
+            const A_deg = (A_rad * 180) / Math.PI;
+            const B_deg = 180 - C_deg - A_deg;
+            const perimeter = a + b + c;
+
+            document.getElementById('oblResC').innerText = c.toFixed(2);
+            document.getElementById('oblResA').innerText = A_deg.toFixed(1) + '°';
+            document.getElementById('oblResB').innerText = B_deg.toFixed(1) + '°';
+            document.getElementById('oblResPerimeter').innerText = perimeter.toFixed(2);
+
+            drawObliqueCanvas(a, b, c, A_deg, B_deg, C_deg);
+        }
+
+        function drawObliqueCanvas(a, b, c, A_deg, B_deg, C_deg) {
+            const canvas = document.getElementById('obliqueCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            const scale = 8, ax = 80, ay = 360, bx = ax + b * scale, by = 360;
+            const C_rad = (C_deg * Math.PI) / 180;
+            const cx = ax + a * scale * Math.cos(C_rad);
+            const cy = ay - a * scale * Math.sin(C_rad);
+
+            ctx.strokeStyle = '#10b981'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.lineTo(cx, cy); ctx.closePath(); ctx.stroke();
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.05)'; ctx.fill();
+
+            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 12px sans-serif';
+            ctx.fillText(`A (${A_deg.toFixed(1)}°)`, ax - 25, ay + 20);
+            ctx.fillText(`B (${B_deg.toFixed(1)}°)`, bx + 10, by + 20);
+            ctx.fillText(`C (${C_deg.toFixed(1)}°)`, cx - 10, cy - 15);
+        }
+
+        function switchLessonTopic(topic) {
+            const rightContent = document.getElementById('lessonContentRight');
+            const obliqueContent = document.getElementById('lessonContentOblique');
+            if (topic === 'right') {
+                rightContent.classList.remove('hidden');
+                obliqueContent.classList.add('hidden');
+            } else {
+                rightContent.classList.add('hidden');
+                obliqueContent.classList.remove('hidden');
+            }
         }
 
         function switchQuizMode(mode) {
@@ -1108,7 +1466,6 @@
             document.querySelectorAll("#submissionsTable tr").forEach((row, index) => {
                 let data = [];
                 row.querySelectorAll("td, th").forEach((col, colIdx) => {
-                    // Exclude the last 'Actions' column from CSV
                     if (colIdx < 6) data.push('"' + col.innerText + '"');
                 });
                 csv.push(data.join(","));
