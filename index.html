@@ -781,7 +781,6 @@
             }
         });
 
-        // Switch Auth View Mode (login, register, or forgot)
         function switchAuthMode(mode) {
             const btnLogin = document.getElementById('btnAuthLogin');
             const btnReg = document.getElementById('btnAuthRegister');
@@ -863,7 +862,6 @@
             }
         }
 
-        // HANDLER: SEND PASSWORD RESET EMAIL
         async function handleFirebasePasswordReset(e) {
             e.preventDefault();
             const email = document.getElementById('forgotEmail').value.trim();
@@ -883,7 +881,6 @@
             });
         }
 
-        // Role-Based UI Display Configuration
         function updateRoleUI() {
             const badge = document.getElementById('userRoleBadge');
             badge.innerText = currentRole.toUpperCase();
@@ -912,7 +909,6 @@
             }
         }
 
-        // Tab Navigation
         function switchTab(tabId) {
             if (tabId === 'dashboard' && currentRole !== 'teacher') {
                 alert("Access restricted: Teacher Analytics & Dashboard is available for Teacher accounts only.");
@@ -955,7 +951,6 @@
             }
         }
 
-        // Simulator Dropdown Switcher
         function switchSimulatorMode(mode) {
             const unitCont = document.getElementById('simUnitCircleContainer');
             const oblCont = document.getElementById('simObliqueContainer');
@@ -1184,6 +1179,7 @@
             }
         }
 
+        // STRICT VERIFICATION: ONLY ALLOW PIN BROADCASTED BY TEACHER IN FIRESTORE
         async function verifyStudentGamePin() {
             const pin = document.getElementById('gamePinInput').value.trim();
             if (pin.length !== 4) {
@@ -1199,12 +1195,10 @@
                     currentDifficulty = data.difficulty || 'easy';
                     startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
                 } else {
-                    alert("Invalid or expired Game PIN. Please check with your teacher.");
+                    alert("Invalid or expired Game PIN. Please enter a valid PIN broadcasted by your teacher.");
                 }
             } catch (e) {
-                activeGamePin = pin;
-                currentDifficulty = 'easy';
-                startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
+                alert("Unable to verify PIN. Please ensure you are connected to the internet or that your teacher has broadcasted the PIN.");
             }
         }
 
@@ -1228,7 +1222,7 @@
             document.getElementById('scoreScreen').classList.add('hidden');
             document.getElementById('quizContainer').classList.remove('hidden');
 
-            loadQuestion();
+loadQuestion();
         }
 
         function loadQuestion() {
