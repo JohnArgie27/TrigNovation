@@ -628,16 +628,16 @@
     <!-- FIREBASE CONFIG & APP SCRIPT -->
     <script>
         // ==========================================
-        // FIREBASE CONFIG & INITIALIZATION (STAY AS IS)
+        // FIREBASE CONFIG & INITIALIZATION (PUT YOUR REAL CREDENTIALS HERE)
         // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyD-DummyKeyForTrigNovationPlatform99",
-            authDomain: "trignovation-cloud.firebaseapp.com",
-            projectId: "trignovation-cloud",
-            storageBucket: "trignovation-cloud.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef1234567890"
-        };
+  apiKey: "AIzaSyAHjIzF3_9cc8cI3lXKj7ec3dhGJinIcB8",
+  authDomain: "conicmaster-961bf.firebaseapp.com",
+  projectId: "conicmaster-961bf",
+  storageBucket: "conicmaster-961bf.firebasestorage.app",
+  messagingSenderId: "95380702057",
+  appId: "1:95380702057:web:91ed894b9b9cba502f33f8"
+};
 
         // Initialize Firebase
         if (!firebase.apps.length) {
@@ -994,7 +994,6 @@
             ctx.clearRect(0, 0, w, h);
 
             // Scale and center triangle vertices
-            // Vertex A at bottom-left, B at bottom-right, C at top
             const scale = 8;
             const ax = 80;
             const ay = 360;
@@ -1152,7 +1151,6 @@
                 document.getElementById('quizTimeRemaining').innerText = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(activeQuizTimer);
-                    // Auto submit wrong answer on timeout
                     submitAnswer(-1);
                 }
             }, 1000);
@@ -1182,7 +1180,6 @@
             document.getElementById('finalScoreText').innerText = `You scored ${score} out of ${currentQuestions.length} (${pct}%)`;
             document.getElementById('scoreSubText').innerText = pct >= 75 ? "🌟 Excellent Mastery of Trigonometry Concepts!" : "📚 Keep practicing with the Lesson Notes!";
 
-            // If Live Mode and user is logged in student, record score to Firestore
             if (activeQuizMode === 'live' && currentUser && currentRole === 'student') {
                 try {
                     await db.collection('submissions').add({
@@ -1206,7 +1203,6 @@
             switchQuizMode('live');
         }
 
-        // Teacher Dashboard & Broadcaster Functions
         async function broadcastNewGameRound() {
             const diff = document.getElementById('teacherRoundSelect').value;
             const pin = Math.floor(1000 + Math.random() * 9000).toString();
@@ -1240,8 +1236,7 @@
                 tbody.innerHTML = '';
                 let submissions = [];
                 snapshot.forEach(doc => {
-                    const data = doc.data();
-                    submissions.push(data);
+                    submissions.push(doc.data());
                 });
 
                 submissions.forEach(sub => {
@@ -1271,7 +1266,6 @@
 
             if (subs.length === 0) return;
 
-            // Sort by percentage descending
             const sorted = [...subs].sort((a, b) => b.percentage - a.percentage);
             podium.innerHTML = '';
             sorted.slice(0, 3).forEach((s, idx) => {
@@ -1310,7 +1304,6 @@
             document.body.removeChild(downloadLink);
         }
 
-        // Initial canvas render on load
         window.onload = () => {
             drawUnitCircle(45);
         };
