@@ -1020,7 +1020,7 @@
 
         async function handleFirebaseRegister(e) {
             e.preventDefault();
-            const name = document.getElementById('regName').value;
+            const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value;
             const role = document.getElementById('regRole').value;
             const pass = document.getElementById('regPassword').value;
@@ -1029,6 +1029,8 @@
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
                 localStorage.setItem(`trign_role_${cred.user.uid}`, role);
                 localStorage.setItem('trign_role', role);
+                localStorage.setItem(`trign_name_${cred.user.uid}`, name);
+                localStorage.setItem('trign_name', name);
 
                 try {
                     await db.collection('users').doc(cred.user.uid).set({
@@ -1452,9 +1454,21 @@
 
             if (activeQuizMode === 'live' && currentUser && currentRole === 'student') {
                 try {
+                    // Fetch registered student name from Firestore or LocalStorage
+                    let studentFullName = localStorage.getItem(`trign_name_${currentUser.uid}`) || localStorage.getItem('trign_name');
+                    if (!studentFullName) {
+                        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                        if (userDoc.exists && userDoc.data().name) {
+                            studentFullName = userDoc.data().name;
+                        }
+                    }
+                    if (!studentFullName) {
+                        studentFullName = currentUser.displayName || currentUser.email.split('@')[0];
+                    }
+
                     await db.collection('submissions').add({
                         studentEmail: currentUser.email,
-                        studentName: currentUser.displayName || currentUser.email.split('@')[0],
+                        studentName: studentFullName,
                         difficulty: currentDifficulty,
                         score: score, total: currentQuestions.length, percentage: pct,
                         pin: activeGamePin,
