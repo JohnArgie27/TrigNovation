@@ -1187,7 +1187,7 @@
             }
         }
 
-        // VERIFY STUDENT GAME PIN (FIRESTORE + LOCAL STORAGE FALLBACK)
+        // VERIFY STUDENT GAME PIN (LOCAL STORAGE FIRST, THEN CLOUD FIRESTORE)
         async function verifyStudentGamePin() {
             const pin = document.getElementById('gamePinInput').value.trim();
             if (pin.length !== 4) {
@@ -1195,6 +1195,16 @@
                 return;
             }
 
+            // 1. Check local session storage first (instant verification)
+            const localDiff = localStorage.getItem(`active_pin_${pin}`);
+            if (localDiff) {
+                activeGamePin = pin;
+                currentDifficulty = localDiff;
+                startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
+                return;
+            }
+
+            // 2. Check Firestore cloud database
             try {
                 const doc = await db.collection('active_games').doc(pin).get();
                 if (doc.exists) {
@@ -1205,18 +1215,10 @@
                     return;
                 }
             } catch (e) {
-                console.warn("Firestore lookup failed, checking session memory...", e);
+                console.warn("Firestore lookup failed:", e);
             }
 
-            // Local Session Fallback Check
-            const localDiff = localStorage.getItem(`active_pin_${pin}`);
-            if (localDiff) {
-                activeGamePin = pin;
-                currentDifficulty = localDiff;
-                startActiveQuizSession(`Live Round (PIN: ${pin})`, currentDifficulty);
-            } else {
-                alert("Invalid or expired Game PIN. Please enter a valid PIN broadcasted by your teacher.");
-            }
+            alert("Invalid or expired Game PIN. Please enter a valid PIN broadcasted by your teacher.");
         }
 
         function startPracticeSession() {
@@ -1329,9 +1331,6 @@
 
         // BROADCAST NEW GAME ROUND WITH HYBRID BULLETPROOF FALLBACK
         async function broadcastNewGameRound() {
-            // Uncomment the line below if you ever need to bypass role locks for testing:
-            // currentRole = 'teacher';
-
             if (currentRole !== 'teacher') {
                 alert("Access Denied: Your account role is currently registered as '" + currentRole + "'. Only Teacher accounts can broadcast PINs.");
                 return;
@@ -1340,7 +1339,7 @@
             const diff = document.getElementById('teacherRoundSelect').value;
             const pin = Math.floor(1000 + Math.random() * 9000).toString();
 
-            // 1. Immediately store locally and render UI to prevent any delay or UI lockups
+            // 1. Immediately store locally and render UI to guarantee instant local support
             localStorage.setItem(`active_pin_${pin}`, diff);
             document.getElementById('displayActivePin').innerText = pin;
             document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIN_${pin}`;
