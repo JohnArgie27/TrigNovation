@@ -701,6 +701,72 @@
         let activeQuizTimer = null;
         let timeLeft = 20;
 
+        // --- WEB AUDIO API SOUND EFFECTS SYNTHESIZER ---
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playSliderTick() {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(450, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.02);
+                gain.gain.setValueAtTime(0.04, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.02);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.02);
+            } catch (e) { console.warn("Audio error", e); }
+        }
+
+        function playCorrectSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                    gain.gain.setValueAtTime(0.12, now + idx * 0.07);
+                    gain.gain.linearRampToValueAtTime(0.001, now + idx * 0.07 + 0.15);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + idx * 0.07);
+                    osc.stop(now + idx * 0.07 + 0.15);
+                });
+            } catch (e) { console.warn("Audio error", e); }
+        }
+
+        function playIncorrectSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(160, now);
+                osc.frequency.linearRampToValueAtTime(80, now + 0.22);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.001, now + 0.22);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.22);
+            } catch (e) { console.warn("Audio error", e); }
+        }
+
         const questionBanks = {
             easy: [
                 { q: "What is the primary trigonometric ratio for Sine in a right triangle?", options: ["Opposite / Hypotenuse", "Adjacent / Hypotenuse", "Opposite / Adjacent", "Hypotenuse / Opposite"], correct: 0 },
@@ -1058,11 +1124,13 @@
         function updateTrigAngle(val) {
             const deg = parseInt(val);
             document.getElementById('angleDegreeVal').innerText = deg + '°';
+            playSliderTick();
             drawUnitCircle(deg);
         }
 
         function setQuickAngle(deg) {
             document.getElementById('angleSlider').value = deg;
+            playSliderTick();
             updateTrigAngle(deg);
         }
 
@@ -1142,6 +1210,7 @@
         }
 
         function updateObliqueSimulation() {
+            playSliderTick();
             const a = parseFloat(document.getElementById('oblASlider').value);
             const b = parseFloat(document.getElementById('oblBSlider').value);
             const C_deg = parseFloat(document.getElementById('oblCSlider').value);
@@ -1300,7 +1369,7 @@
                 optContainer.appendChild(btn);
             });
 
-            // Set dynamic timer based on difficulty level
+            // Set dynamic timer & sound based on difficulty level
             if (currentDifficulty === 'difficult') {
                 timeLeft = 90;
             } else if (currentDifficulty === 'average') {
@@ -1317,6 +1386,7 @@
                 document.getElementById('quizTimeRemaining').innerText = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(activeQuizTimer);
+                    playIncorrectSound();
                     handleAnswerSelection(null, null);
                 }
             }, 1000);
@@ -1325,7 +1395,12 @@
         function handleAnswerSelection(selectedOpt, btnElement) {
             if (activeQuizTimer) clearInterval(activeQuizTimer);
             const isCorrect = (selectedOpt === currentCorrectAnswerText);
-            if (isCorrect) score++;
+            if (isCorrect) {
+                score++;
+                playCorrectSound();
+            } else {
+                playIncorrectSound();
+            }
 
             const buttons = document.querySelectorAll('.option-btn');
             buttons.forEach(b => {
