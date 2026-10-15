@@ -1322,11 +1322,25 @@
         }
 
         function handleLogout() {
-            if (isOfflineModeActive || !auth) {
-                location.reload();
-            } else {
-                auth.signOut().then(() => location.reload());
+            // Sign out from Firebase if online
+            if (auth && !isOfflineModeActive) {
+                auth.signOut().catch(e => console.log("Sign out note:", e));
             }
+            
+            // Reset app states in memory without reloading the page
+            isOfflineModeActive = false;
+            currentUser = null;
+            currentRole = 'guest';
+            
+            // Hide offline banner and show the authentication/mode selection overlay
+            document.getElementById('offlineBanner').classList.add('hidden');
+            document.getElementById('authOverlay').classList.remove('hidden');
+            
+            // Reset the overlay view back to the initial mode selection buttons
+            resetToModeSelector();
+            
+            // Switch default tab back to simulator
+            switchTab('simulator');
         }
 
         function updateRoleUI() {
