@@ -3,7 +3,7 @@
 <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrigNovation: Interactive Trigonometry & Cloud Analytics </title>
+    <title>TrigNovation: Interactive Unit Circle & Cloud Analytics Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -37,10 +37,10 @@
            <!-- MODE SELECTOR BUTTONS (ONLINE VS OFFLINE) -->
            <div id="modeSelectorCard" class="space-y-3">
                <button onclick="enterOfflineMode()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
-                   <span>⚡ Offline Mode </span>
+                   <span>⚡ Offline Mode (Far-Flung / No Internet)</span>
                </button>
                <button onclick="showOnlineAuthOptions()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
-                   <span>🌐 Online Mode </span>
+                   <span>🌐 Online Mode (Sign In / Cloud Sync)</span>
                </button>
            </div>
 
@@ -206,7 +206,7 @@
                     </div>
                 </div>
 
-                <!-- CANVAS UNIT CIRCLE GRAPH (WITH FULL LABELS & MARKINGS) -->
+                <!-- CANVAS UNIT CIRCLE GRAPH -->
                 <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-3 px-2">
                          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Interactive Unit Circle, Hypotenuse & Side Lengths</span>
@@ -274,7 +274,7 @@
                     </div>
                 </div>
 
-                <!-- OBLIQUE CANVAS VISUALIZER (WITH FULL LABELS & MARKINGS) -->
+                <!-- OBLIQUE CANVAS VISUALIZER -->
                 <div class="lg:col-span-2 bg-slate-800 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-3 px-2">
                          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Oblique Triangle Scale Diagram (A, B, C & a, b, c)</span>
@@ -284,7 +284,7 @@
                     <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
                          <canvas id="obliqueCanvas" width="460" height="460" class="max-w-full h-auto"></canvas>
                     </div>
-                    <p class="text-[11px] text-slate-400 text-center mt-2">Proper symbols and label markings (A, B, C vertices and a, b, c side lengths) corresponding directly to standard trigonometry conventions.</p>
+                    <p class="text-[11px] text-slate-400 text-center mt-2">Proper symbols and label markings corresponding directly to standard trigonometry conventions.</p>
                 </div>
             </div>
         </section>
@@ -698,11 +698,19 @@
             appId: "1:390069789816:web:d70ba64d238cee5bc6f98d"
         };
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        let auth = null;
+        let db = null;
+
+        // Safely initialize Firebase with offline fallback protection
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            auth = firebase.auth();
+            db = firebase.firestore();
+        } catch (e) {
+            console.warn("Running in pure offline environment. Firebase SDK skipped.");
         }
-        const auth = firebase.auth();
-        const db = firebase.firestore();
 
         let currentUser = null;
         let currentRole = 'guest';
@@ -936,7 +944,7 @@
                 { q: "Worded Problem: A park bench is positioned such that the angle of elevation to the top of a statue is 28° at point A, and 45° at point B located 15 meters closer to the statue along a straight line. Find the height of the statue.", options: ["20.34 meters", "18.50 meters", "22.10 meters", "17.90 meters"], correct: 0 },
                 { q: "Worded Problem: A triangular steel plate has sides of 25 cm, 35 cm, and 45 cm. Find the largest angle of the plate.", options: ["92.83°", "88.50°", "96.10°", "85.40°"], correct: 0 },
                 { q: "Worded Problem: A ship travels 80 km due west, then changes course by 50° toward north and travels another 60 km. How far is the ship from its origin?", options: ["131.25 km", "125.40 km", "138.90 km", "120.10 km"], correct: 0 },
-                { q: "Worded Problem: A observation balloon is tethered by a 250-meter cable that makes an angle of 58° with the ground. Due to wind, the cable slips and the angle changes to 52°. How much cable was let out or pulled in?", options: ["22.45 meters", "18.10 meters", "25.60 meters", "15.00 meters"], correct: 0 },
+                { q: "Worded Problem: An observation balloon is tethered by a 250-meter cable that makes an angle of 58° with the ground. Due to wind, the cable slips and the angle changes to 52°. How much cable was let out or pulled in?", options: ["22.45 meters", "18.10 meters", "25.60 meters", "15.00 meters"], correct: 0 },
                 { q: "Worded Problem: A triangular swimming pool has sides 8m, 10m, and 12m. What is the area of the pool's surface?", options: ["39.68 sq meters", "35.20 sq meters", "42.10 sq meters", "37.50 sq meters"], correct: 0 }
             ]
         };
@@ -960,7 +968,6 @@
             document.getElementById('userRoleBadge').innerText = "OFFLINE STUDENT";
             document.getElementById('userProfileLabel').innerText = "Running Locally (No Internet Required)";
             
-            // Hide Live quiz mode tab since live cloud broadcast requires internet
             const quizToggleBar = document.getElementById('quizModeToggleBar');
             if (quizToggleBar) quizToggleBar.style.display = 'none';
             switchQuizMode('practice');
@@ -980,35 +987,38 @@
             document.getElementById('authSubtitle').innerText = "Choose your connection mode to begin.";
         }
 
-        auth.onAuthStateChanged(async (user) => {
-            if (isOfflineModeActive) return; // Ignore if user explicitly chose offline mode
-            const authOverlay = document.getElementById('authOverlay');
-            if (user) {
-                if (!user.emailVerified) {
-                    await auth.signOut();
-                    authOverlay.classList.remove('hidden');
-                    alert("Please verify your email address.");
-                    return;
-                }
-                currentUser = user;
-                authOverlay.classList.add('hidden');
-                document.getElementById('offlineBanner').classList.add('hidden');
-                
-                try {
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (userDoc.exists) {
-                        currentRole = userDoc.data().role || 'student';
-                    } else {
+        // Only attach auth state observer if Firebase auth successfully loaded
+        if (auth) {
+            auth.onAuthStateChanged(async (user) => {
+                if (isOfflineModeActive) return;
+                const authOverlay = document.getElementById('authOverlay');
+                if (user) {
+                    if (!user.emailVerified) {
+                        await auth.signOut();
+                        authOverlay.classList.remove('hidden');
+                        alert("Please verify your email address.");
+                        return;
+                    }
+                    currentUser = user;
+                    authOverlay.classList.add('hidden');
+                    document.getElementById('offlineBanner').classList.add('hidden');
+                    
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        if (userDoc.exists) {
+                            currentRole = userDoc.data().role || 'student';
+                        } else {
+                            currentRole = localStorage.getItem(`trign_role_${user.uid}`) || localStorage.getItem('trign_role') || 'student';
+                        }
+                    } catch (e) {
                         currentRole = localStorage.getItem(`trign_role_${user.uid}`) || localStorage.getItem('trign_role') || 'student';
                     }
-                } catch (e) {
-                    currentRole = localStorage.getItem(`trign_role_${user.uid}`) || localStorage.getItem('trign_role') || 'student';
+                    updateRoleUI();
+                } else {
+                    authOverlay.classList.remove('hidden');
                 }
-                updateRoleUI();
-            } else {
-                authOverlay.classList.remove('hidden');
-            }
-        });
+            });
+        }
 
         function switchAuthMode(mode) {
             const btnLogin = document.getElementById('btnAuthLogin');
@@ -1050,6 +1060,7 @@
 
         async function handleFirebaseLogin(e) {
             e.preventDefault();
+            if (!auth) { alert("Offline mode active: Cannot sign in without internet."); return; }
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
             try {
@@ -1066,6 +1077,7 @@
 
         async function handleFirebaseRegister(e) {
             e.preventDefault();
+            if (!auth) { alert("Offline mode active: Cannot register without internet."); return; }
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value;
             const role = document.getElementById('regRole').value;
@@ -1100,6 +1112,7 @@
 
         async function handleFirebasePasswordReset(e) {
             e.preventDefault();
+            if (!auth) { alert("Offline mode active."); return; }
             const email = document.getElementById('forgotEmail').value.trim();
             try {
                 await auth.sendPasswordResetEmail(email);
@@ -1111,7 +1124,7 @@
         }
 
         function handleLogout() {
-            if (isOfflineModeActive) {
+            if (isOfflineModeActive || !auth) {
                 location.reload();
             } else {
                 auth.signOut().then(() => location.reload());
@@ -1423,7 +1436,6 @@
                 optContainer.appendChild(btn);
             });
 
-            // Set dynamic timer & sound based on difficulty level
             if (currentDifficulty === 'difficult') {
                 timeLeft = 90;
             } else if (currentDifficulty === 'average') {
