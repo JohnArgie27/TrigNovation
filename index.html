@@ -1351,8 +1351,11 @@
         }
 
         function handleLogout() {
-            if (isOfflineModeActive || !auth || !navigator.onLine) {
-                isOfflineModeActive = false;
+            // Explicitly hide the offline banner and reset the flag
+            isOfflineModeActive = false;
+            document.getElementById('offlineBanner').classList.add('hidden');
+            
+            if (!auth || !navigator.onLine) {
                 location.reload();
             } else {
                 auth.signOut().then(() => {
