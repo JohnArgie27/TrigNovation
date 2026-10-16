@@ -326,6 +326,19 @@
                            </div>
                        </div>
                    </div>
+
+                   <!-- WORKED EXAMPLE 1 -->
+                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                       <h3 class="text-amber-400 font-bold text-sm uppercase tracking-wider">Worked Example 1: Solving a Right Triangle Side (SOH-CAH-TOA)</h3>
+                       <p class="text-xs text-slate-300"><b>Problem:</b> A ladder 15 meters long leans against a vertical wall. If the ladder makes an angle of $65^\circ$ with the ground, how high up the wall does it reach?</p>
+                       <div class="bg-slate-800 p-4 rounded-lg border border-slate-700 space-y-2 text-xs font-mono text-indigo-300">
+                           <div class="text-slate-400 font-bold">Step-by-Step Solution:</div>
+                           <div>1. Identify knowns: Hypotenuse $c = 15$, Angle $\theta = 65^\circ$, Unknown = Opposite side ($a$).</div>
+                           <div>2. Select correct ratio: $\sin(\theta) = \frac{\text{Opposite}}{\text{Hypotenuse}} \implies \sin(65^\circ) = \frac{a}{15}$</div>
+                           <div>3. Isolate $a$: $a = 15 \cdot \sin(65^\circ)$</div>
+                           <div>4. Compute: $a = 15 \cdot 0.9063 = 13.595 \approx \mathbf{13.60\text{ meters}}$</div>
+                       </div>
+                   </div>
                 </div>
 
                 <!-- LESSON CONTENT B: OBLIQUE TRIANGLES -->
@@ -355,6 +368,19 @@
                                    <div class="pt-1 border-t border-slate-800">Area = √(s(s - a)(s - b)(s - c))</div>
                                </div>
                            </div>
+                       </div>
+                   </div>
+
+                   <!-- WORKED EXAMPLE 2 -->
+                   <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+                       <h3 class="text-emerald-400 font-bold text-sm uppercase tracking-wider">Worked Example 2: Law of Cosines (SAS Triangle)</h3>
+                       <p class="text-xs text-slate-300"><b>Problem:</b> In $\Delta ABC$, side $a = 7$, side $b = 10$, and the included angle $C = 60^\circ$. Find the length of side $c$.</p>
+                       <div class="bg-slate-800 p-4 rounded-lg border border-slate-700 space-y-2 text-xs font-mono text-emerald-300">
+                           <div class="text-slate-400 font-bold">Step-by-Step Solution:</div>
+                           <div>1. Apply Law of Cosines: $c^2 = a^2 + b^2 - 2ab \cdot \cos(C)$</div>
+                           <div>2. Substitute values: $c^2 = 7^2 + 10^2 - 2(7)(10) \cdot \cos(60^\circ)$</div>
+                           <div>3. Simplify components: $c^2 = 49 + 100 - 140(0.5) = 149 - 70 = 79$</div>
+                           <div>4. Take square root: $c = \sqrt{79} \approx \mathbf{8.89\text{ units}}$</div>
                        </div>
                    </div>
                 </div>
@@ -525,9 +551,9 @@
                    <div>
                        <label class="block text-xs font-semibold text-slate-300 mb-1">Select Practice Difficulty:</label>
                        <select id="practiceDifficultySelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
-                           <option value="easy">Easy Level</option>
-                           <option value="average">Average Level</option>
-                           <option value="difficult">Difficult Level</option>
+                           <option value="easy">Easy Level (20s / item)</option>
+                           <option value="average">Average Level (40s / item)</option>
+                           <option value="difficult">Difficult Level (90s / item)</option>
                        </select>
                    </div>
                    <button onclick="startPracticeSession()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Practice Quiz</button>
@@ -578,9 +604,9 @@
                        <div>
                            <label class="block text-xs font-semibold text-slate-300 mb-1">Select Difficulty Round:</label>
                            <select id="teacherRoundSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
-                                <option value="easy">Easy Round</option>
-                                <option value="average">Average Round</option>
-                                <option value="difficult">Difficult Round</option>
+                                <option value="easy">Easy Round (20s / item)</option>
+                                <option value="average">Average Round (40s / item)</option>
+                                <option value="difficult">Difficult Round (90s / item)</option>
                            </select>
                        </div>
                        <button onclick="broadcastNewGameRound()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition">Broadcast Cloud PIN</button>
@@ -1358,7 +1384,11 @@
                     activeBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow";
                 }
             }
-            if (tabId === 'simulator') updateRightTriangleSim();
+            if (tabId === 'simulator') {
+                const mode = document.getElementById('simulatorDropdown').value;
+                if(mode === 'righttriangle') updateRightTriangleSim();
+                else updateObliqueSimulation();
+            }
         }
 
         function switchSimulatorMode(mode) {
@@ -1404,23 +1434,46 @@
             const w = canvas.width, h = canvas.height;
             ctx.clearRect(0, 0, w, h);
 
-            const scale = Math.min(240 / a, 280 / b);
-            const startX = 100, startY = 360;
+            const scale = Math.min(220 / a, 260 / b);
+            const startX = 80, startY = 380;
             const legB_px = b * scale, legA_px = a * scale;
 
-            ctx.strokeStyle = '#6366f1'; ctx.lineWidth = 3;
+            // Triangle fill
+            ctx.fillStyle = 'rgba(99, 102, 241, 0.1)';
             ctx.beginPath();
-            ctx.moveTo(startX, startY); ctx.lineTo(startX + legB_px, startY); ctx.lineTo(startX, startY - legA_px);
-            ctx.closePath(); ctx.stroke();
-            ctx.fillStyle = 'rgba(99, 102, 241, 0.08)'; ctx.fill();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX + legB_px, startY);
+            ctx.lineTo(startX, startY - legA_px);
+            ctx.closePath();
+            ctx.fill();
 
-            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.5;
-            ctx.strokeRect(startX, startY - 18, 18, 18);
+            // Triangle lines
+            ctx.strokeStyle = '#6366f1';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX + legB_px, startY);
+            ctx.lineTo(startX, startY - legA_px);
+            ctx.closePath();
+            ctx.stroke();
 
-            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 12px sans-serif';
-            ctx.fillText(`Vertex C (90°)`, startX - 30, startY + 22);
-            ctx.fillText(`Vertex B`, startX + legB_px + 10, startY + 5);
-            ctx.fillText(`Vertex A (${angleA_deg.toFixed(1)}°)`, startX - 85, startY - legA_px - 10);
+            // Right angle square at C
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(startX, startY - 20, 20, 20);
+
+            // Labels and markings
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText(`Vertex C (90° - Right Angle)`, startX - 20, startY + 25);
+            ctx.fillText(`Vertex B [Angle B: ${angleB_deg.toFixed(1)}°]`, startX + legB_px + 10, startY + 5);
+            ctx.fillText(`Vertex A [Angle A: ${angleA_deg.toFixed(1)}°]`, startX - 50, startY - legA_px - 15);
+
+            // Side lengths markings
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillText(`b (Adjacent) = ${b}`, startX + legB_px / 2 - 40, startY + 22);
+            ctx.fillText(`a (Opposite) = ${a}`, startX - 75, startY - legA_px / 2);
+            ctx.fillText(`c (Hypotenuse) = ${c.toFixed(2)}`, startX + legB_px / 2 + 10, startY - legA_px / 2 - 10);
         }
 
         function updateObliqueSimulation() {
@@ -1443,6 +1496,60 @@
             document.getElementById('oblResA').innerText = A_deg.toFixed(1) + '°';
             document.getElementById('oblResB').innerText = B_deg.toFixed(1) + '°';
             document.getElementById('oblResPerimeter').innerText = (a + b + c).toFixed(2);
+
+            drawObliqueTriangleCanvas(a, b, c, A_deg, B_deg, C_deg);
+        }
+
+        function drawObliqueTriangleCanvas(a, b, c, A_deg, B_deg, C_deg) {
+            const canvas = document.getElementById('obliqueCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            const maxDim = Math.max(a, b, c, 1);
+            const scale = 250 / maxDim;
+
+            const cx = 90, cy = 380; // Vertex C
+            const b_px = b * scale;
+            const ax = cx + b_px, ay = cy; // Vertex A along horizontal base
+
+            const C_rad = (C_deg * Math.PI) / 180;
+            const a_px = a * scale;
+            const bx = cx + a_px * Math.cos(C_rad);
+            const by = cy - a_px * Math.sin(C_rad); // Vertex B
+
+            // Draw triangle fill
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(ax, ay);
+            ctx.lineTo(bx, by);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw triangle strokes
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(ax, ay);
+            ctx.lineTo(bx, by);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Draw vertices and labels
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText(`Vertex C [Angle C: ${C_deg.toFixed(1)}°]`, cx - 40, cy + 25);
+            ctx.fillText(`Vertex A [Angle A: ${A_deg.toFixed(1)}°]`, ax + 10, ay + 5);
+            ctx.fillText(`Vertex B [Angle B: ${B_deg.toFixed(1)}°]`, bx - 25, by - 10);
+
+            // Side lengths markings
+            ctx.fillStyle = '#34d399';
+            ctx.fillText(`Side b = ${b}`, (cx + ax)/2 - 20, cy + 22);
+            ctx.fillText(`Side a = ${a}`, (cx + bx)/2 - 35, (cy + by)/2 - 5);
+            ctx.fillText(`Side c = ${c.toFixed(2)}`, (ax + bx)/2 + 10, (ay + by)/2 + 10);
         }
 
         function switchLessonTopic(topic) {
@@ -1554,7 +1661,17 @@
                 optContainer.appendChild(btn);
             });
 
-            timeLeft = 30;
+            // Set time limits: Easy = 20s, Average = 40s, Difficult = 90s
+            if (currentDifficulty === 'easy') {
+                timeLeft = 20;
+            } else if (currentDifficulty === 'average') {
+                timeLeft = 40;
+            } else if (currentDifficulty === 'difficult') {
+                timeLeft = 90;
+            } else {
+                timeLeft = 30;
+            }
+
             document.getElementById('quizTimeRemaining').innerText = timeLeft;
             if (activeQuizTimer) clearInterval(activeQuizTimer);
 
