@@ -1351,18 +1351,24 @@
         }
 
         function handleLogout() {
-            // Explicitly hide the offline banner and reset the flag
+            // 1. Reset offline flags and hide banner immediately
             isOfflineModeActive = false;
             document.getElementById('offlineBanner').classList.add('hidden');
             
-            if (!auth || !navigator.onLine) {
-                location.reload();
-            } else {
+            // 2. Clear out local storage session markers so it doesn't auto-loop back to offline
+            localStorage.removeItem('trign_role');
+            localStorage.removeItem('trign_name');
+
+            // 3. If Firebase is active and we are online, sign out properly
+            if (auth && navigator.onLine) {
                 auth.signOut().then(() => {
                     location.reload();
                 }).catch((error) => {
                     location.reload();
                 });
+            } else {
+                // If offline or Firebase isn't initialized, force reload the page to bring back the auth/mode selector overlay
+                location.reload();
             }
         }
         
