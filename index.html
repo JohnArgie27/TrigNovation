@@ -1322,13 +1322,22 @@
         }
 
         function handleLogout() {
-            if (isOfflineModeActive || !auth) {
+            // Check if we are in offline mode or if Firebase auth is not active/logged in
+            if (isOfflineModeActive || !auth || !auth.currentUser) {
+                // Clear any local flags and cleanly reload to the mode selector
+                isOfflineModeActive = false;
                 location.reload();
             } else {
-                auth.signOut().then(() => location.reload());
+                // Safely sign out from Firebase for online users
+                auth.signOut().then(() => {
+                    location.reload();
+                }).catch((error) => {
+                    console.warn("Sign out error, forcing reload:", error);
+                    location.reload();
+                });
             }
         }
-
+        
         function updateRoleUI() {
             const badge = document.getElementById('userRoleBadge');
             badge.innerText = isOfflineModeActive ? "OFFLINE STUDENT" : currentRole.toUpperCase();
