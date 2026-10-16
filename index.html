@@ -755,6 +755,17 @@
             }
             auth = firebase.auth();
             db = firebase.firestore();
+
+            // Enable local auth persistence so sessions never drop offline
+            auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => {
+                console.warn("Auth persistence error:", err);
+            });
+
+            // Enable offline caching for Firestore database queries
+            db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+                console.warn("Firestore persistence note:", err);
+            });
+
         } catch (e) {
             console.warn("Running in pure offline environment. Firebase SDK skipped.");
         }
@@ -1187,6 +1198,9 @@
         }
 
         if (auth) {
+            const cachedRole = localStorage.getItem('trign_role');
+            const cachedName = localStorage.getItem('trign_name');
+
             auth.onAuthStateChanged(async (user) => {
                 if (isOfflineModeActive) return;
                 const authOverlay = document.getElementById('authOverlay');
@@ -1206,13 +1220,28 @@
                         if (userDoc.exists) {
                             currentRole = userDoc.data().role || 'student';
                         } else {
-                            currentRole = localStorage.getItem(`trign_role_${user.uid}`) || localStorage.getItem('trign_role') || 'student';
+                            currentRole = localStorage.getItem(`trign_role_${user.uid}`) || cachedRole || 'student';
                         }
                     } catch (e) {
-                        currentRole = localStorage.getItem(`trign_role_${user.uid}`) || localStorage.getItem('trign_role') || 'student';
+                        currentRole = localStorage.getItem(`trign_role_${user.uid}`) || cachedRole || 'student';
                     }
                     updateRoleUI();
                 } else {
+                    if (!navigator.onLine && cachedRole) {
+                        isOfflineModeActive = true;
+                        currentRole = cachedRole;
+                        authOverlay.classList.add('hidden');
+                        document.getElementById('offlineBanner').classList.remove('hidden');
+                        document.getElementById('userRoleBadge').innerText = "OFFLINE STUDENT";
+                        document.getElementById('userProfileLabel').innerText = "Running Locally (Offline Cache Active)";
+                        const quizToggleBar = document.getElementById('quizModeToggleBar');
+                        if (quizToggleBar) quizToggleBar.style.display = 'none';
+                        switchQuizMode('practice');
+                        updateRoleUI();
+                        updateRightTriangleSim();
+                        return;
+                    }
+
                     authOverlay.classList.remove('hidden');
                 }
             });
@@ -1322,17 +1351,13 @@
         }
 
         function handleLogout() {
-            // Check if we are in offline mode or if Firebase auth is not active/logged in
-            if (isOfflineModeActive || !auth || !auth.currentUser) {
-                // Clear any local flags and cleanly reload to the mode selector
+            if (isOfflineModeActive || !auth || !navigator.onLine) {
                 isOfflineModeActive = false;
                 location.reload();
             } else {
-                // Safely sign out from Firebase for online users
                 auth.signOut().then(() => {
                     location.reload();
                 }).catch((error) => {
-                    console.warn("Sign out error, forcing reload:", error);
                     location.reload();
                 });
             }
