@@ -4,18 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrigNovation: Interactive Trigonometry & Cloud Analytics Hub</title>
-    
-<!-- SERVICE WORKER REGISTRATION FOR OFFLINE SUPPORT -->
-    <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker registered!', reg))
-                .catch(err => console.log('Service Worker registration failed:', err));
-        });
-    }
-</script>
-    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -1362,52 +1350,24 @@
             }
         }
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCDqhVYsSknmSMYn-9ZaZU0KM7Sg62VTqc",
-            authDomain: "trignovationv2.firebaseapp.com",
-            projectId: "trignovationv2",
-            storageBucket: "trignovationv2.firebasestorage.app",
-            messagingSenderId: "390069789816",
-            appId: "1:390069789816:web:d70ba64d238cee5bc6f98d"
-        };
-
-        let auth = null;
-        let db = null;
-
-        // Safely initialize Firebase only if online and reachable
-        try {
-            if (navigator.onLine) {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
-                }
-                auth = firebase.auth();
-                db = firebase.firestore();
-
-                auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
-                db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
-            }
-        } catch (e) {
-            console.warn("Offline initialization fallback active.");
-        }
-
-        let currentUser = null;
-        let currentRole = 'guest';
-        let isOfflineModeActive = false;
-        // ... (keep all your other variable declarations)
-
         function handleLogout() {
+            // 1. Reset offline flags and hide banner immediately
             isOfflineModeActive = false;
             document.getElementById('offlineBanner').classList.add('hidden');
             
+            // 2. Clear out local storage session markers so it doesn't auto-loop back to offline
             localStorage.removeItem('trign_role');
             localStorage.removeItem('trign_name');
 
-            // Safely sign out only if Firebase auth and a user session actually exist
-            if (auth && auth.currentUser && navigator.onLine) {
-                auth.signOut().finally(() => {
+            // 3. If Firebase is active and we are online, sign out properly
+            if (auth && navigator.onLine) {
+                auth.signOut().then(() => {
+                    location.reload();
+                }).catch((error) => {
                     location.reload();
                 });
             } else {
+                // If offline or Firebase isn't initialized, force reload the page to bring back the auth/mode selector overlay
                 location.reload();
             }
         }
