@@ -1862,6 +1862,29 @@
             link.click();
         }
 
+        // Ensure functions are globally exposed to HTML buttons
+  window.enterOfflineMode = enterOfflineMode;
+  window.showOnlineAuthOptions = showOnlineAuthOptions;
+  window.resetToModeSelector = resetToModeSelector;
+  window.switchAuthMode = switchAuthMode;
+  window.handleFirebaseLogin = handleFirebaseLogin;
+  window.handleFirebaseRegister = handleFirebaseRegister;
+  window.handleFirebasePasswordReset = handleFirebasePasswordReset;
+  window.handleLogout = handleLogout;
+  window.switchTab = switchTab;
+  window.switchSimulatorMode = switchSimulatorMode;
+  window.switchLessonTopic = switchLessonTopic;
+  window.switchQuizMode = switchQuizMode;
+  window.verifyStudentGamePin = verifyStudentGamePin;
+  window.startPracticeSession = startPracticeSession;
+  window.proceedToNextQuestion = proceedToNextQuestion;
+  window.resetQuizView = resetQuizView;
+  window.broadcastNewGameRound = broadcastNewGameRound;
+  window.loadDashboardData = loadDashboardData;
+  window.deleteSubmissionRecord = deleteSubmissionRecord;
+  window.clearAllSubmissions = clearAllSubmissions;
+  window.exportTableToCSV = exportTableToCSV;
+
         window.onload = () => { updateRightTriangleSim(); };
     <script>
 </body>
