@@ -26,7 +26,20 @@
         ⚡ Offline Mode Active — Local Trigonometry Engine & Simulator Running
     </div>
 
-   <!-- MODE SELECTOR DUAL-CARDS (ONLINE VS OFFLINE) -->
+  <!-- MODE SELECTOR & AUTHENTICATION OVERLAY -->
+    <div id="authOverlay" class="fixed inset-0 z-50 bg-slate-950/95 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl max-w-xl w-full space-y-6 shadow-2xl text-center relative overflow-hidden">
+            
+            <div class="flex justify-center">
+               <img src="logo.png" alt="TrigNovation Logo" class="w-16 h-16 rounded-full border-2 border-indigo-500 object-cover bg-white">
+           </div>
+
+           <div>
+                <h2 id="authTitle" class="text-xl font-black text-white">TrigNovation Portal</h2>
+                <p id="authSubtitle" class="text-xs text-slate-400 mt-1">Choose your connection mode to begin.</p>
+           </div>
+
+           <!-- MODE SELECTOR DUAL-CARDS (ONLINE VS OFFLINE) -->
            <div id="modeSelectorCard" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                <!-- OFFLINE CARD -->
                <button onclick="enterOfflineMode()" onmouseenter="playModeHoverSound('offline')" class="bg-gradient-to-br from-slate-900 to-slate-800 hover:from-emerald-950 hover:to-slate-900 border-2 border-emerald-500/50 hover:border-emerald-400 p-4 rounded-xl transition shadow-xl group flex flex-col justify-between space-y-3">
@@ -55,18 +68,9 @@
                </button>
            </div>
 
-           <!-- MODE SELECTOR BUTTONS (ONLINE VS OFFLINE) -->
-           <div id="modeSelectorCard" class="space-y-3">
-               <button onclick="enterOfflineMode()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
-                   <span>⚡ Offline Mode </span>
-               </button>
-               <button onclick="showOnlineAuthOptions()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
-                   <span>🌐 Online Mode </span>
-               </button>
-           </div>
-
-           <!-- CONTAINER FOR ACTUAL SIGN-IN FORMS -->
+           <!-- CONTAINER FOR ACTUAL SIGN-IN FORMS (HIDDEN UNTIL ONLINE SELECTED) -->
            <div id="onlineAuthContainer" class="hidden space-y-4 text-left">
+               <!-- TOGGLE LOGIN VS REGISTER -->
                <div id="authToggleBar" class="flex bg-slate-900 p-1 rounded-xl border border-slate-700 text-xs">
                    <button onclick="switchAuthMode('login')" id="btnAuthLogin" class="w-1/2 py-2 font-bold rounded-lg bg-indigo-600 text-white transition">Sign In</button>
                    <button onclick="switchAuthMode('register')" id="btnAuthRegister" class="w-1/2 py-2 font-bold rounded-lg text-slate-400 hover:text-white transition">Create Account</button>
@@ -143,6 +147,7 @@
 
             <!-- Navigation Tabs -->
             <div class="mt-4 md:mt-0 flex flex-wrap gap-1 bg-indigo-950 p-1 rounded-xl border border-indigo-800">
+                <button onclick="toggleAudioTheme()" id="btnAudioToggle" class="px-2.5 py-1.5 text-xs font-bold rounded-lg transition text-amber-400 hover:bg-indigo-900" title="Toggle Ambient Audio">🎵 Music: OFF</button>
                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Simulators</button>
                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes & YouTube</button>
                <button onclick="switchTab('student-dashboard')" id="btn-student-dashboard" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-amber-300 hover:text-white">🏆 My Rank & Medals</button>
@@ -590,8 +595,13 @@
                                    <strong>Solution:</strong>
                                    <div>1. s = (120 + 150 + 200) / 2 = 470 / 2 = 235</div>
                                    <div>2. Area = √(s(s - a)(s - b)(s - c)) = √(235(235 - 120)(235 - 150)(235 - 200))</div>
-                                   <div>3. Area = √(235 · 115 · 85 · 35) = √81,257,187.5 ≈ 9,014.28 m²</div>
+                                  <div>3. Area = √(235 · 115 · 85 · 35) = √81,257,187.5 ≈ 9,014.28 m²</div>
                                    <div><strong>Answer: Area ≈ 9,014.28 sq meters</strong></div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                </div>
                                
                 <!-- LESSON CONTENT C: YOUTUBE VIDEO WALKTHROUGHS -->
                 <div id="lessonContentVideos" class="hidden space-y-6">
