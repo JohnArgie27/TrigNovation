@@ -1242,6 +1242,23 @@
             } catch (e) { console.warn("Audio error", e); }
         }
 
+        function playClickSound() {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.09);
+            } catch(e) {}
+        }
+
         function playIncorrectSound() {
             try {
                 const ctx = getAudioContext();
@@ -2158,22 +2175,29 @@
             if (activeQuizTimer) clearInterval(activeQuizTimer);
             const isCorrect = (selectedOpt === currentCorrectAnswerText);
             
-            if (isCorrect) {
-                score++;
-                playCorrectSound();
-            } else {
-                playIncorrectSound();
-            }
-
             // Check if this is a Live Ranked Quiz or a Practice Quiz
             const isLiveRanked = document.getElementById('quizRoundBadgeTitle').innerText.includes("Live Ranked");
 
             if (isLiveRanked) {
-                // INSTANT TRANSITION: Skip feedback banner and go straight to next question
+                // Track score silently in background
+                if (isCorrect) {
+                    score++;
+                }
+                // Play ONE neutral click sound only (keeps suspense hidden!)
+                playClickSound();
+
+                // INSTANT TRANSITION: Skip feedback and go straight to next question
                 currentQuestionIdx++;
                 loadQuestion();
             } else {
-                // PRACTICE QUIZ: Retain immediate feedback and show next button
+                // PRACTICE QUIZ: Play distinct correct/incorrect sounds and show feedback
+                if (isCorrect) {
+                    score++;
+                    playCorrectSound();
+                } else {
+                    playIncorrectSound();
+                }
+
                 const buttons = document.querySelectorAll('.option-btn');
                 buttons.forEach(b => {
                     b.disabled = true;
