@@ -974,6 +974,7 @@
         let score = 0;
         let activeGamePin = null;
         let activeQuizTimer = null;
+        let currentQuizDifficulty = 'easy'; // Tracks current quiz difficulty (easy, medium, hard)
         let timeLeft = 30;
 
         // --- UPBEAT APP-STYLE BGM SYNTHESIZER ---
@@ -2080,12 +2081,45 @@
             startActiveQuizSession('Practice Drill (Unranked)', currentDifficulty);
         }
 
+        function calculateFinalRewards(rawScore, isLiveRanked) {
+            // Multipliers: Easy = 1x, Medium = 2x, Hard = 3x
+            let multiplier = 1;
+            if (currentQuizDifficulty === 'medium') multiplier = 2;
+            if (currentQuizDifficulty === 'hard') multiplier = 3;
+
+            // Base points calculation (e.g., 10 points per correct answer)
+            let earnedPoints = rawScore * 10;
+
+            if (isLiveRanked) {
+                earnedPoints = earnedPoints * multiplier;
+            }
+
+            // Determine medal tier based on difficulty and score
+            let medalEarned = '🥉 Bronze Tier Medal';
+            if (currentQuizDifficulty === 'hard' && rawScore >= 7) {
+                medalEarned = '🥇 Gold Tier Medal';
+            } else if (currentQuizDifficulty === 'medium' && rawScore >= 7) {
+                medalEarned = '🥈 Silver Tier Medal';
+            } else if (currentQuizDifficulty === 'hard' && rawScore >= 5) {
+                medalEarned = '🥈 Silver Tier Medal';
+            }
+
+            return {
+                points: earnedPoints,
+                multiplier: multiplier,
+                medal: medalEarned
+            };
+        }
+
        function startActiveQuizSession(titleBadge, diff) {
+            currentQuizDifficulty = diff || 'easy'; // <-- CAPTURE DIFFICULTY HERE
+
             document.getElementById('liveGateCard').classList.add('hidden');
             document.getElementById('practiceGateCard').classList.add('hidden');
             document.getElementById('quizGameArea').classList.remove('hidden');
             document.getElementById('quizRoundBadgeTitle').innerText = titleBadge;
             document.getElementById('playerBadge').innerText = currentUser ? currentUser.email : (isOfflineModeActive ? 'Offline Student' : 'Guest Student');
+
 
             // Show AI Helper ONLY during Practice Drills, hide during Live Ranked rounds
             const socraticContainer = document.getElementById('practiceSocraticContainer');
@@ -2236,10 +2270,13 @@
             scoreScreen.classList.remove('hidden');
 
             const pct = Math.round((score / currentQuestions.length) * 100);
-            document.getElementById('finalScoreText').innerText = `You scored ${score} out of ${currentQuestions.length} (${pct}%)`;
-
+            
             // CHECK IF LIVE RANKED QUIZ OR PRACTICE DRILL
             const isLiveRanked = document.getElementById('quizRoundBadgeTitle').innerText.includes("Live Ranked");
+            const rewards = calculateFinalRewards(score, isLiveRanked);
+
+            // Display score and include the difficulty multiplier rewards!
+            document.getElementById('finalScoreText').innerText = `You scored ${score} out of ${currentQuestions.length} (${pct}%) \n Points Earned: +${rewards.points} (${rewards.multiplier}x Multiplier)`;
 
             if (isLiveRanked) {
                 // RANK & MEDAL SYSTEM APPLIED ONLY FOR LIVE QUIZ
@@ -2251,17 +2288,17 @@
                     medalEarned = 'gold';
                     medalChange = 2;
                     studentStats.gold++;
-                    medalText = "🥇 Gold Medal Earned! +2 Rank Medals Added!";
+                    medalText = `🥇 Gold Medal Earned! +2 Rank Medals Added! (${rewards.medal})`;
                 } else if (pct >= 75) {
                     medalEarned = 'silver';
                     medalChange = 1;
                     studentStats.silver++;
-                    medalText = "🥈 Silver Medal Earned! +1 Rank Medal Added!";
+                    medalText = `🥈 Silver Medal Earned! +1 Rank Medal Added! (${rewards.medal})`;
                 } else if (pct >= 60) {
                     medalEarned = 'bronze';
                     medalChange = 0;
                     studentStats.bronze++;
-                    medalText = "🥉 Bronze Medal (Passing Score) — Rank Shield Active (No Medals Lost)";
+                    medalText = `🥉 Bronze Medal (Passing Score) — Rank Shield Active`;
                 } else {
                     medalEarned = 'fail';
                     medalChange = -1;
@@ -2275,11 +2312,12 @@
 
                 studentStats.history.push({
                     title: document.getElementById('quizRoundBadgeTitle').innerText,
-                    difficulty: currentDifficulty,
+                    difficulty: currentQuizDifficulty, // FIXED: matched global variable name
                     score: score,
                     total: currentQuestions.length,
                     pct: pct,
-                    medal: medalEarned
+                    medal: medalEarned,
+                    pointsEarned: rewards.points
                 });
 
                 saveStudentStats();
@@ -2293,8 +2331,9 @@
                         await db.collection('submissions').add({
                             studentEmail: currentUser.email,
                             studentName: studentName,
-                            difficulty: currentDifficulty,
+                            difficulty: currentQuizDifficulty, // FIXED: matched global variable name
                             score: score, total: currentQuestions.length, percentage: pct,
+                            points: rewards.points,
                             pin: activeGamePin,
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
                         });
@@ -2303,7 +2342,7 @@
             } else {
                 // PRACTICE DRILL: UNRANKED, NO MEDAL CHANGES
                 document.getElementById('medalAwardResult').style.display = 'none';
-                document.getElementById('scoreSubText').innerText = "🎯 Practice Drill Completed (Unranked - No Medals Affected)";
+                document.getElementById('scoreSubText').innerText = `🎯 Practice Drill Completed (+${rewards.points} Points - Unranked)`;
             }
         }
 
