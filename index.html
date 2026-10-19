@@ -3,7 +3,7 @@
 <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrigNovation: Interactive Trigonometry & Cloud Analytics Hub</title>
+    <title>TrigNovation: Interactive Trigonometry & Cloud Analytics </title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -1740,9 +1740,13 @@
                 localStorage.setItem('trign_role', role);
                 localStorage.setItem(`trign_name_${cred.user.uid}`, name);
 
+                // --- SAVED OFFICIAL ACCOUNT CREATION NAME TO FIRESTORE ---
                 try {
                     await db.collection('users').doc(cred.user.uid).set({
-                        name: name, email: email, role: role,
+                        fullName: name, // Saved officially for teacher analytics lookup
+                        name: name, 
+                        email: email, 
+                        role: role,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } catch (dbErr) {}
@@ -2381,14 +2385,32 @@
                 }
                 tbody.innerHTML = '';
                 let subs = [];
-                snapshot.forEach(doc => subs.push({ id: doc.id, ...doc.data() }));
+                
+                // Fetch submission data alongside registered profile names from Firestore
+                for (const docSnap of snapshot.docs) {
+                    let subData = { id: docSnap.id, ...docSnap.data() };
+                    
+                    // If student UID is known or we can query their profile, pull the official account creation name
+                    if (subData.studentEmail) {
+                        try {
+                            const userQuery = await db.collection('users').where('email', '==', subData.studentEmail).get();
+                            if (!userQuery.empty) {
+                                const userData = userQuery.docs[0].data();
+                                if (userData.fullName) {
+                                    subData.studentName = userData.fullName; // Use official registration name
+                                }
+                            }
+                        } catch(err) {}
+                    }
+                    subs.push(subData);
+                }
                 
                 subs.forEach(sub => {
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-800 transition";
                     const timeStr = sub.timestamp?.toDate ? sub.timestamp.toDate().toLocaleString() : 'Just now';
                     tr.innerHTML = `
-                        <td class="p-3 font-semibold text-white">${sub.studentName || 'Student'}</td>
+                        <td class="p-3 font-semibold text-white">${sub.studentName || localStorage.getItem(`trign_name`) || sub.studentEmail.split('@')[0]}</td>
                         <td class="p-3 text-slate-400">${sub.studentEmail}</td>
                         <td class="p-3 capitalize">${sub.difficulty}</td>
                         <td class="p-3 font-mono text-emerald-400">${sub.score} / ${sub.total}</td>
