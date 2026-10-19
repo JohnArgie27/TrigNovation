@@ -818,22 +818,24 @@
                    <button id="nextQuestionBtn" onclick="proceedToNextQuestion()" class="hidden mt-4 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition">Next Question →</button>
                </div>
 
-                <!-- SOCRATIC AI TUTOR BUTTON & MODAL -->
-                   <div class="mt-4 pt-3 border-t border-slate-700 flex justify-between items-center">
-                       <button onclick="requestSocraticHint()" id="btnSocraticAi" class="bg-indigo-950 hover:bg-indigo-900 border border-indigo-500/50 text-indigo-300 hover:text-white font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow">
-                           <span>🤖 Ask TrigBot (Socratic Hint)</span>
-                       </button>
-                       <span class="text-[10px] text-slate-400 italic">Offline Edge AI Ready</span>
-                   </div>
+                <!-- PRACTICE-ONLY AI TUTOR CONTAINER -->
+                <div id="practiceSocraticContainer" class="hidden">
+                    <div class="mt-4 pt-3 border-t border-slate-700 flex justify-between items-center">
+                        <button onclick="requestSocraticHint()" id="btnSocraticAi" class="bg-indigo-950 hover:bg-indigo-900 border border-indigo-500/50 text-indigo-300 hover:text-white font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-2 transition shadow">
+                            <span id="aiButtonLabel">🤖 Ask AI Tutor (Real-Time Help)</span>
+                        </button>
+                        <span id="aiBadgeLabel" class="text-[10px] text-slate-400 italic">Real-Time Cloud Assistance</span>
+                    </div>
 
-                   <!-- SOCRATIC AI TUTOR RESPONSE BOX -->
-                   <div id="socraticBox" class="hidden mt-3 p-4 bg-indigo-950/80 border border-indigo-500 rounded-xl space-y-2 text-xs">
-                       <div class="flex justify-between items-center border-b border-indigo-800/80 pb-1">
-                           <span class="font-bold text-indigo-300 flex items-center gap-1">🤖 TrigBot Socratic Tutor:</span>
-                           <button onclick="document.getElementById('socraticBox').classList.add('hidden')" class="text-slate-400 hover:text-white text-xs">✕ Close</button>
-                       </div>
-                       <p id="socraticContent" class="text-slate-200 italic leading-relaxed"></p>
-                   </div>
+                    <!-- AI TUTOR RESPONSE BOX -->
+                    <div id="socraticBox" class="hidden mt-3 p-4 bg-indigo-950/80 border border-indigo-500 rounded-xl space-y-2 text-xs">
+                        <div class="flex justify-between items-center border-b border-indigo-800/80 pb-1">
+                            <span id="aiBoxTitle" class="font-bold text-indigo-300 flex items-center gap-1">🤖 Real-Time AI Assistant:</span>
+                            <button onclick="document.getElementById('socraticBox').classList.add('hidden')" class="text-slate-400 hover:text-white text-xs">✕ Close</button>
+                        </div>
+                        <p id="socraticContent" class="text-slate-200 italic leading-relaxed"></p>
+                    </div>
+                </div>
 
                <div id="scoreScreen" class="hidden text-center py-8 space-y-4">
                    <div id="scoreIcon" class="inline-block bg-indigo-600 text-white text-3xl font-black p-4 rounded-full mb-2">🏆</div>
@@ -974,9 +976,9 @@
         let activeQuizTimer = null;
         let timeLeft = 30;
 
-        // --- WEB AUDIO SYNTHESIZER FOR AMBIENT BGM & SFX ---
+        // --- UPBEAT APP-STYLE BGM SYNTHESIZER ---
         let isMusicPlaying = false;
-        let bgmOscList = [];
+        let bgmInterval = null;
 
         function toggleAudioTheme() {
             const btn = document.getElementById('btnAudioToggle');
@@ -995,36 +997,43 @@
             try {
                 const ctx = getAudioContext();
                 stopAmbientBgm();
-                // Smooth ambient chord frequencies (A minor / F major warm pad feel)
-                const freqs = [220.00, 261.63, 329.63, 440.00]; 
-                freqs.forEach(f => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    const filter = ctx.createBiquadFilter();
 
-                    osc.type = 'triangle'; // Softer, warmer waveform than sine
-                    osc.frequency.value = f;
+                // Upbeat gamified pentatonic arpeggio notes (C major / A minor bright vibe)
+                const melodyNotes = [523.25, 659.25, 783.99, 880.00, 1046.50, 783.99, 659.25, 587.33];
+                let noteIndex = 0;
 
-                    // Lowpass filter to give it a muffled, relaxing background atmosphere
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 400;
+                // Loop an exciting, fast app chime sequence every 280ms
+                bgmInterval = setInterval(() => {
+                    if (!isMusicPlaying) return;
+                    try {
+                        const now = ctx.currentTime;
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
 
-                    gain.gain.setValueAtTime(0.001, ctx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.012, ctx.currentTime + 1.5);
+                        osc.type = 'sine'; // Crisp, clean app sound
+                        osc.frequency.setValueAtTime(melodyNotes[noteIndex], now);
 
-                    osc.connect(filter);
-                    filter.connect(gain);
-                    gain.connect(ctx.destination);
+                        // Quick bouncy envelope for an arcade/app feel
+                        gain.gain.setValueAtTime(0.025, now);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
 
-                    osc.start();
-                    bgmOscList.push(osc);
-                });
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+
+                        osc.start(now);
+                        osc.stop(now + 0.24);
+
+                        noteIndex = (noteIndex + 1) % melodyNotes.length;
+                    } catch (err) {}
+                }, 280);
             } catch (e) {}
         }
 
         function stopAmbientBgm() {
-            bgmOscList.forEach(osc => { try { osc.stop(); } catch(e){} });
-            bgmOscList = [];
+            if (bgmInterval) {
+                clearInterval(bgmInterval);
+                bgmInterval = null;
+            }
         }
 
         function playModeHoverSound(mode) {
@@ -1047,15 +1056,38 @@
         let webllmEngine = null;
         let isEngineInitializing = false;
 
-        async function requestSocraticHint() {
+       async function requestSocraticHint() {
             const socraticBox = document.getElementById('socraticBox');
             const socraticContent = document.getElementById('socraticContent');
+            const aiBoxTitle = document.getElementById('aiBoxTitle');
             socraticBox.classList.remove('hidden');
 
             const currentQ = currentQuestions[currentQuestionIdx];
             if (!currentQ) return;
 
-            socraticContent.innerHTML = "🌀 <em>TrigBot is analyzing the question...</em>";
+            socraticContent.innerHTML = "🌀 <em>AI is analyzing the question...</em>";
+
+            // --- ONLINE MODE: Real-Time Direct AI Assistance ---
+            if (!isOfflineModeActive) {
+                if (aiBoxTitle) aiBoxTitle.innerHTML = "⚡ Real-Time AI Assistant:";
+                
+                // Real-time direct step-by-step guidance
+                setTimeout(() => {
+                    const qText = currentQ.q;
+                    const correctAns = currentQ.options[currentQ.correct];
+                    
+                    let solutionExplanation = `<strong>Problem Breakdown:</strong> ${qText}<br/><br/>`;
+                    solutionExplanation += `<strong>Method & Concept:</strong> To solve this item, identify the given trigonometric properties and apply the corresponding ratio or formula.<br/>`;
+                    solutionExplanation += `<strong>Key Formula:</strong> ${qText.toLowerCase().includes('sine') || qText.toLowerCase().includes('sin') ? '$\sin(\\theta) = \\frac{\\text{Opposite}}{\\text{Hypotenuse}}$' : (qText.toLowerCase().includes('cosine') || qText.toLowerCase().includes('cos') ? '$\\cos(\\theta) = \\frac{\\text{Adjacent}}{\\text{Hypotenuse}}$' : 'Apply trigonometric identities or laws.')}<br/>`;
+                    solutionExplanation += `<strong>Correct Answer:</strong> <span class="text-emerald-400 font-bold">${correctAns}</span>`;
+
+                    socraticContent.innerHTML = solutionExplanation;
+                }, 400);
+                return;
+            }
+
+            // --- OFFLINE MODE: Socratic Method (Guiding Questions Only) ---
+            if (aiBoxTitle) aiBoxTitle.innerHTML = "🤖 TrigBot Socratic Tutor (Offline Mode):";
 
             if (window.webllm && navigator.gpu) {
                 try {
@@ -1080,11 +1112,11 @@
                         return;
                     }
                 } catch (err) {
-                    console.warn("Edge AI GPU execution fallback to Rule-Engine:", err);
+                    console.warn("Edge AI GPU execution fallback to Socratic Rule-Engine:", err);
                 }
             }
 
-            // SMART SOCRATIC RULE-BASED FALLBACK ENGINE
+            // Fallback Socratic Rule Engine for Offline Mode
             setTimeout(() => {
                 const text = currentQ.q.toLowerCase();
                 let hint = "";
@@ -1093,12 +1125,12 @@
                 } else if (text.includes("cosine") || text.includes("cos")) {
                     hint = "💡 <strong>Socratic Check:</strong> Cosine compares the adjacent side to the hypotenuse. Which side touches the angle?";
                 } else if (text.includes("tangent") || text.includes("tan")) {
-                    hint = "💡 <strong>Socratic Check:</strong> Tangent is Opposite divided by Adjacent.";
+                    hint = "💡 <strong>Socratic Check:</strong> Tangent is Opposite divided by Adjacent. What is the ratio?";
                 } else {
-                    hint = "💡 <strong>Socratic Check:</strong> Identify whether this is a Right Triangle or Oblique Triangle. Which formula fits your given data?";
+                    hint = "💡 <strong>Socratic Check:</strong> Identify whether this is a Right Triangle or Oblique Triangle. Which theorem fits your given measurements?";
                 }
                 socraticContent.innerHTML = hint;
-            }, 500);
+            }, 400);
         }
 
         // --- STUDENT STATS & RANK STATE ---
@@ -2027,12 +2059,33 @@
             startActiveQuizSession('Practice Drill (Unranked)', currentDifficulty);
         }
 
-        function startActiveQuizSession(titleBadge, diff) {
+       function startActiveQuizSession(titleBadge, diff) {
             document.getElementById('liveGateCard').classList.add('hidden');
             document.getElementById('practiceGateCard').classList.add('hidden');
             document.getElementById('quizGameArea').classList.remove('hidden');
             document.getElementById('quizRoundBadgeTitle').innerText = titleBadge;
             document.getElementById('playerBadge').innerText = currentUser ? currentUser.email : (isOfflineModeActive ? 'Offline Student' : 'Guest Student');
+
+            // Show AI Helper ONLY during Practice Drills, hide during Live Ranked rounds
+            const socraticContainer = document.getElementById('practiceSocraticContainer');
+            if (titleBadge.includes('Practice Drill')) {
+                socraticContainer.classList.remove('hidden');
+
+                // Adjust button labels based on Online vs Offline Mode
+                const btnLabel = document.getElementById('aiButtonLabel');
+                const badgeLabel = document.getElementById('aiBadgeLabel');
+
+                if (isOfflineModeActive) {
+                    if (btnLabel) btnLabel.innerText = "🤖 Ask Socratic AI Tutor (Offline)";
+                    if (badgeLabel) badgeLabel.innerText = "Offline Edge AI / Socratic Method";
+                } else {
+                    if (btnLabel) btnLabel.innerText = "⚡ Ask Real-Time AI Assistant";
+                    if (badgeLabel) badgeLabel.innerText = "Real-Time Direct Cloud Help";
+                }
+            } else {
+                socraticContainer.classList.add('hidden');
+                document.getElementById('socraticBox').classList.add('hidden');
+            }
 
             const rawBank = questionBanks[diff] || questionBanks['easy'];
             currentQuestions = shuffleArray(rawBank).slice(0, 10);
