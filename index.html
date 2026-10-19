@@ -1773,7 +1773,8 @@
                 switchTab('simulator');
                 return;
             }
-            const tabs = ['simulator', 'lessons', 'quiz', 'dashboard'];
+            // Ensure student-dashboard is treated independently so it doesn't cross-trigger with quiz
+            const tabs = ['simulator', 'lessons', 'student-dashboard', 'quiz', 'dashboard'];
             tabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`btn-${t}`);
