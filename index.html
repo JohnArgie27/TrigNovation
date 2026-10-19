@@ -1549,6 +1549,7 @@
 
         function enterOfflineMode() {
             isOfflineModeActive = true;
+            localStorage.setItem('trign_offline_persistent', 'true'); // <--- Add this line
             currentRole = 'student';
             currentUser = null;
             document.getElementById('authOverlay').classList.add('hidden');
@@ -1710,12 +1711,15 @@
 
         function handleLogout() {
             isOfflineModeActive = false;
+            localStorage.removeItem('trign_offline_persistent'); // <--- Add this line
             document.getElementById('offlineBanner').classList.add('hidden');
             localStorage.removeItem('trign_role');
-            if (auth && navigator.onLine) {
-                auth.signOut().then(() => location.reload()).catch(() => location.reload());
-            } else {
-                location.reload();
+            
+            if (isOfflineModeActive || !auth || !navigator.onLine) {
+                isOfflineModeActive = false;
+                document.getElementById('authOverlay').classList.remove('hidden');
+                resetToModeSelector();
+                return;
             }
         }
         
@@ -2300,8 +2304,13 @@
         }
 
         window.onload = () => { 
-            updateRightTriangleSim(); 
-            loadStudentStats();
+            // If offline mode was active before refresh, restore it automatically
+            if (localStorage.getItem('trign_offline_persistent') === 'true') {
+                enterOfflineMode();
+            } else {
+                updateRightTriangleSim(); 
+                loadStudentStats();
+            }
         };
     </script>
 </body>
