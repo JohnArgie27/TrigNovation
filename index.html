@@ -1609,7 +1609,12 @@
             document.getElementById('authSubtitle').innerText = "Choose your connection mode to begin.";
         }
 
-        if (auth && navigator.onLine && localStorage.getItem('trign_offline_persistent') !== 'true') {
+        // AUTO-DETECT CONNECTION ON STARTUP
+        if (!navigator.onLine) {
+            // No Wi-Fi: Go straight to offline mode
+            setTimeout(() => { enterOfflineMode(); }, 100);
+        } else if (auth && localStorage.getItem('trign_offline_persistent') !== 'true') {
+            // Has Wi-Fi and not forced offline: Check Firebase Auth
             const cachedRole = localStorage.getItem('trign_role');
             auth.onAuthStateChanged(async (user) => {
                 if (isOfflineModeActive) return;
@@ -1638,15 +1643,14 @@
                     updateRoleUI();
                     loadStudentStats();
                 } else {
+                    // Has Wi-Fi, but logged out -> SHOW LOGIN OVERLAY
                     authOverlay.classList.remove('hidden');
                 }
             });
         } else {
-            // Instantly bypass network auth check when offline or in persistent offline mode
+            // Forced offline persistent mode even with Wi-Fi
             document.getElementById('authOverlay').classList.add('hidden');
-            if (localStorage.getItem('trign_offline_persistent') === 'true') {
-                enterOfflineMode();
-            }
+            enterOfflineMode();
         }
 
         function switchAuthMode(mode) {
@@ -2395,8 +2399,9 @@
         }
 
         window.onload = () => { 
-            // If offline mode was active before refresh, restore it automatically
-            if (localStorage.getItem('trign_offline_persistent') === 'true') {
+            if (!navigator.onLine) {
+                enterOfflineMode();
+            } else if (localStorage.getItem('trign_offline_persistent') === 'true') {
                 enterOfflineMode();
             } else {
                 updateRightTriangleSim(); 
