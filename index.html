@@ -977,15 +977,27 @@
             try {
                 const ctx = getAudioContext();
                 stopAmbientBgm();
-                const freqs = [130.81, 196.00, 293.66];
+                // Smooth ambient chord frequencies (A minor / F major warm pad feel)
+                const freqs = [220.00, 261.63, 329.63, 440.00]; 
                 freqs.forEach(f => {
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
-                    osc.type = 'sine';
+                    const filter = ctx.createBiquadFilter();
+
+                    osc.type = 'triangle'; // Softer, warmer waveform than sine
                     osc.frequency.value = f;
-                    gain.gain.setValueAtTime(0.015, ctx.currentTime);
-                    osc.connect(gain);
+
+                    // Lowpass filter to give it a muffled, relaxing background atmosphere
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 400;
+
+                    gain.gain.setValueAtTime(0.001, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.012, ctx.currentTime + 1.5);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
                     gain.connect(ctx.destination);
+
                     osc.start();
                     bgmOscList.push(osc);
                 });
@@ -2234,24 +2246,24 @@
         }
 
         function renderLeaderboardAndAnalytics(subs) {
-            const podium = document.getElementById('podiumContainer');
-            const analytics = document.getElementById('analyticsContainer');
-            if (subs.length === 0) return;
-            const sorted = [...subs].sort((a, b) => b.percentage - a.percentage);
-            podium.innerHTML = '';
-            sorted.slice(0, 3).forEach((s, idx) => {
-                const medals = ['🥇', '🥈', '🥉'];
-                const div = document.createElement('div');
-                div.className = "flex justify-between items-center bg-slate-800 p-2 rounded border border-slate-700";
-                div.innerHTML = `<span>${medals[idx]} ${s.studentName}</span><span class="font-mono text-emerald-400 font-bold">${s.percentage}%</span>`;
-                podium.appendChild(div);
-            });
-            const avgPct = Math.round(subs.reduce((acc, curr) => acc + curr.percentage, 0) / subs.length);
-            analytics.innerHTML = `
-                <div class="flex justify-between border-b border-slate-800 pb-1"><span>Total Submissions:</span><span class="font-bold text-white">${subs.length}</span></div>
-                <div class="flex justify-between"><span>Class Average:</span><span class="font-bold text-indigo-400">${avgPct}%</span></div>
-            `;
-        }
+    const podium = document.getElementById('podiumContainer');
+    const analytics = document.getElementById('analyticsContainer');
+    if (subs.length === 0) return;
+    const sorted = [...subs].sort((a, b) => b.percentage - a.percentage);
+    podium.innerHTML = '';
+    sorted.slice(0, 3).forEach((s, idx) => {
+        const rankLabels = ['#1 Top Scorer', '#2 Runner Up', '#3 High Scorer'];
+        const div = document.createElement('div');
+        div.className = "flex justify-between items-center bg-slate-800 p-2 rounded border border-slate-700 text-xs";
+        div.innerHTML = `<span class="font-semibold text-slate-200">${rankLabels[idx]}: ${s.studentName}</span><span class="font-mono text-emerald-400 font-bold">${s.percentage}%</span>`;
+        podium.appendChild(div);
+    });
+    const avgPct = Math.round(subs.reduce((acc, curr) => acc + curr.percentage, 0) / subs.length);
+    analytics.innerHTML = `
+        <div class="flex justify-between border-b border-slate-800 pb-1"><span>Total Submissions:</span><span class="font-bold text-white">${subs.length}</span></div>
+        <div class="flex justify-between"><span>Class Average:</span><span class="font-bold text-indigo-400">${avgPct}%</span></div>
+    `;
+}
 
         function exportTableToCSV(filename) {
             if (currentRole !== 'teacher') return;
