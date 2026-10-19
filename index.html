@@ -150,7 +150,7 @@
                 <button onclick="toggleAudioTheme()" id="btnAudioToggle" class="px-2.5 py-1.5 text-xs font-bold rounded-lg transition text-amber-400 hover:bg-indigo-900" title="Toggle Ambient Audio">🎵 Music: OFF</button>
                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Simulators</button>
                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes & YouTube</button>
-               <button onclick="switchTab('student-dashboard')" id="btn-student-dashboard" class="student-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-amber-300 hover:text-white">🏆 My Rank & Medals</button>
+               <button onclick="switchTab('student-dashboard')" id="btn-student-dashboard" class="hidden student-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-amber-300 hover:text-white">🏆 My Rank & Medals</button>
                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics</button>
                <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Exit / Switch Mode</button>
@@ -657,8 +657,8 @@
             </div>
         </section>
 
-        <!-- TAB 3: STUDENT DASHBOARD & ML-STYLE RANKS -->
-        <section id="tab-student-dashboard" class="hidden space-y-6 max-w-4xl mx-auto">
+       <!-- TAB 3: STUDENT DASHBOARD & ML-STYLE RANKS (Hidden) -->
+        <section id="tab-student-dashboard" class="hidden space-y-6 max-w-4xl mx-auto" style="display: none !important;">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
                 
                 <div class="bg-gradient-to-r from-indigo-950 to-slate-900 p-6 rounded-xl border border-indigo-500/40 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -1758,7 +1758,7 @@
                 switchTab('simulator');
                 return;
             }
-            const tabs = ['simulator', 'lessons', 'student-dashboard', 'quiz', 'dashboard'];
+            const tabs = ['simulator', 'lessons', 'quiz', 'dashboard'];
             tabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`btn-${t}`);
