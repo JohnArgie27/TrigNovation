@@ -1577,7 +1577,7 @@
             document.getElementById('authSubtitle').innerText = "Choose your connection mode to begin.";
         }
 
-        if (auth) {
+        if (auth && navigator.onLine && localStorage.getItem('trign_offline_persistent') !== 'true') {
             const cachedRole = localStorage.getItem('trign_role');
             auth.onAuthStateChanged(async (user) => {
                 if (isOfflineModeActive) return;
@@ -1609,6 +1609,12 @@
                     authOverlay.classList.remove('hidden');
                 }
             });
+        } else {
+            // Instantly bypass network auth check when offline or in persistent offline mode
+            document.getElementById('authOverlay').classList.add('hidden');
+            if (localStorage.getItem('trign_offline_persistent') === 'true') {
+                enterOfflineMode();
+            }
         }
 
         function switchAuthMode(mode) {
@@ -1710,16 +1716,21 @@
         }
 
         function handleLogout() {
-            isOfflineModeActive = false;
-            localStorage.removeItem('trign_offline_persistent'); // <--- Add this line
-            document.getElementById('offlineBanner').classList.add('hidden');
-            localStorage.removeItem('trign_role');
+            // Save current offline state before clearing
+            const wasOffline = isOfflineModeActive || localStorage.getItem('trign_offline_persistent') === 'true';
             
-            if (isOfflineModeActive || !auth || !navigator.onLine) {
-                isOfflineModeActive = false;
-                document.getElementById('authOverlay').classList.remove('hidden');
-                resetToModeSelector();
-                return;
+            isOfflineModeActive = false;
+            localStorage.removeItem('trign_offline_persistent');
+            localStorage.removeItem('trign_role');
+            document.getElementById('offlineBanner').classList.add('hidden');
+            
+            // Immediately reveal the auth overlay and reset mode selector whether online or offline
+            const authOverlay = document.getElementById('authOverlay');
+            if (authOverlay) authOverlay.classList.remove('hidden');
+            resetToModeSelector();
+
+            if (!wasOffline && auth && navigator.onLine) {
+                auth.signOut().catch(() => {});
             }
         }
         
