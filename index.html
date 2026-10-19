@@ -23,7 +23,7 @@
 
     <!-- OFFLINE FALLBACK BANNER -->
     <div id="offlineBanner" class="hidden bg-amber-600 text-slate-950 font-bold text-xs py-1 px-4 text-center sticky top-0 z-50 shadow">
-        ⚡ Offline Mode Active — Local Trigonometry Engine & Simulator Running
+        ⚡ Offline Mode Active
     </div>
 
   <!-- MODE SELECTOR & AUTHENTICATION OVERLAY -->
@@ -39,32 +39,16 @@
                 <p id="authSubtitle" class="text-xs text-slate-400 mt-1">Choose your connection mode to begin.</p>
            </div>
 
-           <!-- MODE SELECTOR DUAL-CARDS (ONLINE VS OFFLINE) -->
+         <!-- MODE SELECTOR DUAL-CARDS (ONLINE VS OFFLINE) -->
            <div id="modeSelectorCard" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                <!-- OFFLINE CARD -->
-               <button onclick="enterOfflineMode()" onmouseenter="playModeHoverSound('offline')" class="bg-gradient-to-br from-slate-900 to-slate-800 hover:from-emerald-950 hover:to-slate-900 border-2 border-emerald-500/50 hover:border-emerald-400 p-4 rounded-xl transition shadow-xl group flex flex-col justify-between space-y-3">
-                   <div>
-                       <div class="flex items-center justify-between mb-1">
-                           <span class="text-base font-bold text-emerald-400 group-hover:text-emerald-300 flex items-center gap-1">⚡ Offline Mode</span>
-                       </div>
-                       <p class="text-[11px] text-slate-300">100% Self-Paced Learning. Runs locally without Wi-Fi or mobile data.</p>
-                   </div>
-                   <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold px-2 py-1 rounded-md text-center">
-                       Notes, Quizzes & Socratic AI Ready
-                   </div>
+               <button onclick="enterOfflineMode()" onmouseenter="playModeHoverSound('offline')" class="bg-gradient-to-br from-slate-900 to-slate-800 hover:from-emerald-950 hover:to-slate-900 border-2 border-emerald-500/50 hover:border-emerald-400 p-5 rounded-xl transition shadow-xl group flex items-center justify-center">
+                   <span class="text-base font-bold text-emerald-400 group-hover:text-emerald-300 flex items-center gap-2">⚡ Offline Mode</span>
                </button>
 
                <!-- ONLINE CARD -->
-               <button onclick="showOnlineAuthOptions()" onmouseenter="playModeHoverSound('online')" class="bg-gradient-to-br from-slate-900 to-slate-800 hover:from-indigo-950 hover:to-slate-900 border-2 border-indigo-500/50 hover:border-indigo-400 p-4 rounded-xl transition shadow-xl group flex flex-col justify-between space-y-3">
-                   <div>
-                       <div class="flex items-center justify-between mb-1">
-                           <span class="text-base font-bold text-indigo-400 group-hover:text-indigo-300 flex items-center gap-1">🌐 Online Mode</span>
-                       </div>
-                       <p class="text-[11px] text-slate-300">Connect to live classroom broadcasts, game PINs, and cloud sync.</p>
-                   </div>
-                   <div class="bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-[10px] font-bold px-2 py-1 rounded-md text-center">
-                       Live Leaderboard & Teacher Analytics
-                   </div>
+               <button onclick="showOnlineAuthOptions()" onmouseenter="playModeHoverSound('online')" class="bg-gradient-to-br from-slate-900 to-slate-800 hover:from-indigo-950 hover:to-slate-900 border-2 border-indigo-500/50 hover:border-indigo-400 p-5 rounded-xl transition shadow-xl group flex items-center justify-center">
+                   <span class="text-base font-bold text-indigo-400 group-hover:text-indigo-300 flex items-center gap-2">🌐 Online Mode</span>
                </button>
            </div>
 
@@ -110,7 +94,7 @@
                        </select>
                    </div>
                    <div>
-                       <label class="block text-xs font-semibold text-slate-300 mb-1">Password (min 6 chars):</label>
+                       <label class="block text-xs font-semibold text-slate-300 mb-1">Password (min 6 characters):</label>
                        <input type="password" id="regPassword" minlength="6" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
                    </div>
                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Register </button>
@@ -141,7 +125,7 @@
                    <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
                        TrigNovation <span id="userRoleBadge" class="bg-indigo-600 text-[10px] px-2 py-0.5 rounded uppercase tracking-wider">Offline Student</span>
                    </h1>
-                   <p id="userProfileLabel" class="text-indigo-300 text-xs">Right Triangle Simulator & Real-Time Cloud Analytics Hub</p>
+                   <p id="userProfileLabel" class="text-indigo-300 text-xs">Interactive Simulators & Real-Time Cloud Analytics Hub</p>
                </div>
             </div>
 
@@ -149,10 +133,10 @@
             <div class="mt-4 md:mt-0 flex flex-wrap gap-1 bg-indigo-950 p-1 rounded-xl border border-indigo-800">
                 <button onclick="toggleAudioTheme()" id="btnAudioToggle" class="px-2.5 py-1.5 text-xs font-bold rounded-lg transition text-amber-400 hover:bg-indigo-900" title="Toggle Ambient Audio">🎵 Music: OFF</button>
                <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Simulators</button>
-               <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes & YouTube</button>
+               <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes & Videos </button>
                <button onclick="switchTab('student-dashboard')" id="btn-student-dashboard" class="hidden student-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-amber-300 hover:text-white">🏆 My Rank & Medals</button>
                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
-               <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics</button>
+               <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics Dashboard </button>
                <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Exit / Switch Mode</button>
             </div>
         </div>
@@ -242,7 +226,7 @@
                     <div class="flex-grow flex items-center justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-700 p-2 min-h-[420px]">
                          <canvas id="rightTriangleCanvas" width="460" height="460" class="max-w-full h-auto"></canvas>
                     </div>
-                    <p class="text-[11px] text-slate-400 text-center mt-2">Adjust legs $a$ and $b$ to instantly recalculate hypotenuse $c$, angles $A$ and $B$, and all 6 trigonometric ratios.</p>
+                    <p class="text-[11px] text-slate-400 text-center mt-2">Adjust legs a and b to instantly recalculate hypotenuse c, angles A and B, and all 6 trigonometric ratios.</p>
                 </div>
             </div>
 
@@ -320,7 +304,7 @@
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-6">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-700 pb-4">
                     <div>
-                        <h2 class="text-xl font-bold text-white mb-1">Student's Trigonometry Review & Video Tutorials</h2>
+                        <h2 class="text-xl font-bold text-white mb-1">Trigonometry Review & Video Tutorials</h2>
                         <p class="text-slate-400 text-sm">Comprehensive review notes with complete step-by-step mathematical solutions and video walkthroughs.</p>
                     </div>
                     <div class="flex items-center gap-3 w-full md:w-auto">
@@ -617,7 +601,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Video Card 1 -->
                             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-                                <span class="text-xs font-bold text-indigo-400 uppercase">Module 1: Right Triangles & SOH-CAH-TOA</span>
+                                <span class="text-xs font-bold text-indigo-400 uppercase">Lesson Video 1: Right Triangles & SOH-CAH-TOA</span>
                                 <div class="relative bg-slate-950 rounded-lg overflow-hidden aspect-video border border-slate-700">
                                     <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/i3bjEOA5_zc" title="Trigonometry - How To Solve Right Triangles" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
@@ -626,7 +610,7 @@
 
                             <!-- Video Card 2 -->
                             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-                                <span class="text-xs font-bold text-emerald-400 uppercase">Module 2: Law of Sines (AAS & SSA)</span>
+                                <span class="text-xs font-bold text-emerald-400 uppercase">Lesson Video 2: Law of Sines (AAS & SSA)</span>
                                 <div class="relative bg-slate-950 rounded-lg overflow-hidden aspect-video border border-slate-700">
                                     <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/9fS0uA4iLxI" title="Law of Sines Basic Introduction" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
@@ -635,7 +619,7 @@
 
                             <!-- Video Card 3 -->
                             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-                                <span class="text-xs font-bold text-purple-400 uppercase">Module 3: Law of Cosines (SSS & SAS)</span>
+                                <span class="text-xs font-bold text-purple-400 uppercase">Lesson Video 3: Law of Cosines (SSS & SAS)</span>
                                 <div class="relative bg-slate-950 rounded-lg overflow-hidden aspect-video border border-slate-700">
                                     <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/9CGY0s-uCUE" title="Law of Cosines Finding Angles & Sides" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
@@ -644,7 +628,7 @@
 
                             <!-- Video Card 4 -->
                             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-                                <span class="text-xs font-bold text-amber-400 uppercase">Module 4: Heron's Formula & Oblique Area</span>
+                                <span class="text-xs font-bold text-amber-400 uppercase">Lesson Video 4: Heron's Formula & Oblique Area</span>
                                 <div class="relative bg-slate-950 rounded-lg overflow-hidden aspect-video border border-slate-700">
                                     <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/vPt6j5e_uhE" title="Area of an Oblique Triangle - Heron's Formula" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
@@ -787,9 +771,9 @@
                    <div>
                        <label class="block text-xs font-semibold text-slate-300 mb-1">Select Practice Difficulty:</label>
                        <select id="practiceDifficultySelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
-                           <option value="easy">Easy Level (20s / item)</option>
-                           <option value="average">Average Level (40s / item)</option>
-                           <option value="difficult">Difficult Level (90s / item)</option>
+                           <option value="easy">Easy Level</option>
+                           <option value="average">Average Level</option>
+                           <option value="difficult">Difficult Level</option>
                        </select>
                    </div>
                    <button onclick="startPracticeSession()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">Start Practice Quiz</button>
@@ -859,9 +843,9 @@
                        <div>
                            <label class="block text-xs font-semibold text-slate-300 mb-1">Select Difficulty Round:</label>
                            <select id="teacherRoundSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
-                                <option value="easy">Easy Round (20s / item)</option>
-                                <option value="average">Average Round (40s / item)</option>
-                                <option value="difficult">Difficult Round (90s / item)</option>
+                                <option value="easy">Easy Round</option>
+                                <option value="average">Average Round</option>
+                                <option value="difficult">Difficult Round</option>
                            </select>
                        </div>
                        <button onclick="broadcastNewGameRound()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition">Broadcast Cloud PIN</button>
@@ -1143,19 +1127,54 @@
             history: []
         };
 
-        function loadStudentStats() {
-            const saved = localStorage.getItem('trign_student_stats');
-            if (saved) {
-                try { studentStats = JSON.parse(saved); } catch (e) {}
-            }
-            updateStudentDashboardUI();
+// --- CLOUD-SYNCED STUDENT STATS & RANK FUNCTIONS ---
+async function loadStudentStats() {
+    if (!currentUser) {
+        // Fallback for offline or guest mode using browser storage
+        const saved = localStorage.getItem('trign_student_stats');
+        if (saved) {
+            try { studentStats = JSON.parse(saved); } catch (e) {}
         }
+        updateStudentDashboardUI();
+        return;
+    }
 
-        function saveStudentStats() {
-            localStorage.setItem('trign_student_stats', JSON.stringify(studentStats));
-            updateStudentDashboardUI();
+    try {
+        // Fetch user document from Firestore to get their unique medals
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        if (userDoc.exists && userDoc.data().medalStats) {
+            studentStats = userDoc.data().medalStats;
+        } else {
+            studentStats = { totalMedals: 0, gold: 0, silver: 0, bronze: 0, history: [] };
         }
+    } catch (error) {
+        // Offline fallback
+        const saved = localStorage.getItem(`trign_student_stats_${currentUser.uid}`);
+        if (saved) {
+            try { studentStats = JSON.parse(saved); } catch (e) {}
+        } else {
+            studentStats = { totalMedals: 0, gold: 0, silver: 0, bronze: 0, history: [] };
+        }
+    }
+    updateStudentDashboardUI();
+}
 
+async function saveStudentStats() {
+    if (currentUser) {
+        try {
+            await db.collection('users').doc(currentUser.uid).set({
+                medalStats: studentStats
+            }, { merge: true });
+        } catch (error) {
+            console.warn("Cloud save failed, saving locally:", error);
+        }
+        localStorage.setItem(`trign_student_stats_${currentUser.uid}`, JSON.stringify(studentStats));
+    } else {
+        localStorage.setItem('trign_student_stats', JSON.stringify(studentStats));
+    }
+    updateStudentDashboardUI();
+}
+        
         function calculateRankTitle(medals) {
             if (medals >= 45) return "Apex Trigo Master (Legend)";
             if (medals >= 30) return "Triangle Titan III";
@@ -1627,36 +1646,39 @@
             document.getElementById('authSubtitle').innerText = "Choose your connection mode to begin.";
         }
 
-       if (auth && navigator.onLine && localStorage.getItem('trign_offline_persistent') !== 'true') {
-            const cachedRole = localStorage.getItem('trign_role');
-            auth.onAuthStateChanged(async (user) => {
-                if (isOfflineModeActive) return;
-                const authOverlay = document.getElementById('authOverlay');
-                if (user) {
-                    currentUser = user;
-                    authOverlay.classList.add('hidden');
-                    document.getElementById('offlineBanner').classList.add('hidden');
-                    
-                    try {
-                        const userDoc = await db.collection('users').doc(user.uid).get();
-                        if (userDoc.exists) {
-                            currentRole = userDoc.data().role || 'student';
-                        } else {
-                            currentRole = localStorage.getItem(`trign_role_${user.uid}`) || cachedRole || 'student';
-                        }
-                    } catch (e) {
-                        currentRole = localStorage.getItem(`trign_role_${user.uid}`) || cachedRole || 'student';
-                    }
-                    updateRoleUI();
-                    loadStudentStats();
+      if (auth && navigator.onLine && localStorage.getItem('trign_offline_persistent') !== 'true') {
+    const cachedRole = localStorage.getItem('trign_role');
+    auth.onAuthStateChanged(async (user) => {
+        if (isOfflineModeActive) return;
+        const authOverlay = document.getElementById('authOverlay');
+        if (user) {
+            currentUser = user;
+            authOverlay.classList.add('hidden');
+            document.getElementById('offlineBanner').classList.add('hidden');
+            
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    currentRole = userDoc.data().role || 'student';
                 } else {
-                    authOverlay.classList.remove('hidden');
+                    currentRole = localStorage.getItem(`trign_role_${user.uid}`) || cachedRole || 'student';
                 }
-            });
+            } catch (e) {
+                currentRole = localStorage.getItem(`trign_role_${user.uid}`) || cachedRole || 'student';
+            }
+            updateRoleUI();
+            
+            // --- LOAD STATS UPON LOGIN ---
+            await loadStudentStats(); 
+
         } else {
-            // Automatically launch full Offline Mode on startup when offline
-            enterOfflineMode();
+            authOverlay.classList.remove('hidden');
         }
+    });
+} else {
+    // Automatically launch full Offline Mode on startup when offline
+    enterOfflineMode();
+}
 
         function switchAuthMode(mode) {
             const btnLogin = document.getElementById('btnAuthLogin');
