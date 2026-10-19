@@ -1627,23 +1627,12 @@
             document.getElementById('authSubtitle').innerText = "Choose your connection mode to begin.";
         }
 
-        // AUTO-DETECT CONNECTION ON STARTUP
-        if (!navigator.onLine) {
-            // No Wi-Fi: Go straight to offline mode
-            setTimeout(() => { enterOfflineMode(); }, 100);
-        } else if (auth && localStorage.getItem('trign_offline_persistent') !== 'true') {
-            // Has Wi-Fi and not forced offline: Check Firebase Auth
+       if (auth && navigator.onLine && localStorage.getItem('trign_offline_persistent') !== 'true') {
             const cachedRole = localStorage.getItem('trign_role');
             auth.onAuthStateChanged(async (user) => {
                 if (isOfflineModeActive) return;
                 const authOverlay = document.getElementById('authOverlay');
                 if (user) {
-                    if (!user.emailVerified) {
-                        await auth.signOut();
-                        authOverlay.classList.remove('hidden');
-                        alert("Please verify your email address.");
-                        return;
-                    }
                     currentUser = user;
                     authOverlay.classList.add('hidden');
                     document.getElementById('offlineBanner').classList.add('hidden');
@@ -1661,13 +1650,11 @@
                     updateRoleUI();
                     loadStudentStats();
                 } else {
-                    // Has Wi-Fi, but logged out -> SHOW LOGIN OVERLAY
                     authOverlay.classList.remove('hidden');
                 }
             });
         } else {
-            // Forced offline persistent mode even with Wi-Fi
-            document.getElementById('authOverlay').classList.add('hidden');
+            // Automatically launch full Offline Mode on startup when offline
             enterOfflineMode();
         }
 
@@ -1726,7 +1713,7 @@
             }
         }
 
-        async function handleFirebaseRegister(e) {
+       async function handleFirebaseRegister(e) {
             e.preventDefault();
             if (!auth) { alert("Offline mode active: Cannot register without internet."); return; }
             const name = document.getElementById('regName').value.trim();
@@ -1740,13 +1727,9 @@
                 localStorage.setItem('trign_role', role);
                 localStorage.setItem(`trign_name_${cred.user.uid}`, name);
 
-                // --- SAVED OFFICIAL ACCOUNT CREATION NAME TO FIRESTORE ---
                 try {
                     await db.collection('users').doc(cred.user.uid).set({
-                        fullName: name, // Saved officially for teacher analytics lookup
-                        name: name, 
-                        email: email, 
-                        role: role,
+                        name: name, email: email, role: role,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } catch (dbErr) {}
