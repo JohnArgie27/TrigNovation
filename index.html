@@ -658,7 +658,7 @@
         </section>
 
        <!-- TAB 3: STUDENT DASHBOARD & ML-STYLE RANKS (Hidden) -->
-        <section id="tab-student-dashboard" class="hidden space-y-6 max-w-4xl mx-auto" style="display: none !important;">
+        <section id="tab-student-dashboard" class="student-only hidden space-y-6 max-w-4xl mx-auto">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
                 
                 <div class="bg-gradient-to-r from-indigo-950 to-slate-900 p-6 rounded-xl border border-indigo-500/40 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -1737,6 +1737,8 @@
         function updateRoleUI() {
             const badge = document.getElementById('userRoleBadge');
             badge.innerText = isOfflineModeActive ? "OFFLINE STUDENT" : currentRole.toUpperCase();
+            
+            // Handle Teacher-only elements
             const teacherElements = document.querySelectorAll('.teacher-only');
             teacherElements.forEach(el => {
                 if (!isOfflineModeActive && currentRole === 'teacher') {
@@ -1747,6 +1749,19 @@
                     el.style.display = 'none';
                 }
             });
+
+            // Handle Student-only elements (Hide for teachers, show for students/offline)
+            const studentElements = document.querySelectorAll('.student-only');
+            studentElements.forEach(el => {
+                if (isOfflineModeActive || currentRole !== 'teacher') {
+                    el.classList.remove('hidden');
+                    el.style.display = '';
+                } else {
+                    el.classList.add('hidden');
+                    el.style.display = 'none';
+                }
+            });
+
             if (currentUser && !isOfflineModeActive) {
                 document.getElementById('userProfileLabel').innerText = `Logged in as ${currentUser.email} (${currentRole})`;
             }
