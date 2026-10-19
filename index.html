@@ -2153,6 +2153,7 @@
         function handleAnswerSelection(selectedOpt, btnElement) {
             if (activeQuizTimer) clearInterval(activeQuizTimer);
             const isCorrect = (selectedOpt === currentCorrectAnswerText);
+            
             if (isCorrect) {
                 score++;
                 playCorrectSound();
@@ -2160,29 +2161,39 @@
                 playIncorrectSound();
             }
 
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(b => {
-                b.disabled = true;
-                if (b.innerText.includes(currentCorrectAnswerText)) {
-                    b.classList.remove('bg-slate-900', 'hover:bg-indigo-600');
-                    b.classList.add('bg-emerald-700', 'border-emerald-500');
-                } else if (b === btnElement && !isCorrect) {
-                    b.classList.remove('bg-slate-900', 'hover:bg-indigo-600');
-                    b.classList.add('bg-rose-700', 'border-rose-500');
-                }
-            });
+            // Check if this is a Live Ranked Quiz or a Practice Quiz
+            const isLiveRanked = document.getElementById('quizRoundBadgeTitle').innerText.includes("Live Ranked");
 
-            const feedbackBanner = document.getElementById('feedbackBanner');
-            feedbackBanner.classList.remove('hidden');
-
-            if (isCorrect) {
-                feedbackBanner.className = "mt-4 p-3 rounded-xl text-xs font-bold text-center bg-emerald-500/20 border border-emerald-500 text-emerald-300";
-                feedbackBanner.innerHTML = "✅ Correct!";
+            if (isLiveRanked) {
+                // INSTANT TRANSITION: Skip feedback banner and go straight to next question
+                currentQuestionIdx++;
+                loadQuestion();
             } else {
-                feedbackBanner.className = "mt-4 p-3 rounded-xl text-xs font-bold text-center bg-rose-500/20 border border-rose-500 text-rose-300";
-                feedbackBanner.innerHTML = `❌ Incorrect. Correct answer: <strong>${currentCorrectAnswerText}</strong>`;
+                // PRACTICE QUIZ: Retain immediate feedback and show next button
+                const buttons = document.querySelectorAll('.option-btn');
+                buttons.forEach(b => {
+                    b.disabled = true;
+                    if (b.innerText.includes(currentCorrectAnswerText)) {
+                        b.classList.remove('bg-slate-900', 'hover:bg-indigo-600');
+                        b.classList.add('bg-emerald-700', 'border-emerald-500');
+                    } else if (b === btnElement && !isCorrect) {
+                        b.classList.remove('bg-slate-900', 'hover:bg-indigo-600');
+                        b.classList.add('bg-rose-700', 'border-rose-500');
+                    }
+                });
+
+                const feedbackBanner = document.getElementById('feedbackBanner');
+                feedbackBanner.classList.remove('hidden');
+
+                if (isCorrect) {
+                    feedbackBanner.className = "mt-4 p-3 rounded-xl text-xs font-bold text-center bg-emerald-500/20 border border-emerald-500 text-emerald-300";
+                    feedbackBanner.innerHTML = "✅ Correct!";
+                } else {
+                    feedbackBanner.className = "mt-4 p-3 rounded-xl text-xs font-bold text-center bg-rose-500/20 border border-rose-500 text-rose-300";
+                    feedbackBanner.innerHTML = `❌ Incorrect. Correct answer: <strong>${currentCorrectAnswerText}</strong>`;
+                }
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
             }
-            document.getElementById('nextQuestionBtn').classList.remove('hidden');
         }
 
         function proceedToNextQuestion() {
