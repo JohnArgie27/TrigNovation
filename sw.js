@@ -1,49 +1,62 @@
 const CACHE_NAME = 'trignovation-v1';
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  // Add paths to your other critical local files if needed (e.g., styles.css, main.js)
+    './',
+    './index.html',
+    './manifest.json',
+    './logo.png'
+    // Add any other local CSS, JS, or JSON data files here
 ];
 
-// 1. Install Event: Save core files into cache
+// 1. Install Event: Save core files to cache
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
-  self.skipWaiting();
-});
-
-// 2. Activate Event: Clean up old caches if you update the app later
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            console.log('[Service Worker] Precaching App Assets');
+            return cache.addAll(ASSETS_TO_CACHE);
         })
-      );
-    })
-  );
-  self.clients.claim();
+    );
+    self.skipWaiting();
 });
 
-// 3. Fetch Event: Intercept page requests and serve offline fallback
+// 2. Activate Event: Clean up old expired caches
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((keyList) => {
+            return Promise.all(
+                keyList.map((key) => {
+                    if (key !== CACHE_NAME) {
+                        console.log('[Service Worker] Removing old cache:', key);
+                        return caches.delete(key);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim();
+});
+
+// 3. Fetch Event: Serve from cache first, fallback to network
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).catch(() => {
-        return caches.match('./index.html');
-      })
+        caches.match(event.request).then((cachedResponse) => {
+            // Return cached version if available, otherwise fetch from network
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+            return fetch(event.request).then((networkResponse) => {
+                // Dynamically cache new requests if successful
+                return caches.open(CACHE_NAME).then((cache) => {
+                    if(event.request.method === 'GET' && networkResponse.status === 200) {
+                        cache.put(event.request, networkResponse.clone());
+                    }
+                    return networkResponse;
+                });
+            }).catch(() => {
+                // Fallback for offline navigation if needed
+                if (event.request.mode === 'navigate') {
+                    return caches.match('./index.html');
+                }
+            });
+        })
     );
-  } else {
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        return cachedResponse || fetch(event.request);
-      })
-    );
-  }
 });
