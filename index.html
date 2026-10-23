@@ -642,7 +642,7 @@
         </section>
 
        <!-- TAB 3: STUDENT DASHBOARD & ML-STYLE RANKS (Hidden) -->
-        <section id="tab-student-dashboard" class="student-only hidden space-y-6 max-w-4xl mx-auto">
+        <section id="tab-student-dashboard" class="student-only hidden offline-hide space-y-6 max-w-4xl mx-auto">
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
                 
                 <div class="bg-gradient-to-r from-indigo-950 to-slate-900 p-6 rounded-xl border border-indigo-500/40 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -1815,49 +1815,47 @@ async function saveStudentStats() {
         }
         
         function updateRoleUI() {
-            const badge = document.getElementById('userRoleBadge');
-            badge.innerText = isOfflineModeActive ? "OFFLINE STUDENT" : currentRole.toUpperCase();
-            
-            // Handle Teacher-only elements
-            const teacherElements = document.querySelectorAll('.teacher-only');
-            teacherElements.forEach(el => {
-                if (!isOfflineModeActive && currentRole === 'teacher') {
-                    el.classList.remove('hidden');
-                    el.style.display = '';
-                } else {
-                    el.classList.add('hidden');
-                    el.style.display = 'none';
-                }
-            });
-
-            // Handle Student-only elements (Hide for teachers, show for students/offline)
-            const studentElements = document.querySelectorAll('.student-only');
-            studentElements.forEach(el => {
-                if (isOfflineModeActive || currentRole !== 'teacher') {
-                    el.classList.remove('hidden');
-                    el.style.display = '';
-                } else {
-                    el.classList.add('hidden');
-                    el.style.display = 'none';
-                }
-            });
-
-            // COMPLETELY HIDE RANK & MEDALS TAB WHEN OFFLINE
-            const offlineHideElements = document.querySelectorAll('.offline-hide');
-            offlineHideElements.forEach(el => {
-                if (isOfflineModeActive) {
-                    el.classList.add('hidden');
-                    el.style.display = 'none';
-                } else {
-                    el.classList.remove('hidden');
-                    el.style.display = '';
-                }
-            });
-
-            if (currentUser && !isOfflineModeActive) {
-                document.getElementById('userProfileLabel').innerText = `Logged in as ${currentUser.email} (${currentRole})`;
-            }
+    const badge = document.getElementById('userRoleBadge');
+    badge.innerText = isOfflineModeActive ? "OFFLINE STUDENT" : currentRole.toUpperCase();
+    
+    // Handle Teacher-only elements
+    const teacherElements = document.querySelectorAll('.teacher-only');
+    teacherElements.forEach(el => {
+        if (!isOfflineModeActive && currentRole === 'teacher') {
+            el.classList.remove('hidden');
+            el.style.display = '';
+        } else {
+            el.classList.add('hidden');
+            el.style.display = 'none';
         }
+    });
+
+    // Handle Student-only elements (Hide for teachers, show for students/online)
+    const studentElements = document.querySelectorAll('.student-only');
+    studentElements.forEach(el => {
+        if (isOfflineModeActive || currentRole !== 'teacher') {
+            // Do not unhide offline-hide elements if offline
+            if (isOfflineModeActive && el.classList.contains('offline-hide')) return;
+            el.classList.remove('hidden');
+            el.style.display = '';
+        } else {
+            el.classList.add('hidden');
+            el.style.display = 'none';
+        }
+    });
+
+    // COMPLETELY REMOVE RANK & MEDALS BUTTON & TAB FROM DOM WHEN OFFLINE
+    const offlineHideElements = document.querySelectorAll('.offline-hide');
+    offlineHideElements.forEach(el => {
+        if (isOfflineModeActive) {
+            el.remove(); // Completely deletes the element from the DOM
+        }
+    });
+
+    if (currentUser && !isOfflineModeActive) {
+        document.getElementById('userProfileLabel').innerText = `Logged in as ${currentUser.email} (${currentRole})`;
+    }
+}
 
         function switchTab(tabId) {
             if (tabId === 'dashboard' && (isOfflineModeActive || currentRole !== 'teacher')) {
