@@ -666,35 +666,35 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <span class="text-2xl">🥇</span>
+                            <span class="text-2xl">🟢</span>
                             <div>
-                                <span class="text-xs font-bold text-white block">Gold Medals</span>
-                                <span class="text-[10px] text-slate-400">Live Top 3 / ≥90% (+2)</span>
+                                <span class="text-xs font-bold text-white block">Medal Count (Easy)</span>
+                                <span class="text-[10px] text-slate-400">1 Medal per 3 attempts @ ≥80%</span>
                             </div>
                         </div>
-                        <span id="dashGoldCount" class="text-lg font-mono font-bold text-amber-400">0</span>
+                        <span id="dashEasyCount" class="text-lg font-mono font-bold text-emerald-400">0</span>
                     </div>
 
                     <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <span class="text-2xl">🥈</span>
+                            <span class="text-2xl">🟡</span>
                             <div>
-                                <span class="text-xs font-bold text-white block">Silver Medals</span>
-                                <span class="text-[10px] text-slate-400">Live Top 10 / ≥75% (+1)</span>
+                                <span class="text-xs font-bold text-white block">Medal Count (Average)</span>
+                                <span class="text-[10px] text-slate-400">1 Medal per 2 attempts @ ≥80%</span>
                             </div>
                         </div>
-                        <span id="dashSilverCount" class="text-lg font-mono font-bold text-slate-300">0</span>
+                        <span id="dashAverageCount" class="text-lg font-mono font-bold text-amber-400">0</span>
                     </div>
 
                     <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <span class="text-2xl">🥉</span>
+                            <span class="text-2xl">🔴</span>
                             <div>
-                                <span class="text-xs font-bold text-white block">Bronze Medals</span>
-                                <span class="text-[10px] text-slate-400">Live Passing Score (Safe)</span>
+                                <span class="text-xs font-bold text-white block">Medal Count (Difficult)</span>
+                                <span class="text-[10px] text-slate-400">1 Medal per attempt @ ≥80%</span>
                             </div>
                         </div>
-                        <span id="dashBronzeCount" class="text-lg font-mono font-bold text-amber-600">0</span>
+                        <span id="dashDifficultCount" class="text-lg font-mono font-bold text-rose-400">0</span>
                     </div>
                 </div>
 
@@ -1135,79 +1135,80 @@
             }, 400);
         }
 
-        // --- STUDENT STATS & RANK STATE ---
+       // --- UPDATED STUDENT STATS & BACKWARD-COMPATIBLE MAPPING ---
         let studentStats = {
             totalMedals: 2,
-            gold: 0,
-            silver: 1,
-            bronze: 0,
+            easy: 0,
+            average: 0,
+            difficult: 0,
+            easyAttempts: 0,       // Tracks progress towards Easy medal (1 per 3 attempts @ >=80%)
+            averageAttempts: 0,    // Tracks progress towards Average medal (1 per 2 attempts @ >=80%)
             history: []
         };
 
-// --- CLOUD-SYNCED STUDENT STATS & RANK FUNCTIONS ---
-async function loadStudentStats() {
-    if (!currentUser) {
-        // Fallback for offline or guest mode using browser storage
-        const saved = localStorage.getItem('trign_student_stats');
-        if (saved) {
-            try { studentStats = JSON.parse(saved); } catch (e) {}
+        // --- MIGRATION UTILITY FOR EXISTING ACCOUNTS ---
+        function migrateOldStats(data) {
+            if (!data) return;
+            // Map legacy gold/silver/bronze keys if they exist in storage
+            if (data.gold !== undefined && data.difficult === undefined) data.difficult = data.gold;
+            if (data.silver !== undefined && data.average === undefined) data.average = data.silver;
+            if (data.bronze !== undefined && data.easy === undefined) data.easy = data.bronze;
+            if (data.easyAttempts === undefined) data.easyAttempts = 0;
+            if (data.averageAttempts === undefined) data.averageAttempts = 0;
+            return data;
         }
-        updateStudentDashboardUI();
-        return;
-    }
 
-    try {
-        // Fetch user document from Firestore to get their unique medals
-        const userDoc = await db.collection('users').doc(currentUser.uid).get();
-        if (userDoc.exists && userDoc.data().medalStats) {
-            studentStats = userDoc.data().medalStats;
-        } else {
-            studentStats = { totalMedals: 0, gold: 0, silver: 0, bronze: 0, history: [] };
-        }
-    } catch (error) {
-        // Offline fallback
-        const saved = localStorage.getItem(`trign_student_stats_${currentUser.uid}`);
-        if (saved) {
-            try { studentStats = JSON.parse(saved); } catch (e) {}
-        } else {
-            studentStats = { totalMedals: 0, gold: 0, silver: 0, bronze: 0, history: [] };
-        }
-    }
-    updateStudentDashboardUI();
-}
+        async function loadStudentStats() {
+            if (!currentUser) {
+                const saved = localStorage.getItem('trign_student_stats');
+                if (saved) {
+                    try { studentStats = migrateOldStats(JSON.parse(saved)); } catch (e) {}
+                }
+                updateStudentDashboardUI();
+                return;
+            }
 
-async function saveStudentStats() {
-    if (currentUser) {
-        try {
-            await db.collection('users').doc(currentUser.uid).set({
-                medalStats: studentStats
-            }, { merge: true });
-        } catch (error) {
-            console.warn("Cloud save failed, saving locally:", error);
+            try {
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                if (userDoc.exists && userDoc.data().medalStats) {
+                    studentStats = migrateOldStats(userDoc.data().medalStats);
+                } else {
+                    studentStats = { totalMedals: 0, easy: 0, average: 0, difficult: 0, easyAttempts: 0, averageAttempts: 0, history: [] };
+                }
+            } catch (error) {
+                const saved = localStorage.getItem(`trign_student_stats_${currentUser.uid}`);
+                if (saved) {
+                    try { studentStats = migrateOldStats(JSON.parse(saved)); } catch (e) {}
+                } else {
+                    studentStats = { totalMedals: 0, easy: 0, average: 0, difficult: 0, easyAttempts: 0, averageAttempts: 0, history: [] };
+                }
+            }
+            updateStudentDashboardUI();
         }
-        localStorage.setItem(`trign_student_stats_${currentUser.uid}`, JSON.stringify(studentStats));
-    } else {
-        localStorage.setItem('trign_student_stats', JSON.stringify(studentStats));
-    }
-    updateStudentDashboardUI();
-}
-        
-        function calculateRankTitle(medals) {
-            if (medals >= 45) return "Apex Trigo Master (Legend)";
-            if (medals >= 30) return "Triangle Titan III";
-            if (medals >= 20) return "Oblique Vanguard III";
-            if (medals >= 12) return "Pythagorean Adept III";
-            if (medals >= 5) return "Sine Scholar III";
-            return "Angle Novice III";
+
+        async function saveStudentStats() {
+            if (currentUser) {
+                try {
+                    await db.collection('users').doc(currentUser.uid).set({
+                        medalStats: studentStats
+                    }, { merge: true });
+                } catch (error) {
+                    console.warn("Cloud save failed, saving locally:", error);
+                }
+                localStorage.setItem(`trign_student_stats_${currentUser.uid}`, JSON.stringify(studentStats));
+            } else {
+                localStorage.setItem('trign_student_stats', JSON.stringify(studentStats));
+            }
+            updateStudentDashboardUI();
         }
 
         function updateStudentDashboardUI() {
             const rankTitle = calculateRankTitle(studentStats.totalMedals);
             document.getElementById('dashStudentRankTitle').innerText = rankTitle;
             document.getElementById('dashTotalMedals').innerText = studentStats.totalMedals;
-            document.getElementById('dashGoldCount').innerText = studentStats.gold;
-            document.getElementById('dashSilverCount').innerText = studentStats.silver;
-            document.getElementById('dashBronzeCount').innerText = studentStats.bronze;
+            document.getElementById('dashEasyCount').innerText = studentStats.easy;
+            document.getElementById('dashAverageCount').innerText = studentStats.average;
+            document.getElementById('dashDifficultCount').innerText = studentStats.difficult;
 
             const histContainer = document.getElementById('dashMatchHistory');
             if (!studentStats.history || studentStats.history.length === 0) {
@@ -1219,16 +1220,85 @@ async function saveStudentStats() {
             studentStats.history.slice(-5).reverse().forEach(match => {
                 const div = document.createElement('div');
                 div.className = "flex justify-between items-center bg-slate-900 p-3 rounded-xl border border-slate-700";
-                const medalIcon = match.medal === 'gold' ? '🥇 Gold (+2)' : (match.medal === 'silver' ? '🥈 Silver (+1)' : (match.medal === 'bronze' ? '🥉 Bronze (Safe)' : '❌ Fail (-1)'));
                 div.innerHTML = `
                     <div>
                         <span class="text-white font-bold block">${match.title} (${match.difficulty})</span>
                         <span class="text-[10px] text-slate-400">Score: ${match.score}/${match.total} (${match.pct}%)</span>
                     </div>
-                    <span class="font-mono text-xs font-bold text-amber-400">${medalIcon}</span>
+                    <span class="font-mono text-xs font-bold text-amber-400">${match.medalText || ''}</span>
                 `;
                 histContainer.appendChild(div);
             });
+        }
+
+        function calculateFinalRewards(rawScore, totalQuestions, isLiveRanked, diffLevel) {
+            let multiplier = 1;
+            if (diffLevel === 'average') multiplier = 2;
+            if (diffLevel === 'difficult') multiplier = 3;
+
+            let earnedPoints = rawScore * 10;
+            if (isLiveRanked) {
+                earnedPoints = earnedPoints * multiplier;
+            }
+
+            let pct = Math.round((rawScore / totalQuestions) * 100);
+            let medalChange = 0;
+            let medalText = "";
+            let medalCategory = "none";
+
+            if (isLiveRanked) {
+                if (pct <= 50) {
+                    // Rule: 50% or below in every attempt regardless of difficulty -> 1 medal deducted
+                    medalChange = -1;
+                    medalCategory = "deduct";
+                    medalText = "❌ ≤50% Score — 1 Medal Deducted!";
+                    studentStats.totalMedals = Math.max(0, studentStats.totalMedals - 1);
+                } else if (pct >= 80) {
+                    if (diffLevel === 'difficult') {
+                        // Rule: 80% in each attempt in difficult round -> 1 medal count immediately
+                        medalChange = 1;
+                        medalCategory = "difficult";
+                        studentStats.difficult++;
+                        studentStats.totalMedals += 1;
+                        medalText = "🔴 Difficult Medal Earned! (+1)";
+                    } else if (diffLevel === 'average') {
+                        // Rule: 80% in each attempt for 2 attempts in average round -> 1 medal count
+                        studentStats.averageAttempts = (studentStats.averageAttempts || 0) + 1;
+                        if (studentStats.averageAttempts >= 2) {
+                            medalChange = 1;
+                            medalCategory = "average";
+                            studentStats.average++;
+                            studentStats.totalMedals += 1;
+                            studentStats.averageAttempts = 0;
+                            medalText = "🟡 Average Medal Earned! (+1)";
+                        } else {
+                            medalText = `🟡 Average Round Passed (${studentStats.averageAttempts}/2 @ ≥80%)`;
+                        }
+                    } else if (diffLevel === 'easy') {
+                        // Rule: 80% in each attempt for 3 attempts in easy round -> 1 medal count
+                        studentStats.easyAttempts = (studentStats.easyAttempts || 0) + 1;
+                        if (studentStats.easyAttempts >= 3) {
+                            medalChange = 1;
+                            medalCategory = "easy";
+                            studentStats.easy++;
+                            studentStats.totalMedals += 1;
+                            studentStats.easyAttempts = 0;
+                            medalText = "🟢 Easy Medal Earned! (+1)";
+                        } else {
+                            medalText = `🟢 Easy Round Passed (${studentStats.easyAttempts}/3 @ ≥80%)`;
+                        }
+                    }
+                } else {
+                    medalText = "🛡️ Passing Score (No Medal Change)";
+                }
+            }
+
+            return {
+                points: earnedPoints,
+                multiplier: multiplier,
+                medalText: medalText,
+                medalCategory: medalCategory
+            };
         }
 
         // --- WEB AUDIO API SOUND EFFECTS SYNTHESIZER ---
@@ -1814,7 +1884,7 @@ async function saveStudentStats() {
             }
         }
         
-        function updateRoleUI() {
+function updateRoleUI() {
     const badge = document.getElementById('userRoleBadge');
     badge.innerText = isOfflineModeActive ? "OFFLINE STUDENT" : currentRole.toUpperCase();
     
@@ -2094,35 +2164,6 @@ async function saveStudentStats() {
             startActiveQuizSession('Practice Drill (Unranked)', currentDifficulty);
         }
 
-        function calculateFinalRewards(rawScore, isLiveRanked) {
-            // Multipliers: Easy = 1x, Medium = 2x, Hard = 3x
-            let multiplier = 1;
-            if (currentQuizDifficulty === 'medium') multiplier = 2;
-            if (currentQuizDifficulty === 'hard') multiplier = 3;
-
-            // Base points calculation (e.g., 10 points per correct answer)
-            let earnedPoints = rawScore * 10;
-
-            if (isLiveRanked) {
-                earnedPoints = earnedPoints * multiplier;
-            }
-
-            // Determine medal tier based on difficulty and score
-            let medalEarned = '🥉 Bronze Tier Medal';
-            if (currentQuizDifficulty === 'hard' && rawScore >= 7) {
-                medalEarned = '🥇 Gold Tier Medal';
-            } else if (currentQuizDifficulty === 'medium' && rawScore >= 7) {
-                medalEarned = '🥈 Silver Tier Medal';
-            } else if (currentQuizDifficulty === 'hard' && rawScore >= 5) {
-                medalEarned = '🥈 Silver Tier Medal';
-            }
-
-            return {
-                points: earnedPoints,
-                multiplier: multiplier,
-                medal: medalEarned
-            };
-        }
 
        function startActiveQuizSession(titleBadge, diff) {
             currentQuizDifficulty = diff || 'easy'; // <-- CAPTURE DIFFICULTY HERE
@@ -2277,87 +2318,59 @@ async function saveStudentStats() {
         }
 
         async function endQuizSession() {
-            if (activeQuizTimer) clearInterval(activeQuizTimer);
-            document.getElementById('quizContainer').classList.add('hidden');
-            const scoreScreen = document.getElementById('scoreScreen');
-            scoreScreen.classList.remove('hidden');
+    if (activeQuizTimer) clearInterval(activeQuizTimer);
+    document.getElementById('quizContainer').classList.add('hidden');
+    const scoreScreen = document.getElementById('scoreScreen');
+    scoreScreen.classList.remove('hidden');
 
-            const pct = Math.round((score / currentQuestions.length) * 100);
-            
-            // CHECK IF LIVE RANKED QUIZ OR PRACTICE DRILL
-            const isLiveRanked = document.getElementById('quizRoundBadgeTitle').innerText.includes("Live Ranked");
-            const rewards = calculateFinalRewards(score, isLiveRanked);
+    const pct = Math.round((score / currentQuestions.length) * 100);
+    
+    // CHECK IF LIVE RANKED QUIZ OR PRACTICE DRILL
+    const isLiveRanked = document.getElementById('quizRoundBadgeTitle').innerText.includes("Live Ranked");
+    const rewards = calculateFinalRewards(score, currentQuestions.length, isLiveRanked, currentQuizDifficulty);
 
-            // Display score and include the difficulty multiplier rewards!
-            document.getElementById('finalScoreText').innerText = `You scored ${score} out of ${currentQuestions.length} (${pct}%) \n Points Earned: +${rewards.points} (${rewards.multiplier}x Multiplier)`;
+    // Display score and include the difficulty multiplier rewards!
+    document.getElementById('finalScoreText').innerText = `You scored ${score} out of ${currentQuestions.length} (${pct}%) \n Points Earned: +${rewards.points} (${rewards.multiplier}x Multiplier)`;
 
-            if (isLiveRanked) {
-                // RANK & MEDAL SYSTEM APPLIED ONLY FOR LIVE QUIZ
-                let medalEarned = 'none';
-                let medalChange = 0;
-                let medalText = "";
+    if (isLiveRanked) {
+        // RANK & MEDAL SYSTEM APPLIED ONLY FOR LIVE QUIZ
+        studentStats.history.push({
+            title: document.getElementById('quizRoundBadgeTitle').innerText,
+            difficulty: currentQuizDifficulty,
+            score: score,
+            total: currentQuestions.length,
+            pct: pct,
+            medalText: rewards.medalText,
+            pointsEarned: rewards.points
+        });
 
-                if (pct >= 90) {
-                    medalEarned = 'gold';
-                    medalChange = 2;
-                    studentStats.gold++;
-                    medalText = `🥇 Gold Medal Earned! +2 Rank Medals Added! (${rewards.medal})`;
-                } else if (pct >= 75) {
-                    medalEarned = 'silver';
-                    medalChange = 1;
-                    studentStats.silver++;
-                    medalText = `🥈 Silver Medal Earned! +1 Rank Medal Added! (${rewards.medal})`;
-                } else if (pct >= 60) {
-                    medalEarned = 'bronze';
-                    medalChange = 0;
-                    studentStats.bronze++;
-                    medalText = `🥉 Bronze Medal (Passing Score) — Rank Shield Active`;
-                } else {
-                    medalEarned = 'fail';
-                    medalChange = -1;
-                    studentStats.totalMedals = Math.max(0, studentStats.totalMedals - 1);
-                    medalText = "❌ Low Score — 1 Rank Medal Deducted!";
-                }
+        saveStudentStats();
+        document.getElementById('medalAwardResult').style.display = 'block';
+        document.getElementById('medalAwardResult').innerText = rewards.medalText;
+        document.getElementById('scoreSubText').innerText = `Current Rank Title: ${calculateRankTitle(studentStats.totalMedals)}`;
 
-                if (medalChange > 0) {
-                    studentStats.totalMedals += medalChange;
-                }
-
-                studentStats.history.push({
-                    title: document.getElementById('quizRoundBadgeTitle').innerText,
-                    difficulty: currentQuizDifficulty, // FIXED: matched global variable name
-                    score: score,
-                    total: currentQuestions.length,
-                    pct: pct,
-                    medal: medalEarned,
-                    pointsEarned: rewards.points
+        if (currentUser && currentRole === 'student' && !isOfflineModeActive) {
+            try {
+                let studentName = localStorage.getItem(`trign_name_${currentUser.uid}`) || currentUser.email.split('@')[0];
+                await db.collection('submissions').add({
+                    studentEmail: currentUser.email,
+                    studentName: studentName,
+                    difficulty: currentQuizDifficulty,
+                    score: score, 
+                    total: currentQuestions.length, 
+                    percentage: pct,
+                    points: rewards.points,
+                    pin: activeGamePin,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
-                saveStudentStats();
-                document.getElementById('medalAwardResult').style.display = 'block';
-                document.getElementById('medalAwardResult').innerText = medalText;
-                document.getElementById('scoreSubText').innerText = `Current Rank Title: ${calculateRankTitle(studentStats.totalMedals)}`;
-
-                if (currentUser && currentRole === 'student' && !isOfflineModeActive) {
-                    try {
-                        let studentName = localStorage.getItem(`trign_name_${currentUser.uid}`) || currentUser.email.split('@')[0];
-                        await db.collection('submissions').add({
-                            studentEmail: currentUser.email,
-                            studentName: studentName,
-                            difficulty: currentQuizDifficulty, // FIXED: matched global variable name
-                            score: score, total: currentQuestions.length, percentage: pct,
-                            points: rewards.points,
-                            pin: activeGamePin,
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    } catch (e) {}
-                }
-            } else {
-                // PRACTICE DRILL: UNRANKED, NO MEDAL CHANGES
-                document.getElementById('medalAwardResult').style.display = 'none';
-                document.getElementById('scoreSubText').innerText = `🎯 Practice Drill Completed (+${rewards.points} Points - Unranked)`;
-            }
+            } catch (e) {}
         }
+    } else {
+        // PRACTICE DRILL: UNRANKED, NO MEDAL CHANGES
+        document.getElementById('medalAwardResult').style.display = 'none';
+        document.getElementById('scoreSubText').innerText = `🎯 Practice Drill Completed (+${rewards.points} Points - Unranked)`;
+    }
+}
 
         function resetQuizView() { switchQuizMode(isOfflineModeActive ? 'practice' : 'live'); }
 
