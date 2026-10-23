@@ -1135,73 +1135,62 @@
             }, 400);
         }
 
-       // --- STUDENT STATS OBJECT (NEW TALLY STRUCTURE) ---
+        // --- STUDENT STATS & RANK STATE ---
         let studentStats = {
-            totalMedals: 0,
-            easyMedals: 0,
-            averageMedals: 0,
-            difficultMedals: 0,
-            totalDeductions: 0,
-            easySuccessCount: 0,
-            averageSuccessCount: 0,
+            totalMedals: 2,
+            gold: 0,
+            silver: 1,
+            bronze: 0,
             history: []
         };
 
-        // --- CLOUD-SYNCED STUDENT STATS & RANK FUNCTIONS ---
-        async function loadStudentStats() {
-            const defaultStats = {
-                totalMedals: 0,
-                easyMedals: 0,
-                averageMedals: 0,
-                difficultMedals: 0,
-                totalDeductions: 0,
-                easySuccessCount: 0,
-                averageSuccessCount: 0,
-                history: []
-            };
-
-            if (!currentUser) {
-                const saved = localStorage.getItem('trign_student_stats');
-                if (saved) {
-                    try { studentStats = { ...defaultStats, ...JSON.parse(saved) }; } catch (e) {}
-                } else {
-                    studentStats = defaultStats;
-                }
-                updateStudentDashboardUI();
-                return;
-            }
-
-            try {
-                const userDoc = await db.collection('users').doc(currentUser.uid).get();
-                if (userDoc.exists && userDoc.data().medalStats) {
-                    studentStats = { ...defaultStats, ...userDoc.data().medalStats };
-                } else {
-                    studentStats = defaultStats;
-                }
-            } catch (error) {
-                const saved = localStorage.getItem(`trign_student_stats_${currentUser.uid}`);
-                if (saved) {
-                    try { studentStats = { ...defaultStats, ...JSON.parse(saved) }; } catch (e) {}
-                } else {
-                    studentStats = defaultStats;
-                }
-            }
-            updateStudentDashboardUI();
+// --- CLOUD-SYNCED STUDENT STATS & RANK FUNCTIONS ---
+async function loadStudentStats() {
+    if (!currentUser) {
+        // Fallback for offline or guest mode using browser storage
+        const saved = localStorage.getItem('trign_student_stats');
+        if (saved) {
+            try { studentStats = JSON.parse(saved); } catch (e) {}
         }
+        updateStudentDashboardUI();
+        return;
+    }
 
-        async function saveStudentStats() {
-            if (currentUser) {
-                try {
-                    await db.collection('users').doc(currentUser.uid).set({
-                        medalStats: studentStats
-                    }, { merge: true });
-                } catch (error) {}
-                localStorage.setItem(`trign_student_stats_${currentUser.uid}`, JSON.stringify(studentStats));
-            } else {
-                localStorage.setItem('trign_student_stats', JSON.stringify(studentStats));
-            }
-            updateStudentDashboardUI();
+    try {
+        // Fetch user document from Firestore to get their unique medals
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        if (userDoc.exists && userDoc.data().medalStats) {
+            studentStats = userDoc.data().medalStats;
+        } else {
+            studentStats = { totalMedals: 0, gold: 0, silver: 0, bronze: 0, history: [] };
         }
+    } catch (error) {
+        // Offline fallback
+        const saved = localStorage.getItem(`trign_student_stats_${currentUser.uid}`);
+        if (saved) {
+            try { studentStats = JSON.parse(saved); } catch (e) {}
+        } else {
+            studentStats = { totalMedals: 0, gold: 0, silver: 0, bronze: 0, history: [] };
+        }
+    }
+    updateStudentDashboardUI();
+}
+
+async function saveStudentStats() {
+    if (currentUser) {
+        try {
+            await db.collection('users').doc(currentUser.uid).set({
+                medalStats: studentStats
+            }, { merge: true });
+        } catch (error) {
+            console.warn("Cloud save failed, saving locally:", error);
+        }
+        localStorage.setItem(`trign_student_stats_${currentUser.uid}`, JSON.stringify(studentStats));
+    } else {
+        localStorage.setItem('trign_student_stats', JSON.stringify(studentStats));
+    }
+    updateStudentDashboardUI();
+}
         
         function calculateRankTitle(medals) {
             if (medals >= 45) return "Apex Trigo Master (Legend)";
@@ -1214,19 +1203,15 @@
 
         function updateStudentDashboardUI() {
             const rankTitle = calculateRankTitle(studentStats.totalMedals);
-            if (document.getElementById('dashStudentRankTitle')) document.getElementById('dashStudentRankTitle').innerText = rankTitle;
-            if (document.getElementById('dashTotalMedals')) document.getElementById('dashTotalMedals').innerText = studentStats.totalMedals;
-            
-            if (document.getElementById('dashEasyCount')) document.getElementById('dashEasyCount').innerText = studentStats.easyMedals;
-            if (document.getElementById('dashAverageCount')) document.getElementById('dashAverageCount').innerText = studentStats.averageMedals;
-            if (document.getElementById('dashDifficultCount')) document.getElementById('dashDifficultCount').innerText = studentStats.difficultMedals;
-            if (document.getElementById('dashDeductionsCount')) document.getElementById('dashDeductionsCount').innerText = studentStats.totalDeductions;
+            document.getElementById('dashStudentRankTitle').innerText = rankTitle;
+            document.getElementById('dashTotalMedals').innerText = studentStats.totalMedals;
+            document.getElementById('dashGoldCount').innerText = studentStats.gold;
+            document.getElementById('dashSilverCount').innerText = studentStats.silver;
+            document.getElementById('dashBronzeCount').innerText = studentStats.bronze;
 
             const histContainer = document.getElementById('dashMatchHistory');
-            if (!histContainer) return;
-
             if (!studentStats.history || studentStats.history.length === 0) {
-                histContainer.innerHTML = `<p class="text-slate-500 italic">No ranked matches recorded yet.</p>`;
+                histContainer.innerHTML = `<p class="text-slate-500 italic">No ranked matches recorded yet. Complete a live broadcast quiz to earn rank medals!</p>`;
                 return;
             }
 
@@ -1234,20 +1219,13 @@
             studentStats.history.slice(-5).reverse().forEach(match => {
                 const div = document.createElement('div');
                 div.className = "flex justify-between items-center bg-slate-900 p-3 rounded-xl border border-slate-700";
-                
-                let badgeDisplay = "";
-                if (match.medal === 'easy_milestone') badgeDisplay = '🟢 Easy Medal (+1)';
-                else if (match.medal === 'average_milestone') badgeDisplay = '🟡 Average Medal (+1)';
-                else if (match.medal === 'difficult_milestone') badgeDisplay = '🔴 Difficult Medal (+1)';
-                else if (match.medal === 'fail') badgeDisplay = '❌ Deduction (-1)';
-                else badgeDisplay = '📋 Recorded (No change)';
-
+                const medalIcon = match.medal === 'gold' ? '🥇 Gold (+2)' : (match.medal === 'silver' ? '🥈 Silver (+1)' : (match.medal === 'bronze' ? '🥉 Bronze (Safe)' : '❌ Fail (-1)'));
                 div.innerHTML = `
                     <div>
                         <span class="text-white font-bold block">${match.title} (${match.difficulty})</span>
                         <span class="text-[10px] text-slate-400">Score: ${match.score}/${match.total} (${match.pct}%)</span>
                     </div>
-                    <span class="font-mono text-xs font-bold text-amber-400">${badgeDisplay}</span>
+                    <span class="font-mono text-xs font-bold text-amber-400">${medalIcon}</span>
                 `;
                 histContainer.appendChild(div);
             });
