@@ -1231,7 +1231,7 @@
             });
         }
 
-        function calculateFinalRewards(rawScore, totalQuestions, isLiveRanked, diffLevel) {
+       function calculateFinalRewards(rawScore, totalQuestions, isLiveRanked, diffLevel) {
             let multiplier = 1;
             if (diffLevel === 'average') multiplier = 2;
             if (diffLevel === 'difficult') multiplier = 3;
@@ -1242,30 +1242,26 @@
             }
 
             let pct = Math.round((rawScore / totalQuestions) * 100);
-            let medalChange = 0;
             let medalText = "";
             let medalCategory = "none";
 
             if (isLiveRanked) {
                 if (pct <= 50) {
-                    // Rule: 50% or below in every attempt regardless of difficulty -> 1 medal deducted
-                    medalChange = -1;
+                    // Rule: 50% or below regardless of difficulty -> 1 medal deducted
                     medalCategory = "deduct";
                     medalText = "❌ ≤50% Score — 1 Medal Deducted!";
                     studentStats.totalMedals = Math.max(0, studentStats.totalMedals - 1);
                 } else if (pct >= 80) {
                     if (diffLevel === 'difficult') {
-                        // Rule: 80% in each attempt in difficult round -> 1 medal count immediately
-                        medalChange = 1;
+                        // Rule: 80% or more in each attempt in difficult round -> 1 medal count immediately
                         medalCategory = "difficult";
                         studentStats.difficult++;
                         studentStats.totalMedals += 1;
                         medalText = "🔴 Difficult Medal Earned! (+1)";
                     } else if (diffLevel === 'average') {
-                        // Rule: 80% in each attempt for 2 attempts in average round -> 1 medal count
+                        // Rule: 80% or more in each attempt for 2 attempts in average round -> 1 medal count
                         studentStats.averageAttempts = (studentStats.averageAttempts || 0) + 1;
                         if (studentStats.averageAttempts >= 2) {
-                            medalChange = 1;
                             medalCategory = "average";
                             studentStats.average++;
                             studentStats.totalMedals += 1;
@@ -1275,10 +1271,9 @@
                             medalText = `🟡 Average Round Passed (${studentStats.averageAttempts}/2 @ ≥80%)`;
                         }
                     } else if (diffLevel === 'easy') {
-                        // Rule: 80% in each attempt for 3 attempts in easy round -> 1 medal count
+                        // Rule: 80% or more in each attempt for 3 attempts in easy round -> 1 medal count
                         studentStats.easyAttempts = (studentStats.easyAttempts || 0) + 1;
                         if (studentStats.easyAttempts >= 3) {
-                            medalChange = 1;
                             medalCategory = "easy";
                             studentStats.easy++;
                             studentStats.totalMedals += 1;
