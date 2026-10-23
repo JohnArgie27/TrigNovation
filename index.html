@@ -1135,260 +1135,123 @@
             }, 400);
         }
 
-       let studentStats = {
-    totalMedals: 0,
-    easyMedals: 0,         // Medals earned from completing Easy milestone (3x 80%+)
-    averageMedals: 0,      // Medals earned from completing Average milestone (2x 80%+)
-    difficultMedals: 0,    // Medals earned from Difficult round (1x 80%+)
-    totalDeductions: 0,    // Tracks how many times medals were deducted due to failing (<= 50%)
-    easySuccessCount: 0,   // Current progress towards Easy medal (0 to 3)
-    averageSuccessCount: 0,// Current progress towards Average medal (0 to 2)
-    history: []
-};
-```[cite: 1]
+       // --- STUDENT STATS OBJECT (NEW TALLY STRUCTURE) ---
+        let studentStats = {
+            totalMedals: 0,
+            easyMedals: 0,
+            averageMedals: 0,
+            difficultMedals: 0,
+            totalDeductions: 0,
+            easySuccessCount: 0,
+            averageSuccessCount: 0,
+            history: []
+        };
 
----
+        // --- CLOUD-SYNCED STUDENT STATS & RANK FUNCTIONS ---
+        async function loadStudentStats() {
+            const defaultStats = {
+                totalMedals: 0,
+                easyMedals: 0,
+                averageMedals: 0,
+                difficultMedals: 0,
+                totalDeductions: 0,
+                easySuccessCount: 0,
+                averageSuccessCount: 0,
+                history: []
+            };
 
-### 2. Update the Student Dashboard HTML (`tab-student-dashboard`)
-Replace the old Gold/Silver/Bronze card grid in Tab 3 with the new tally cards for Easy, Average, Difficult medals, and Total Deductions:
+            if (!currentUser) {
+                const saved = localStorage.getItem('trign_student_stats');
+                if (saved) {
+                    try { studentStats = { ...defaultStats, ...JSON.parse(saved) }; } catch (e) {}
+                } else {
+                    studentStats = defaultStats;
+                }
+                updateStudentDashboardUI();
+                return;
+            }
 
-```html
-<!-- REPLACE THE 3-CARD GRID IN TAB 3 WITH THIS -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <span class="text-2xl">🟢</span>
-            <div>
-                <span class="text-xs font-bold text-white block">Easy Medals</span>
-                <span class="text-[10px] text-slate-400">3x 80%+ = 1 Medal</span>
-            </div>
-        </div>
-        <span id="dashEasyCount" class="text-lg font-mono font-bold text-emerald-400">0</span>
-    </div>
+            try {
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                if (userDoc.exists && userDoc.data().medalStats) {
+                    studentStats = { ...defaultStats, ...userDoc.data().medalStats };
+                } else {
+                    studentStats = defaultStats;
+                }
+            } catch (error) {
+                const saved = localStorage.getItem(`trign_student_stats_${currentUser.uid}`);
+                if (saved) {
+                    try { studentStats = { ...defaultStats, ...JSON.parse(saved) }; } catch (e) {}
+                } else {
+                    studentStats = defaultStats;
+                }
+            }
+            updateStudentDashboardUI();
+        }
 
-    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <span class="text-2xl">🟡</span>
-            <div>
-                <span class="text-xs font-bold text-white block">Average Medals</span>
-                <span class="text-[10px] text-slate-400">2x 80%+ = 1 Medal</span>
-            </div>
-        </div>
-        <span id="dashAverageCount" class="text-lg font-mono font-bold text-amber-400">0</span>
-    </div>
-
-    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <span class="text-2xl">🔴</span>
-            <div>
-                <span class="text-xs font-bold text-white block">Difficult Medals</span>
-                <span class="text-[10px] text-slate-400">1x 80%+ = 1 Medal</span>
-            </div>
-        </div>
-        <span id="dashDifficultCount" class="text-lg font-mono font-bold text-rose-400">0</span>
-    </div>
-
-    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <span class="text-2xl">⚠️</span>
-            <div>
-                <span class="text-xs font-bold text-white block">Deductions</span>
-                <span class="text-[10px] text-slate-400">Score &le; 50%</span>
-            </div>
-        </div>
-        <span id="dashDeductionsCount" class="text-lg font-mono font-bold text-slate-400">0</span>
-    </div>
-</div>
-```[cite: 1]
-
----
-
-### 3. Update `updateStudentDashboardUI()` Function
-Update the UI text updater function to populate these new dashboard fields:
-
-```javascript
-function updateStudentDashboardUI() {
-    const rankTitle = calculateRankTitle(studentStats.totalMedals);
-    document.getElementById('dashStudentRankTitle').innerText = rankTitle;
-    document.getElementById('dashTotalMedals').innerText = studentStats.totalMedals;
-    
-    // Update new difficulty tallies and deductions
-    if (document.getElementById('dashEasyCount')) document.getElementById('dashEasyCount').innerText = studentStats.easyMedals;
-    if (document.getElementById('dashAverageCount')) document.getElementById('dashAverageCount').innerText = studentStats.averageMedals;
-    if (document.getElementById('dashDifficultCount')) document.getElementById('dashDifficultCount').innerText = studentStats.difficultMedals;
-    if (document.getElementById('dashDeductionsCount')) document.getElementById('dashDeductionsCount').innerText = studentStats.totalDeductions;
-
-    const histContainer = document.getElementById('dashMatchHistory');
-    if (!studentStats.history || studentStats.history.length === 0) {
-        histContainer.innerHTML = `<p class="text-slate-500 italic">No ranked matches recorded yet. Complete a live broadcast quiz to earn rank medals!</p>`;
-        return;
-    }
-
-    histContainer.innerHTML = '';
-    studentStats.history.slice(-5).reverse().forEach(match => {
-        const div = document.createElement('div');
-        div.className = "flex justify-between items-center bg-slate-900 p-3 rounded-xl border border-slate-700";
+        async function saveStudentStats() {
+            if (currentUser) {
+                try {
+                    await db.collection('users').doc(currentUser.uid).set({
+                        medalStats: studentStats
+                    }, { merge: true });
+                } catch (error) {}
+                localStorage.setItem(`trign_student_stats_${currentUser.uid}`, JSON.stringify(studentStats));
+            } else {
+                localStorage.setItem('trign_student_stats', JSON.stringify(studentStats));
+            }
+            updateStudentDashboardUI();
+        }
         
-        let badgeDisplay = "";
-        if (match.medal === 'easy_milestone') badgeDisplay = '🟢 Easy Medal (+1)';
-        else if (match.medal === 'average_milestone') badgeDisplay = '🟡 Average Medal (+1)';
-        else if (match.medal === 'difficult_milestone') badgeDisplay = '🔴 Difficult Medal (+1)';
-        else if (match.medal === 'fail') badgeDisplay = '❌ Deduction (-1)';
-        else badgeDisplay = '📋 Recorded (No change)';
-
-        div.innerHTML = `
-            <div>
-                <span class="text-white font-bold block">${match.title} (${match.difficulty})</span>
-                <span class="text-[10px] text-slate-400">Score: ${match.score}/${match.total} (${match.pct}%)</span>
-            </div>
-            <span class="font-mono text-xs font-bold text-amber-400">${badgeDisplay}</span>
-        `;
-        histContainer.appendChild(div);
-    });
-}
-```[cite: 1]
-
----
-
-### 4. Update Safe Data Loading (`loadStudentStats()`)
-Ensure existing stats safely default the new properties without erasing stored scores:
-
-```javascript
-async function loadStudentStats() {
-    const defaultStats = {
-        totalMedals: 0,
-        easyMedals: 0,
-        averageMedals: 0,
-        difficultMedals: 0,
-        totalDeductions: 0,
-        easySuccessCount: 0,
-        averageSuccessCount: 0,
-        history: []
-    };
-
-    if (!currentUser) {
-        const saved = localStorage.getItem('trign_student_stats');
-        if (saved) {
-            try { 
-                studentStats = { ...defaultStats, ...JSON.parse(saved) }; 
-            } catch (e) {}
-        } else {
-            studentStats = defaultStats;
+        function calculateRankTitle(medals) {
+            if (medals >= 45) return "Apex Trigo Master (Legend)";
+            if (medals >= 30) return "Triangle Titan III";
+            if (medals >= 20) return "Oblique Vanguard III";
+            if (medals >= 12) return "Pythagorean Adept III";
+            if (medals >= 5) return "Sine Scholar III";
+            return "Angle Novice III";
         }
-        updateStudentDashboardUI();
-        return;
-    }
 
-    try {
-        const userDoc = await db.collection('users').doc(currentUser.uid).get();
-        if (userDoc.exists && userDoc.data().medalStats) {
-            studentStats = { ...defaultStats, ...userDoc.data().medalStats };
-        } else {
-            studentStats = defaultStats;
-        }
-    } catch (error) {
-        const saved = localStorage.getItem(`trign_student_stats_${currentUser.uid}`);
-        if (saved) {
-            try { 
-                studentStats = { ...defaultStats, ...JSON.parse(saved) }; 
-            } catch (e) {}
-        } else {
-            studentStats = defaultStats;
-        }
-    }
-    updateStudentDashboardUI();
-}
-```[cite: 1]
+        function updateStudentDashboardUI() {
+            const rankTitle = calculateRankTitle(studentStats.totalMedals);
+            if (document.getElementById('dashStudentRankTitle')) document.getElementById('dashStudentRankTitle').innerText = rankTitle;
+            if (document.getElementById('dashTotalMedals')) document.getElementById('dashTotalMedals').innerText = studentStats.totalMedals;
+            
+            if (document.getElementById('dashEasyCount')) document.getElementById('dashEasyCount').innerText = studentStats.easyMedals;
+            if (document.getElementById('dashAverageCount')) document.getElementById('dashAverageCount').innerText = studentStats.averageMedals;
+            if (document.getElementById('dashDifficultCount')) document.getElementById('dashDifficultCount').innerText = studentStats.difficultMedals;
+            if (document.getElementById('dashDeductionsCount')) document.getElementById('dashDeductionsCount').innerText = studentStats.totalDeductions;
 
----
+            const histContainer = document.getElementById('dashMatchHistory');
+            if (!histContainer) return;
 
-### 5. Update the Scoring Logic in `endQuizSession()`
-Replace the reward processing block in `endQuizSession()` to enforce your exact milestone and deduction rules:
+            if (!studentStats.history || studentStats.history.length === 0) {
+                histContainer.innerHTML = `<p class="text-slate-500 italic">No ranked matches recorded yet.</p>`;
+                return;
+            }
 
-```javascript
-if (isLiveRanked) {
-    let medalChange = 0;
-    let medalText = "";
-    let medalEarnedType = 'none';
+            histContainer.innerHTML = '';
+            studentStats.history.slice(-5).reverse().forEach(match => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-slate-900 p-3 rounded-xl border border-slate-700";
+                
+                let badgeDisplay = "";
+                if (match.medal === 'easy_milestone') badgeDisplay = '🟢 Easy Medal (+1)';
+                else if (match.medal === 'average_milestone') badgeDisplay = '🟡 Average Medal (+1)';
+                else if (match.medal === 'difficult_milestone') badgeDisplay = '🔴 Difficult Medal (+1)';
+                else if (match.medal === 'fail') badgeDisplay = '❌ Deduction (-1)';
+                else badgeDisplay = '📋 Recorded (No change)';
 
-    // Rule: Failure or 50% or below on ANY difficulty results in 1 medal deduction
-    if (pct <= 50) {
-        medalChange = -1;
-        medalEarnedType = 'fail';
-        studentStats.totalDeductions++;
-        studentStats.totalMedals = Math.max(0, studentStats.totalMedals - 1);
-        medalText = "❌ Score 50% or below — 1 Medal Deducted!";
-    } 
-    // Rule for EASY round: 80%+ in each attempt 3 times = 1 medal
-    else if (currentQuizDifficulty === 'easy' && pct >= 80) {
-        studentStats.easySuccessCount++;
-        if (studentStats.easySuccessCount >= 3) {
-            studentStats.easySuccessCount = 0; // Reset counter
-            medalChange = 1;
-            medalEarnedType = 'easy_milestone';
-            studentStats.easyMedals++;
-            studentStats.totalMedals += 1;
-            medalText = "🟢 Easy Milestone Reached (3x 80%+)! +1 Easy Medal Earned!";
-        } else {
-            medalText = `🎯 Easy Round Passed (${studentStats.easySuccessCount}/3 towards 1 Easy medal)`;
-        }
-    } 
-    // Rule for AVERAGE round: 80%+ in each attempt 2 times = 1 medal
-    else if (currentQuizDifficulty === 'medium' && pct >= 80) {
-        studentStats.averageSuccessCount++;
-        if (studentStats.averageSuccessCount >= 2) {
-            studentStats.averageSuccessCount = 0; // Reset counter
-            medalChange = 1;
-            medalEarnedType = 'average_milestone';
-            studentStats.averageMedals++;
-            studentStats.totalMedals += 1;
-            medalText = "🟡 Average Milestone Reached (2x 80%+)! +1 Average Medal Earned!";
-        } else {
-            medalText = `🎯 Average Round Passed (${studentStats.averageSuccessCount}/2 towards 1 Average medal)`;
-        }
-    } 
-    // Rule for DIFFICULT round: 80%+ in each attempt 1 time = 1 medal
-    else if (currentQuizDifficulty === 'hard' && pct >= 80) {
-        medalChange = 1;
-        medalEarnedType = 'difficult_milestone';
-        studentStats.difficultMedals++;
-        studentStats.totalMedals += 1;
-        medalText = "🔴 Difficult Round Passed (80%+)! +1 Difficult Medal Earned!";
-    } 
-    else {
-        medalText = "📋 Round completed. Score recorded (No medal milestone reached).";
-    }
-
-    studentStats.history.push({
-        title: document.getElementById('quizRoundBadgeTitle').innerText,
-        difficulty: currentQuizDifficulty,
-        score: score,
-        total: currentQuestions.length,
-        pct: pct,
-        medal: medalEarnedType,
-        pointsEarned: rewards.points
-    });
-
-    saveStudentStats();
-    document.getElementById('medalAwardResult').style.display = 'block';
-    document.getElementById('medalAwardResult').innerText = medalText;
-    document.getElementById('scoreSubText').innerText = `Current Rank Title: ${calculateRankTitle(studentStats.totalMedals)}`;
-
-    if (currentUser && currentRole === 'student' && !isOfflineModeActive) {
-        try {
-            let studentName = localStorage.getItem(`trign_name_${currentUser.uid}`) || currentUser.email.split('@')[0];
-            await db.collection('submissions').add({
-                studentEmail: currentUser.email,
-                studentName: studentName,
-                difficulty: currentQuizDifficulty,
-                score: score, total: currentQuestions.length, percentage: pct,
-                points: rewards.points,
-                pin: activeGamePin,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                div.innerHTML = `
+                    <div>
+                        <span class="text-white font-bold block">${match.title} (${match.difficulty})</span>
+                        <span class="text-[10px] text-slate-400">Score: ${match.score}/${match.total} (${match.pct}%)</span>
+                    </div>
+                    <span class="font-mono text-xs font-bold text-amber-400">${badgeDisplay}</span>
+                `;
+                histContainer.appendChild(div);
             });
-        } catch (e) {}
-    }
-}
+        }
 
         // --- WEB AUDIO API SOUND EFFECTS SYNTHESIZER ---
         let audioCtx = null;
