@@ -132,9 +132,9 @@
             <!-- Navigation Tabs -->
             <div class="mt-4 md:mt-0 flex flex-wrap gap-1 bg-indigo-950 p-1 rounded-xl border border-indigo-800">
                 <button onclick="toggleAudioTheme()" id="btnAudioToggle" class="px-2.5 py-1.5 text-xs font-bold rounded-lg transition text-amber-400 hover:bg-indigo-900" title="Toggle Ambient Audio">🎵 Music: OFF</button>
-               <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Simulators</button>
+              <button onclick="switchTab('simulator')" id="btn-simulator" class="px-3 py-1.5 text-xs font-bold rounded-lg transition bg-indigo-600 text-white shadow">Simulators</button>
                <button onclick="switchTab('lessons')" id="btn-lessons" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Lesson Notes & Videos </button>
-               <button onclick="switchTab('student-dashboard')" id="btn-student-dashboard" class="hidden student-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-amber-300 hover:text-white">🏆 My Rank & Medals</button>
+               <button onclick="switchTab('student-dashboard')" id="btn-student-dashboard" class="hidden student-only offline-hide px-3 py-1.5 text-xs font-bold rounded-lg transition text-amber-300 hover:text-white">🏆 My Rank & Medals</button>
                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-3 py-1.5 text-xs font-bold rounded-lg transition text-indigo-300 hover:text-white">Interactive Quiz</button>
                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="hidden teacher-only px-3 py-1.5 text-xs font-bold rounded-lg transition text-emerald-400 hover:text-emerald-200">Teacher Analytics Dashboard </button>
                <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-700 hover:bg-rose-600 text-white ml-2 transition">Exit / Switch Mode</button>
@@ -1839,6 +1839,18 @@ async function saveStudentStats() {
                 } else {
                     el.classList.add('hidden');
                     el.style.display = 'none';
+                }
+            });
+
+            // COMPLETELY HIDE RANK & MEDALS TAB WHEN OFFLINE
+            const offlineHideElements = document.querySelectorAll('.offline-hide');
+            offlineHideElements.forEach(el => {
+                if (isOfflineModeActive) {
+                    el.classList.add('hidden');
+                    el.style.display = 'none';
+                } else {
+                    el.classList.remove('hidden');
+                    el.style.display = '';
                 }
             });
 
